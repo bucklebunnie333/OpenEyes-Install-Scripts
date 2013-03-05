@@ -67,7 +67,7 @@ Install Main Packages and OpenEyes
 
 The next step is to run
 
-	 `sh install.sh -Q -R -a`
+	 sh install.sh -Q -R -a
 
 The `-R` is used in the installation of MySQL - and will be the root password used. The -Q is the option to specify the openeyes database user (all calls to the OpenEyes database are performed by this user and never by root).
 
