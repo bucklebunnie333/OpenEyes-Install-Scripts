@@ -46,7 +46,7 @@ Once logged in again, verify the user's groups - at the command prompt or in a t
 
 the output of which should include the `www-data` group and the `openeyes` group:
 
-	dev adm dialout cdrom **www-data** plugdev lpadmin admin sambashare **openeyes**
+	dev adm dialout cdrom www-data plugdev lpadmin admin sambashare openeyes
 
 Create GIT keys
 ===============
