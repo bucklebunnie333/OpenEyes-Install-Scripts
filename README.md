@@ -1,5 +1,19 @@
-Install
-=======
+Getting Help
+============
+
+The `install.sh` script can display help; simply run
+
+	sh install.sh -h
+
+to display help information.
+
+Introduction
+============
+
+These scripts show are used to install OpenEyes EPR for Ubuntu 10.04 LTS.
+
+Create Groups and Upgrade 
+=========================
 
 	sh install.sh -t -u
 
@@ -18,14 +32,16 @@ Restart using the following command:
 
 	sudo shutdown -r now
 
-Once logged in again, verify the user's groups:
+Once logged in again, verify the user's groups - at the command prompt or in a terminal, type:
 
 	groups
 
-	dev adm dialout cdrom www-data plugdev lpadmin admin sambashare openeyes
+the output of which should include the `www-data` group and the `openeyes` group:
 
-GIT keys
---------
+	dev adm dialout cdrom *www-data* plugdev lpadmin admin sambashare *openeyes*
+
+Create GIT keys
+===============
 
 In order to access the git repository, run the following command:
 
@@ -39,7 +55,7 @@ Again, sudo password will be prompted for - enter it and follow instructions. Yo
 After entering the email to be used, a passphrase will be prompted for - hit <ENTER> to enter a blank passphrase. Now copy the contents of ~/.ssh/id_rsa.pub to the github account used to access OpenEyes. How to do this is not documented here.
 
 Install Main Packages and OpenEyes
-----------------------------------
+==================================
 
 The next step is to run
 
@@ -66,7 +82,7 @@ Note that the following message will be displayed for cloning OpenEyes:
 	RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
 	Are you sure you want to continue connecting (yes/no)?
 
-Answer yes to this question then hit <ENTER>.
+Answer yes to this question then hit `<ENTER>`.
 
 Finally, YII will attempt to migrate the OpenEyes database schemas:
 
@@ -87,4 +103,9 @@ Finally, YII will attempt to migrate the OpenEyes database schemas:
 
 	Apply the above migrations? [yes|no]
 
-Answer yes then hit <ENTER>
+Answer yes then hit `<ENTER>`
+
+Testing the Installation
+========================
+
+Browse to `http://localhost` (or wherever the installation host is located) in order to test the installation.
