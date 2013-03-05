@@ -1,3 +1,10 @@
+Introduction
+============
+
+These scripts show are used to install OpenEyes EPR for Ubuntu 10.04 LTS. In particular, the script `install.sh` is the main script to be called for installation. `base.sh` contains utility function calls that are used across other scripts.
+
+Each `.sh` file typically contains a referenced `.properties` file - these files contain environmental variables used for the install. By default they can be left as is and are required only for fine-tuning more complex installations.
+
 Getting Help
 ============
 
@@ -7,26 +14,21 @@ The `install.sh` script can display help; simply run
 
 to display help information.
 
-Introduction
-============
-
-These scripts show are used to install OpenEyes EPR for Ubuntu 10.04 LTS.
-
 Create Groups and Upgrade 
 =========================
 
 	sh install.sh -t -u
 
-Since -t adds the user to two different groups, the sudo password must be entered. Once entered, it will not be needed to be re-entered again.
+Since `-t` adds the user to two different groups, the sudo password must be entered. Once entered, it will not be needed to be re-entered again.
 
 The new groups will not be added until the user logs out.
 
-The -u will perform an upgrade. This will take some time.
+The `-u` will perform an upgrade. This will take some time.
 
 At the end of this process, the following message will be issued:
 
-It is important that you now restart your system, especially
-if the upgrade was from a fresh vanilla install.
+	It is important that you now restart your system, especially
+	if the upgrade was from a fresh vanilla install.
 
 Restart using the following command:
 
@@ -52,7 +54,7 @@ Again, sudo password will be prompted for - enter it and follow instructions. Yo
 	Attempting to generate the key. This requires your email used with the GIT repository to identify yourself.
 	Enter your email used to generate the key:
 
-After entering the email to be used, a passphrase will be prompted for - hit <ENTER> to enter a blank passphrase. Now copy the contents of ~/.ssh/id_rsa.pub to the github account used to access OpenEyes. How to do this is not documented here.
+After entering the email to be used, a passphrase will be prompted for - press `<ENTER>` to enter a blank passphrase. Now copy the contents of `~/.ssh/id_rsa.pub` to the github account used to access OpenEyes. How to do this is not documented here and can be found on the github pages.
 
 Install Main Packages and OpenEyes
 ==================================
@@ -61,9 +63,9 @@ The next step is to run
 
 	 `sh install.sh -Q -R -a`
 
-The -R is used in the installation of MySQL - and will be the root password used. The -Q is the option to specify the openeyes database user (all calls to the OpenEyes database are performed by this user and never by root).
+The `-R` is used in the installation of MySQL - and will be the root password used. The -Q is the option to specify the openeyes database user (all calls to the OpenEyes database are performed by this user and never by root).
 
-The -a command performs the following targets in order:
+The `-a` command performs the following targets in order:
 
 	-i: install all required packages (LAMP stack etc.);
 	-d: create necessary databases and database users, including permissions;
@@ -82,7 +84,7 @@ Note that the following message will be displayed for cloning OpenEyes:
 	RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
 	Are you sure you want to continue connecting (yes/no)?
 
-Answer yes to this question then hit `<ENTER>`.
+Answer yes to this question then press `<ENTER>`.
 
 Finally, YII will attempt to migrate the OpenEyes database schemas:
 
@@ -103,9 +105,9 @@ Finally, YII will attempt to migrate the OpenEyes database schemas:
 
 	Apply the above migrations? [yes|no]
 
-Answer yes then hit `<ENTER>`
+Answer yes then press `<ENTER>` If the migration is unsuccessful an error will be reported.
 
 Testing the Installation
 ========================
 
-Browse to `http://localhost` (or wherever the installation host is located) in order to test the installation.
+Browse to `http://localhost` (or wherever the installation host is located) in order to test the installation. A page with log on and password fields should be displayed with appropriate Moorfields skinning.
