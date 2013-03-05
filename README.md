@@ -5,14 +5,18 @@ These scripts show are used to install OpenEyes EPR for Ubuntu 10.04 LTS. In par
 
 Each `.sh` file typically contains a referenced `.properties` file - these files contain environmental variables used for the install. By default they can be left as is and are required only for fine-tuning more complex installations.
 
-Getting Help
-============
+Getting Help and Logging
+========================
 
 The `install.sh` script can display help; simply run
 
 	sh install.sh -h
 
 to display help information.
+
+The shell scripts also log a lot of their information as the install progresses; the install script is written to the directory `.openeyes-install` by default, in a file named `oe-install.log`. To watch the log as the process installs, from a separate terminal or console the following command can be issued once the install begins:
+
+	tail -f .openeyes-install/oe-install.log
 
 Create Groups and Upgrade 
 =========================
