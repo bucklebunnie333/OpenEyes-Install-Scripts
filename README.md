@@ -17,6 +17,8 @@ to display help information.
 Create Groups and Upgrade 
 =========================
 
+Before proceeding with the actual installation, it is necessary to create the correct groups that the user will belong to and update and upgrade the Ubuntu distribution to the latest version. This can be achieved by executing the following from a terminal or command prompt:
+
 	sh install.sh -t -u
 
 Since `-t` adds the user to two different groups, the sudo password must be entered. Once entered, it will not be needed to be re-entered again.
@@ -40,7 +42,7 @@ Once logged in again, verify the user's groups - at the command prompt or in a t
 
 the output of which should include the `www-data` group and the `openeyes` group:
 
-	dev adm dialout cdrom *www-data* plugdev lpadmin admin sambashare *openeyes*
+	dev adm dialout cdrom **www-data** plugdev lpadmin admin sambashare **openeyes**
 
 Create GIT keys
 ===============
