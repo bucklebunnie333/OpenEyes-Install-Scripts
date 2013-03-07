@@ -71,6 +71,10 @@ The next step is to run
 
 The `-R` is used in the installation of MySQL - and will be the root password used. The -Q is the option to specify the openeyes database user (all calls to the OpenEyes database are performed by this user and never by root).
 
+This will apply the migration without asking the user; to be prompted for the migration, add the `-A` option with the value _false_, thus:
+
+	sh install.sh -Q -R -A false -a
+
 The `-a` command performs the following targets in order:
 
 	-i: install all required packages (LAMP stack etc.);
@@ -111,9 +115,52 @@ Finally, YII will attempt to migrate the OpenEyes database schemas:
 
 	Apply the above migrations? [yes|no]
 
-Answer yes then press `<ENTER>` If the migration is unsuccessful an error will be reported.
+By deafult the 'yes' will be supplied by the script - to override this and set auto-migrate to false, ensure `-A false` is set. Otherwise, answer yes then press `<ENTER>` If the migration is unsuccessful an error will be reported either way.
 
 Testing the Installation
 ========================
 
 Browse to `http://localhost` (or wherever the installation host is located) in order to test the installation. A page with log on and password fields should be displayed with appropriate Moorfields skinning.
+
+Installing Core Modules
+=======================
+
+This section describes how to install some of the easily configurable modules for OpenEyes. In particular, easily configurable modules require minimal configuration, with at most a single migration to ensure the module works. An example of an easily configurable module without need of a migration is the `EyeDraw` module. Examples of modules requiring simple migration are `OphCiExamination` and `OphDrPrescription`.
+
+Help for module installation can be achieved by invoking the module installation script with `-h`:
+
+	bash modules.sh -h
+
+To install all default OpenEyes modules, simply run
+
+	bash modules.sh -i
+
+Although the `module.properties` file contains a default list of modules ready for use with OpenEyes, these can also be hand-crafted, using the `-M [modules]` option, where `[modules]` takes the format
+
+	module_name|git_repository|git_branch|migrate;[other_modules]
+
+Surrounded with quotes.  Note that `migrate` is not required and defaults to _true_ - that is, all modules are migrated by default and not requiring the user to answer 'yes' or 'no'. Ensure `migrate` is set to _false_ to prevent migration. Other modules take the same format, and are separated by a semi-colon. For example, to install module OphCiExamination and Sample from the main OpenEyes github site, with branch release/1.3-moorfields, the script would be invoked using
+
+	bash modules.sh "OphCiExamination|git@github.com:openeyes|release/1.3-moorfields;Sample|git@github.com:openeyes|release/1.3-moorfields"
+
+Note that all modules can be prompted for migration by supplying the `-A false` option, as with the main installation (described above).
+
+Installing Sample Data
+======================
+
+The Moorfields sample data can be installed by calling
+
+	bash modules.sh -s
+
+This installs records for randomly generated patient names.
+
+Issues: git hangs
+-----------------
+
+It is not uncommon for the process to hang, occassionally, when performing installation of core modules and/or sample data. Typically the installation will just stay at one stage and not progress:
+
+	NAME: OphDrPrescription, REPO: git@github.com:openeyes, BRANCH: release/1.2-moorfields
+	Attempting to clone git@github.com:openeyes/OphDrPrescription.git to OphDrPrescription (in directory /var/www/openeyes/protected/modules)
+	Cloning into 'OphDrPrescription'...
+
+If this happens, simply `CTRL-C` the process and re-run it. Modules that are already installed will be skipped.
