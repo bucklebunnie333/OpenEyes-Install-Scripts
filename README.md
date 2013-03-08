@@ -141,9 +141,13 @@ Although the `module.properties` file contains a default list of modules ready f
 
 Surrounded with quotes.  Note that `migrate` is not required and defaults to _true_ - that is, all modules are migrated by default and not requiring the user to answer 'yes' or 'no'. Ensure `migrate` is set to _false_ to prevent migration. Other modules take the same format, and are separated by a semi-colon. For example, to install module OphCiExamination and Sample from the main OpenEyes github site, with branch release/1.3-moorfields, the script would be invoked using
 
-	bash modules.sh "OphCiExamination|git@github.com:openeyes|release/1.3-moorfields;Sample|git@github.com:openeyes|release/1.3-moorfields"
+	bash modules.sh -M "OphCiExamination|git@github.com:openeyes|release/1.3-moorfields;Sample|git@github.com:openeyes|release/1.3-moorfields" -i
 
-Note that all modules can be prompted for migration by supplying the `-A false` option, as with the main installation (described above).
+By default, migration will happen automatically (without waiting for the user to enter yes/no); this can be changed using the `-A false` option, as with the main installation (described above). So
+
+	bash modules.sh -A false -i
+
+would prompt the user each time a migration would be performed for individual modules.
 
 Installing Sample Data
 ======================
