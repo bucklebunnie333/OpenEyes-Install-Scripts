@@ -27,22 +27,34 @@ backup() {
 
 	log "Preparing to back up current OpenEyes installation..."
 
-	mkdir -p $BACKUP_DIR
+	if [ ! -d $BACKUP_DIR ]
+	then 
+		mkdir -p $BACKUP_DIR
+	fi
+
+	if [ -d "$BACKUP_DIR/$PREFIX-$OE_DIR" -o -d "$BACKUP_DIR/$PREFIX-$OE_DIR.sql" ]
+	then
+		log "Cannot back up using specified prefix - it already exists; try a different prefix (you used '$PREFIX')"
+		exit 1
+	fi
 	read_root_db_password
 
 	check_dir_exists_or_quit $BACKUP_DIR
 	if [ -d $SITE_DIR/$OE_DIR ]
 	then
-	        log "Copying main site directory from $SITE_DIR/$OE_DIR to $BACKUP_DIR/$DATE-$OE_DIR"
-		sudo cp -r $SITE_DIR/$OE_DIR $BACKUP_DIR/$DATE-$OE_DIR
+	        log "Copying main site directory from $SITE_DIR/$OE_DIR to $BACKUP_DIR/$PREFIX-$OE_DIR"
+		sudo cp -r $SITE_DIR/$OE_DIR $BACKUP_DIR/$PREFIX-$OE_DIR
 		report_success $? "Copied $SITE_DIR/$OE_DIR to $BACKUP_DIR/$DATE-$OE_DIR"
 	fi
-
-	log "Attempting to dump openeyes database to $BACKUP_DIR under the name $DATE-$OE_DIR.sql"
-	mysqldump -u root --password=$DB_PASSWORD openeyes > $BACKUP_DIR/$DATE-$OE_DIR.sql
+	if [ -z $PREFIX ]
+	then
+		PREFIX=$DATE
+	fi
+	log "Attempting to dump openeyes database to $BACKUP_DIR under the name $PREFIX-$OE_DIR.sql"
+	mysqldump -u root --password=$DB_PASSWORD openeyes > $BACKUP_DIR/$PREFIX-$OE_DIR.sql
 	report_success $? "MySQL openeyes DB dumped"
 	log "Backup complete. You can restore at any time after nuking (-n) by running:"
-	log "    $0 -D $DATE -r"
+	log "    $0 -P $PREFIX -r"
 }
 
 # 
@@ -51,13 +63,13 @@ backup() {
 # not already exist.
 # 
 restore() {
-	if [ -z "$RESTORE_DATE" ] 
+	if [ -z "$PREFIX" ] 
 	then
 		log "Restore date not specified; use -D [date]."
 		exit 1
 	fi
-	check_file_exists_or_quit $BACKUP_DIR/$RESTORE_DATE-$OE_DIR.sql
-	check_dir_exists_or_quit $BACKUP_DIR/$RESTORE_DATE-$OE_DIR
+	check_file_exists_or_quit $BACKUP_DIR/$PREFIX-$OE_DIR.sql
+	check_dir_exists_or_quit $BACKUP_DIR/$PREFIX-$OE_DIR
 	read_root_db_password
 	if [ -d $SITE_DIR/$OE_DIR ]
 	then
@@ -75,11 +87,11 @@ restore() {
 	sudo /etc/init.d/apache2 stop
 	mysql -u root --password=$DB_PASSWORD -e "create database openeyes"
 	report_success $? "Database created"
-	log "About to import data to database from $BACKUP_DIR/$RESTORE_DATE-$OE_DIR.sql - this may take a while..."
-	mysql -u root --password=$DB_PASSWORD openeyes < $BACKUP_DIR/$RESTORE_DATE-$OE_DIR.sql
-	report_success $? "Database imported from $BACKUP_DIR/$RESTORE_DATE-$OE_DIR.sql "
-	sudo cp -r $BACKUP_DIR/$RESTORE_DATE-$OE_DIR $SITE_DIR/$OE_DIR
-	report_success $? "Copied $BACKUP_DIR/$RESTORE_DATE-$OE_DIR to $SITE_DIR/$OE_DIR"
+	log "About to import data to database from $BACKUP_DIR/$PREFIX-$OE_DIR.sql - this may take a while..."
+	mysql -u root --password=$DB_PASSWORD openeyes < $BACKUP_DIR/$PREFIX-$OE_DIR.sql
+	report_success $? "Database imported from $BACKUP_DIR/$PREFIX-$OE_DIR.sql "
+	sudo cp -r $BACKUP_DIR/$PREFIX-$OE_DIR $SITE_DIR/$OE_DIR
+	report_success $? "Copied $BACKUP_DIR/$PREFIX-$OE_DIR to $SITE_DIR/$OE_DIR"
 
 	sudo chown -R root:www-data $SITE_DIR/$OE_DIR
 	report_success $? "chown'd site data"
@@ -114,31 +126,43 @@ nuke() {
 # 
 print_help() {
   echo "Backup, restore or nuke an openeyes installation."
-  echo "All files are backed up to and restored from $BACKUP_DIR"
+  echo "All files are backed up to and restored from \$BACKUP_DIR"
+  echo "(currently set to $BACKUP_DIR)."
   echo "Each time a directory is backed up, it is backed up"
-  echo "in \$BACKUP_DIR prefixed with the date in the"
-  echo "format yyyy-mm-dd.HHMMss-[name] where [name]."
+  echo "in \$BACKUP_DIR prefixed either with the date in the"
+  echo "format yyyy-mm-dd.HHMMss-[name], or with the prefix"
+  echo "specified using -P <PREFIX>, where [name]"
   echo "is the file being backed up."
   echo ""
   echo "For development, typically the process is one of"
   echo "backup (-b), then nuke (-n), at which point the main"
   echo "installation script can be used to get a new version"
   echo "of the sources, or optionally a restore (-r) can"
-  echo "be used to restore an old copy (using -D)."
+  echo "be used to restore an old copy (using -P)."
   echo ""
-  echo "Options:"
+  echo "Configuration options should be provided first, followed"
+  echo "by installation targets which are executed in the order"
+  echo "they are specified."
+  echo ""
+  echo "Configuration options:"
+  echo "  -P <PREFIX>: prefix for specifying a backup or restore;"
+  echo "      the prefix is mandatory for restoring."
+  echo ""
+  echo "Script targets:"
   echo ""
   echo "  -b: Backup the site directory and MySQL database."
+  echo "      specifying the date prefix to restore. Uses: -P,"
+  echo "      although if not specified is prefixed with the"
+  echo "      date format specified above."
   echo "  -r: Restore a previously backed up configuration,"
-  echo "      specifying the date prefix to restore. Uses: -D"
+  echo "      specifying the date prefix to restore. Uses: -P,"
+  echo "      which *must* be specified."
   echo "  -n: Nuke/delete the database and site directory."
   echo "      WARNING - make sure you've done a backup first,"
   echo "      and verify that the backup worked. Nuking sources"
   echo "      that have not been checked in to the repository"
   echo "      should not be nuked!"
   echo "  -h: Print this help then quit."
-  echo "  -D <DATE>: Specify the date for restoration in the"
-  echo "      format yyyy-mm-dd.HHMMss"
 }
 
 # 
@@ -151,11 +175,11 @@ print_help() {
 # 
 # Inspired by http://wiki.bash-hackers.org/howto/getopts_tutorial
 # 
-while getopts ":rbnhD:" opt; do
+while getopts ":rbnhP:" opt; do
   case $opt in
-    D)
-      log "Date specified for restore: $OPTARG" >&2
-      RESTORE_DATE="$OPTARG"
+    P)
+      log "Prefix specified for restore/backup: $OPTARG" >&2
+      PREFIX="$OPTARG"
       ;;
     r)
       restore
