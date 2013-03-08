@@ -38,8 +38,8 @@ install_base_modules() {
 			log "NAME: $mod_name, REPO: $mod_repo, BRANCH: $mod_branch"
 			do_git_clone $mod_repo/$mod_name.git $mod_name
 			cd $SITE_DIR/$OE_DIR/protected/modules/$mod_name
-			do_git_checkout $mod_branch
-			if [ $mod_migrate = "false" ]
+			do_git_checkout $mod_branch origin/$mod_branch
+			if [ "$mod_migrate" = "false" ]
 			then
 				log "No migration for module $mod_name"
 			else
@@ -52,7 +52,7 @@ install_base_modules() {
 }
 
 # 
-# Parse the details of the module, placing results in $mod_name,
+# Parse the details of the module, placing results in mod_name,
 # mod_repo, mod_branch and mod_migrate.
 # 
 # $1 - module in the format module_name | git_repo | git_branch_name | migrate
@@ -134,10 +134,15 @@ install_sample() {
 # 
 print_help() {
 	echo "Install, configure and update OpenEyes modules. Expects an existing"
-	echo "OpenEyes installation to be in place."
+	echo "OpenEyes installation to be in place. Each module is defined by a"
+	echo "number of configuration options such as git repository, git branch"
+	echo "etc.; note that all modules are tracked in git via the --track option,"
+	echo "although this is not configurable - rather, the branch name is used"
+	echo "prefixed by 'origin/'."
 	echo ""
-	echo "All options marked with an asterix require an internet connection,"
-	echo "unless the repository is local; asterix is not required for invocation."
+	echo "All options marked with an asterix require an ethernet connection,"
+	echo "unless the repository is local; asterix is not required for invocation"
+	echo "in the installation targets given below."
 	echo ""
 	echo "Configuration options MUST preceed installation targets and targets"
 	echo "are executed in the order they are specified."
