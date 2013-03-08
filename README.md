@@ -122,10 +122,17 @@ Testing the Installation
 
 Browse to `http://localhost` (or wherever the installation host is located) in order to test the installation. A page with log on and password fields should be displayed with appropriate Moorfields skinning.
 
-Installing Core Modules
-=======================
+Installing Modules
+==================
+
+Two aspects of modular installation are covered here - core modules and sample data.
+
+Core Modules
+------------
 
 This section describes how to install some of the easily configurable modules for OpenEyes. In particular, easily configurable modules require minimal configuration, with at most a single migration to ensure the module works. An example of an easily configurable module without need of a migration is the `EyeDraw` module. Examples of modules requiring simple migration are `OphCiExamination` and `OphDrPrescription`.
+
+*NOTE* - module installation covers installing the `Sample` data project - it is recommended to install sample data _before_ installing the main modules specified from using `-i`. Sample data installation is covered below.
 
 Help for module installation can be achieved by invoking the module installation script with `-h`:
 
@@ -150,7 +157,7 @@ By default, migration will happen automatically (without waiting for the user to
 would prompt the user each time a migration would be performed for individual modules.
 
 Installing Sample Data
-======================
+----------------------
 
 The Moorfields sample data can be installed by calling
 
@@ -198,9 +205,9 @@ which will back the Apache site directory and do an SQL dump to the backup direc
 
 This can be verified by taking a look at the files and directories given in the above output - here only a directory listing is given, although script callers should make a more informed verification:
 
-$ ls -ltrh ~/.openeyes-install/backups/
-drwxr-xr-x 1 root root   23 Mar  8 10:54 13-03-08.105442-openeyes
--rw-r--r-- 1 devel devel  20M Mar  8 10:55 13-03-08.105442-openeyes.sql
+	$ ls -ltrh ~/.openeyes-install/backups/
+	drwxr-xr-x 1 root root   23 Mar  8 10:54 13-03-08.105442-openeyes
+	-rw-r--r-- 1 devel devel  20M Mar  8 10:55 13-03-08.105442-openeyes.sql
 
 Note the backup can also be called with the `-P <PREFIX>` option - in which case, the date specified above (13-03-08.105442) can be replaced a (more meaningful) user-defined prefix.
 
