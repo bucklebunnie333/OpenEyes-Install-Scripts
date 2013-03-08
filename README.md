@@ -200,7 +200,7 @@ This can be verified by taking a look at the files and directories given in the 
 
 $ ls -ltrh ~/.openeyes-install/backups/
 drwxr-xr-x 1 root root   23 Mar  8 10:54 13-03-08.105442-openeyes
--rw-r--r-- 1 rich rich  20M Mar  8 10:55 13-03-08.105442-openeyes.sql
+-rw-r--r-- 1 devel devel  20M Mar  8 10:55 13-03-08.105442-openeyes.sql
 
 Note the backup can also be called with the `-P <PREFIX>` option - in which case, the date specified above (13-03-08.105442) can be replaced a (more meaningful) user-defined prefix.
 
@@ -214,7 +214,7 @@ which outputs:
 	Reading in password for root database access. Please enter root database password:
 	Again, please:
 	Stopping Apache - if the script does not complete, it will have to be manually restarted.
-	Writing to log file /home/rich/.openeyes-install/oe-install.log
+	Writing to log file /home/devel/.openeyes-install/oe-install.log
 	Removed /var/www/openeyes: Success
 	Dropped MySQL database openeyes.: Success
 	Restarting Apache...
@@ -232,7 +232,7 @@ At some point the user might want to restore their database - in which case a _n
 where `<PREFIX>` is the prefix specified when performing the backup; if no prefix was specified, then it will be the date called when the backup was created. From the above example, the `<PREFIX>` will be `13-03-08.105442`. Here's a restore in action:
 
 	$ sh dev-utils.sh -P 13-03-08.105442 -r
-	Writing to log file /home/rich/.openeyes-install/oe-install.log
+	Writing to log file /home/devel/.openeyes-install/oe-install.log
 	Prefix specified for restore/backup: 13-03-08.105442
 	Reading in password for root database access. Please enter root database password:
 	Again, please:
@@ -242,9 +242,9 @@ where `<PREFIX>` is the prefix specified when performing the backup; if no prefi
 	Warning: DocumentRoot [/var/www/openeyes] does not exist
 	 ... waiting [ OK ]
 	Database created: Success
-	About to import data to database from /home/rich/.openeyes-install/backups/13-03-08.105442-openeyes.sql - this may take a while...
-	Database imported from /home/rich/.openeyes-install/backups/13-03-08.105442-openeyes.sql : Success
-	Copied /home/rich/.openeyes-install/backups/13-03-08.105442-openeyes to /var/www/openeyes: Success
+	About to import data to database from /home/devel/.openeyes-install/backups/13-03-08.105442-openeyes.sql - this may take a while...
+	Database imported from /home/devel/.openeyes-install/backups/13-03-08.105442-openeyes.sql : Success
+	Copied /home/devel/.openeyes-install/backups/13-03-08.105442-openeyes to /var/www/openeyes: Success
 	chown'd site data: Success
 	chmod'd site data - group has r/w/x: Success
 	Restarting Apache...
