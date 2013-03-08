@@ -144,23 +144,25 @@ print_help() {
 	echo ""
 	echo "Configuration options:"
 	echo ""
-	echo "	-A <true|false>: auto-migrate without question; defaults to true"
-	echo "	-M <modules>: overrides the \$MODULES variable in the properties file,"
-	echo "		 and uses the same format:"
-	echo "			 module_name|git_repo|git_branch_name|migrate;<other module definitions>"
-	echo "		 where module name is the name of the module (as a repository name, for"
-	echo "		 example, OphCiExamination), git_repo is the location of the git repository"
-	echo "		 to download the module from, git_branch is the remote branch to use and"
-	echo "		 migrate is an optional true/false value (defaults to true) on whether to"
-	echo "		 run a migration for the module or not. Multiple modules can be defined"
-	echo "		 by separating the module specifications with a semi-colon."
+	echo "  -A <true|false>: automatically migrate without question; defaults to true"
+	echo "     If set to false, eaech migration will be displayed and the user"
+	echo "     prompted whether to apply the migration or not."
+	echo "  -M <modules>: overrides the \$MODULES variable in the properties file,"
+	echo "     and uses the same format:"
+	echo "       module_name|git_repo|git_branch_name|migrate;<other module definitions>"
+	echo "     where module name is the name of the module (as a repository name, for"
+	echo "     example, OphCiExamination), git_repo is the location of the git repository"
+	echo "     to download the module from, git_branch is the remote branch to use and"
+	echo "     migrate is an optional true/false value (defaults to true) on whether to"
+	echo "     run a migration for the module or not. Multiple modules can be defined"
+	echo "     by separating the module specifications with a semi-colon."
 	echo ""
 	echo "Installation targets:"
 	echo ""
 	echo "* -s: install sample data module and import to DB. Uses: -R"
 	echo "* -i: install all modules specified either my -M or by the modules"
-	echo "			listed in the module properties file."
-	echo "	-h: Print this message then quit."
+	echo "      listed in the module properties file."
+	echo "  -h: Print this message then quit."
 }
 
 # 
@@ -176,7 +178,7 @@ print_help() {
 while getopts ":ishM:A:" opt; do
 	case $opt in
 		A)
-			log "Auto migrate set to: $OPTARG"
+			log "Automatically migrate modules, unless set to false. Current value: $OPTARG"
 			AUTO_MIGRATE="$OPTARG"
 			;;
 		M)
