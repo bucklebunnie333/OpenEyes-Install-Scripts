@@ -27,6 +27,11 @@ backup() {
 
 	log "Preparing to back up current OpenEyes installation..."
 
+	if [ -z $PREFIX ]
+	then
+		PREFIX=$DATE
+		log "No prefix specified; using date '$PREFIX'"
+	fi
 	if [ ! -d $BACKUP_DIR ]
 	then 
 		mkdir -p $BACKUP_DIR
@@ -46,10 +51,6 @@ backup() {
 		sudo cp -r $SITE_DIR/$OE_DIR $BACKUP_DIR/$PREFIX-$OE_DIR
 		report_success $? "Copied $SITE_DIR/$OE_DIR to $BACKUP_DIR/$DATE-$OE_DIR"
 	fi
-	if [ -z $PREFIX ]
-	then
-		PREFIX=$DATE
-	fi
 	log "Attempting to dump openeyes database to $BACKUP_DIR under the name $PREFIX-$OE_DIR.sql"
 	mysqldump -u root --password=$DB_PASSWORD openeyes > $BACKUP_DIR/$PREFIX-$OE_DIR.sql
 	report_success $? "MySQL openeyes DB dumped"
@@ -65,7 +66,7 @@ backup() {
 restore() {
 	if [ -z "$PREFIX" ] 
 	then
-		log "Restore date not specified; use -D [date]."
+		log "Restore date not specified; use -P <PREFIX>"
 		exit 1
 	fi
 	check_file_exists_or_quit $BACKUP_DIR/$PREFIX-$OE_DIR.sql
@@ -107,6 +108,8 @@ restore() {
 # 
 nuke() {
 	read_root_db_password
+	log "Stopping Apache - if the script does not complete, it will have to be manually restarted."
+	sudo /etc/init.d/apache2 stop
 	diff -r --brief $SITE_DIR $SITE_DIR/$OE_DIR > /dev/null 2>&1
 	if [ $? -eq 0 ]
 	then
