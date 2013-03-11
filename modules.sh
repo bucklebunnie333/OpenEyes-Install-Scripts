@@ -35,9 +35,9 @@ install_base_modules() {
 			log "It looks like module $mod_name already exists; skipping this one."
 		else
 			cd $SITE_DIR/$OE_DIR/protected/modules/
-			log "NAME: $mod_name, REPO: $mod_repo, BRANCH: $mod_branch"
-			do_git_clone $mod_repo/$mod_name.git $mod_name
-			cd $SITE_DIR/$OE_DIR/protected/modules/$mod_name
+			log "Remote name: $mod_name, local name: $mod_local_name, repository: $mod_repo, branch: $mod_branch"
+			do_git_clone $mod_repo/$mod_name.git $mod_local_name
+			cd $SITE_DIR/$OE_DIR/protected/modules/$mod_local_name
 			do_git_checkout $mod_branch origin/$mod_branch
 			if [ "$mod_migrate" = "false" ]
 			then
@@ -45,7 +45,7 @@ install_base_modules() {
 			else
 				# implication? If migrating, needs to be added to config too?
 				add_module_to_config $mod_name
-				migrate_module $mod_name
+				migrate_module $mod_local_name
 			fi
 		fi
 	done
@@ -53,16 +53,26 @@ install_base_modules() {
 
 # 
 # Parse the details of the module, placing results in mod_name,
-# mod_repo, mod_branch and mod_migrate.
+# mod_local_name, mod_repo, mod_branch and mod_migrate.
 # 
-# $1 - module in the format module_name | git_repo | git_branch_name | migrate
+# $1 - module in the format remote_module_name | local_module_name | git_repo | git_branch_name | migrate
+# 
+# See the module properties file for explanation of each part of the module configuration given above.
 # 
 parse_module_details() {
 	module=$1
 	mod_name=`echo $module | cut -d \| -f 1`
-	mod_repo=`echo $module | cut -d \| -f 2`
-	mod_branch=`echo $module | cut -d \| -f 3`
-	mod_migrate=`echo $module | cut -d \| -f 4`
+	mod_local_name=`echo $module | cut -d \| -f 2`
+	mod_repo=`echo $module | cut -d \| -f 3`
+	mod_branch=`echo $module | cut -d \| -f 4`
+	mod_migrate=`echo $module | cut -d \| -f 5`
+	if [ -z "$mod_local_name" ]
+	then
+		mod_local_name=$mod_name
+		log "Module name is same as remote module repository name ($mod_local_name)."
+	else
+		log "Using different local module name: $mod_local_name, differs from $mod_name"
+	fi
 }
 
 #
@@ -75,9 +85,9 @@ migrate_module() {
 	log "About to run migration - this may take some time..."
 	if [ $AUTO_MIGRATE = 'true' ]
 	then
-		echo 'yes' | ./yiic migrate --migrationPath=application.modules.$mod_name.migrations
+		echo 'yes' | ./yiic migrate --migrationPath=application.modules.$mod_local_name.migrations
 	else
-		./yiic migrate --migrationPath=application.modules.$mod_name.migrations
+		./yiic migrate --migrationPath=application.modules.$mod_local_name.migrations
 	fi
 	report_success $? "$mod_name migrated"
 }
@@ -119,9 +129,9 @@ install_sample() {
 	cd $SITE_DIR/openeyes/protected/modules
 	log "Installing sample patient data..."
 	parse_module_details $MODULE_SAMPLE_DATA
-	do_git_clone $mod_repo/$mod_name.git $mod_name
-	cd $mod_name
-	do_git_checkout $$mod_branch
+	do_git_clone $mod_repo/$mod_name.git $mod_local_name
+	cd $mod_local_name
+	do_git_checkout $mod_branch
 	log "Importing patient data to database - this may take a while..."
 
 	mysql -u root --password=$DB_PASSWORD -D openeyes < sql/openeyes.sql
