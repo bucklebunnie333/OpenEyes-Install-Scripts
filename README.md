@@ -71,7 +71,7 @@ The next step is to run
 
 The `-R` is used in the installation of MySQL - and will be the root password used. The -Q is the option to specify the openeyes database user (all calls to the OpenEyes database are performed by this user and never by root).
 
-This will apply the migration without asking the user; to be prompted for the migration, add the `-A` option with the value _false_, thus:
+This will apply the migration without asking the user; to be prompted for the migration, add the `-A` (auto-migrate) option with the value _false_, thus:
 
 	sh install.sh -Q -R -A false -a
 
@@ -144,11 +144,11 @@ To install all default OpenEyes modules, simply run
 
 Although the `module.properties` file contains a default list of modules ready for use with OpenEyes, these can also be hand-crafted, using the `-M [modules]` option, where `[modules]` takes the format
 
-	module_name|git_repository|git_branch|migrate;[other_modules]
+	remote_module_name|local_module_name|git_repository|git_branch|migrate;[other_modules]
 
-Surrounded with quotes.  Note that `migrate` is not required and defaults to _true_ - that is, all modules are migrated by default and not requiring the user to answer 'yes' or 'no'. Ensure `migrate` is set to _false_ to prevent migration. Other modules take the same format, and are separated by a semi-colon. For example, to install module OphCiExamination and Sample from the main OpenEyes github site, with branch release/1.3-moorfields, the script would be invoked using
+Surrounded with quotes.  `local_module_name` is optional, and used only when the remote and local names are different (like EyeDraw for example, that uses a local name of eyedraw). If not using `local_module_name`, supply no spaces between the pipes used to configure the module name. Note that `migrate` is not required and defaults to _true_ - that is, all modules are migrated by default and not requiring the user to answer 'yes' or 'no'. Ensure `migrate` is set to _false_ to prevent migration. Other modules take the same format, and are separated by a semi-colon. For example, to install module OphCiExamination and Sample from the main OpenEyes github site (using a local name of _sample_ for the _Sample repository), with branch release/1.3-moorfields, the script would be invoked using
 
-	bash modules.sh -M "OphCiExamination|git@github.com:openeyes|release/1.3-moorfields;Sample|git@github.com:openeyes|release/1.3-moorfields" -i
+	bash modules.sh -M "OphCiExamination||git@github.com:openeyes|release/1.3-moorfields;Sample|sample|git@github.com:openeyes|release/1.3-moorfields" -i
 
 By default, migration will happen automatically (without waiting for the user to enter yes/no); this can be changed using the `-A false` option, as with the main installation (described above). So
 
