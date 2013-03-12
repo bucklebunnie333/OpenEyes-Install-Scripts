@@ -33,13 +33,18 @@ read_root_db_password() {
 }
 
 # 
-# Create the temporary directory that sources will be downloaded to.
+# Create 
 # 
-create_tmp_dir() {
-	if [ ! -d $TMP_DIR ]
+# $1 - directory to create
+# 
+create_directory() {
+	DIRECTORY=$1
+	if [ ! -d  $DIRECTORY ]
 	then
-		mkdir $TMP_DIR
-		log "Created $TMP_DIR"
+		sudo mkdir -p $DIRECTORY
+		report_success $? "Created $DIRECTORY"
+	else
+		log "$DIRECTORY already exists, no need to create it."
 	fi
 }
 
@@ -54,7 +59,7 @@ log() {
 		if [ $FIRST_TIME_LOG = "true" ]
 		then
 			FIRST_TIME_LOG="false"
-			create_tmp_dir
+			create_directory $TMP_DIR
 			echo "Writing to log file $LOG_FILE"
 			echo "`date +"%a %Y-%m-%d %H:%M:%S"` Script started." >> $LOG_FILE
 		fi
