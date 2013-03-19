@@ -152,16 +152,16 @@ quit_if_dir_exists() {
 # Adds the current user to www-data
 # 
 add_user_to_apache_group() {
-	groups $USER | grep --quiet www-data
+	groups $USER | grep --quiet $APACHE_GROUP
 	if [ $? -ne 0 ]
 	then
-		log "Adding this user to group 'www-data' for r/w purposes:"
-		sudo sudo usermod -G www-data -a $USER
-		log "Added user to www-data"
+		log "Adding this user to group '$APACHE_GROUP' for r/w purposes:"
+		sudo sudo usermod -G $APACHE_GROUP -a $USER
+		log "Added user to $APACHE_GROUP"
 		log "Note: you may need to log in and out for the changes"
 		log "to take effect to be member of the specified group."
 	else
-		log "$USER is already a member of www-data."
+		log "$USER is already a member of $APACHE_GROUP."
 	fi
 }
 
@@ -169,12 +169,16 @@ add_user_to_apache_group() {
 # Adds the user to the $OE_GROUP group.
 #
 add_user_to_oe_group() {
-	groups $USER | grep --quiet $OE_GROUP
+	sudo grep -qs $OE_GROUP /etc/group
 	if [ $? -ne 0 ]
 	then
 		log "'$OE_GROUP' group does not exist; creating it..."
 		sudo groupadd $OE_GROUP
 		report_success $? "Added group '$OE_GROUP'"
+	fi
+	groups $USER | grep --quiet $OE_GROUP
+	if [ $? -ne 0 ]
+	then
 		sudo usermod -a -G $OE_GROUP $USER
 		report_success $? "Added $USER to group '$OE_GROUP'"
 		log "Note: you may need to log in and out for the changes"

@@ -611,7 +611,7 @@ while getopts ":guitdayeocsmhRQL:W:P:Y:G:S:O:D:T:Z:U:C:N:" opt; do
 			create_git_keys
 			;;
 		a)
-			create_directory $TMP_DIR
+			mkdir $TMP_DIR
 			install_packages
 			db_admin
 			download_yii_code
@@ -634,19 +634,19 @@ while getopts ":guitdayeocsmhRQL:W:P:Y:G:S:O:D:T:Z:U:C:N:" opt; do
 			db_admin
 			;;
 		y)
-			create_directory $TMP_DIR
+			mkdir $TMP_DIR
 			download_yii_code
 			;;
 		e)
-			create_directory $TMP_DIR
+			mkdir $TMP_DIR
 			extract_yii_code
 			;;
 		o)
-			create_directory $TMP_DIR
+			mkdir $TMP_DIR
 			download_oe_code
 			;;
 		c)
-			create_directory $TMP_DIR
+			mkdir $TMP_DIR
 			configure_oe_code
 			;;
 		s)
