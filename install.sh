@@ -28,10 +28,8 @@
 # to install required packages and end up with an Apache server running OpenEyes. The -R and -Q options prompt for the root and OE user passwords for database admin/access (respectively).
 # 
 
-SCRIPT_DIR=`dirname $0`
-
-. $SCRIPT_DIR/base.sh
-. $SCRIPT_DIR/install.properties
+. $OE_INSTALL_SCRIPTS_DIR/base.sh
+. $OE_INSTALL_SCRIPTS_DIR/install.properties
 
 # 
 # Perform a system update and upgrade to get the latest packages.

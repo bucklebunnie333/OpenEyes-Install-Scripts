@@ -11,8 +11,8 @@
 # 
 # Initial author: Richard Meeking, 16th January 2012.
 # 
-SCRIPT_DIR=`dirname $0`
-. $SCRIPT_DIR/base.properties
+
+. $OE_INSTALL_SCRIPTS_DIR/base.properties
 
 #
 # 

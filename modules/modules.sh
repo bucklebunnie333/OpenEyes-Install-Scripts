@@ -11,10 +11,10 @@
 # 
 # Initial author: Richard Meeking, 24th July 2012.
 
-SCRIPT_DIR=`dirname $0`
+echo $OE_INSTALL_SCRIPTS_DIR/base.sh
 
-. $SCRIPT_DIR/base.sh
-. $SCRIPT_DIR/modules.properties
+. $OE_INSTALL_SCRIPTS_DIR/base.sh
+. $OE_INSTALL_SCRIPTS_DIR/modules/modules.properties
 
 #
 # Install all modules given in the properties file;
@@ -29,7 +29,7 @@ install_base_modules() {
 
 	for module in $mods
 	do
-				parse_module_details $module
+		parse_module_details $module
 		if [ -d $SITE_DIR/$OE_DIR/protected/modules/$mod_name ]
 		then
 			log "It looks like module $mod_name already exists; skipping this one."
