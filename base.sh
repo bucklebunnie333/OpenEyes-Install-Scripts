@@ -149,51 +149,41 @@ quit_if_dir_exists() {
 }
 
 # 
-# Adds the current user to www-data
+# Adds the specified user to the given group.
 # 
-add_user_to_apache_group() {
-	groups $USER | grep --quiet $APACHE_GROUP
+# $1 the user to add to the group
+# 
+# $2 the group to add the user to
+# 
+add_user_to_group() {
+	USER_TO_ADD=$1
+	GROUP_TO_ADD=$2
+	sudo grep -qs $GROUP_TO_ADD /etc/group
 	if [ $? -ne 0 ]
 	then
-		log "Adding this user to group '$APACHE_GROUP' for r/w purposes:"
-		sudo sudo usermod -G $APACHE_GROUP -a $USER
-		log "Added user to $APACHE_GROUP"
+		log "'$GROUP_TO_ADD' group does not exist; creating it..."
+		sudo groupadd $GROUP_TO_ADD
+		report_success $? "Added group '$GROUP_TO_ADD'"
+	fi
+	groups $USER_TO_ADD | grep --quiet $GROUP_TO_ADD
+	if [ $? -ne 0 ]
+	then
+		log "Adding this user to group '$GROUP_TO_ADD' for r/w purposes:"
+		sudo sudo usermod -G $GROUP_TO_ADD -a $USER_TO_ADD
+		log "Added user to $GROUP_TO_ADD"
 		log "Note: you may need to log in and out for the changes"
 		log "to take effect to be member of the specified group."
 	else
-		log "$USER is already a member of $APACHE_GROUP."
+		log "$USER_TO_ADD is already a member of $GROUP_TO_ADD."
 	fi
 }
 
 #
-# Adds the user to the $OE_GROUP group.
-#
-add_user_to_oe_group() {
-	sudo grep -qs $OE_GROUP /etc/group
-	if [ $? -ne 0 ]
-	then
-		log "'$OE_GROUP' group does not exist; creating it..."
-		sudo groupadd $OE_GROUP
-		report_success $? "Added group '$OE_GROUP'"
-	fi
-	groups $USER | grep --quiet $OE_GROUP
-	if [ $? -ne 0 ]
-	then
-		sudo usermod -a -G $OE_GROUP $USER
-		report_success $? "Added $USER to group '$OE_GROUP'"
-		log "Note: you may need to log in and out for the changes"
-		log "to take effect to be member of the specified group."
-	else
-		log "$USER is already a member of $OE_GROUP."
-	fi
-}
-
-#
-# Adds the user to the www-data and $OE_GROUP groups.
+# Adds the user to the necessary groups (APACHE_GROUP and OE_GROUP).
 #
 add_user_to_groups() {
-	add_user_to_oe_group
-	add_user_to_apache_group
+	add_user_to_group $USER $OE_GROUP
+	add_user_to_group $USER $APACHE_GROUP
 }
 
 # 
