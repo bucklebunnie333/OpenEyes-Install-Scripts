@@ -16,6 +16,7 @@
 
 . $OE_INSTALL_SCRIPTS_DIR/base.sh
 . $OE_INSTALL_SCRIPTS_DIR/esb/mirth/mirth-install.properties
+# Required to install java and maven:
 . $OE_INSTALL_SCRIPTS_DIR/java/java-utils.sh
 
 # 
@@ -204,7 +205,7 @@ substitute_mirth_properties() {
 	perform_substitution _OE_DB_URL_ $OE_DB_URL $MIRTH_XML_FILE
 	perform_substitution _OE_DB_DRIVER_ $OE_DB_DRIVER $MIRTH_XML_FILE
 	perform_substitution _OE_LOG_DIR_ $OE_LOG_DIR $MIRTH_XML_FILE
-	perform_substitution _OE_LOG_FILE_ $OE_LOG_FILE $MIRTH_XML_FILE
+	perform_substitution _OE_MIRTH_LOG_FILE_ $OE_MIRTH_LOG_FILE $MIRTH_XML_FILE
 }
 
 #
@@ -313,9 +314,6 @@ undeploy() {
 		-p $MIRTH_PASSWORD \
 		-s $MIRTH_TMP_CONFIG_DIR/$MIRTH_CHANNELS_UNDEPLOY_FILE
 	report_success $? "Channels successfully undeployed"
-	
-	
-	
 }
 
 # 
