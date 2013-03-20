@@ -68,6 +68,7 @@ install_maven() {
 # if the sources cannot be built.
 # 
 compile_and_install_maven_sources() {
+	# TODO ultimately these will obtained via git
 	export_maven_path
 	cd $SCRIPT_DIR/conf/mirth/java-src/imageutils
 	mvn clean install

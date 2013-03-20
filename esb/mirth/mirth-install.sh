@@ -131,6 +131,7 @@ stop_esb() {
 # them to *.xml equivalents
 # 
 pre_process_mirth_config() {
+	# TODO ultimately these will obtained via git
 	ls conf/mirth/channels/*.xml  > /dev/null 2>&1
 	if [ $? -eq 0 ]
 	then
