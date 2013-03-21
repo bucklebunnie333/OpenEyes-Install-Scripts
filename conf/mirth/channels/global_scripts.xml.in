@@ -74,7 +74,7 @@ globalMap.put(&apos;OE_DB_SERVICE_BUS_VFA_FILES&apos;, &apos;_OE_DB_SERVICE_BUS_
 globalMap.put(&apos;OE_DB_SERVICE_BUS_VFA_XML_INFO&apos;, &apos;_OE_DB_SERVICE_BUS_VFA_XML_INFO_&apos;);
 globalMap.put(&apos;OE_DB_SERVICE_BUS_FILE_AUDIT&apos;, &apos;_OE_DB_SERVICE_BUS_FILE_AUDIT_&apos;);
 globalMap.put(&apos;OE_DB_SERVICE_BUS_UID&apos;, &apos;_OE_DB_SERVICE_BUS_UID_&apos;);
-globalMap.put(&apos;OE_DB_SERVICE_BUS_FILE&apos;, &apos;_OE_DB_SERVICE_BUS_&apos;);
+globalMap.put(&apos;OE_DB_SERVICE_BUS_FILE&apos;, &apos;_OE_DB_SERVICE_BUS_FILE_&apos;);
 globalMap.put(&apos;OE_DB_SERVICE_BUS_DIRECTORY&apos;, &apos;_OE_DB_SERVICE_BUS_DIRECTORY_&apos;);
 
 return;</string>
