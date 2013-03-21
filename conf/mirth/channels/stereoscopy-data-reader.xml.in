@@ -7,10 +7,10 @@ The text file contains at least one line. Each line contains information about a
   <enabled>true</enabled>
   <version>2.2.1.5861</version>
   <lastModified>
-    <time>1363813824639</time>
+    <time>1363897302774</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>22</revision>
+  <revision>25</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -20,7 +20,6 @@ The text file contains at least one line. Each line contains information about a
       <property name="binary">0</property>
       <property name="charsetEncoding">DEFAULT_ENCODING</property>
       <property name="checkFileAge">1</property>
-      <property name="directory"></property>
       <property name="fileAge">1000</property>
       <property name="fileFilter">ID*.txt</property>
       <property name="host">_OE_STEREO_TEXT_IN_</property>
@@ -31,7 +30,6 @@ The text file contains at least one line. Each line contains information about a
       <property name="passive">1</property>
       <property name="password">anonymous</property>
       <property name="pollingFrequency">1000</property>
-      <property name="pollingTime">12:00 AM</property>
       <property name="pollingType">interval</property>
       <property name="processBatchFiles">1</property>
       <property name="regex">0</property>
@@ -59,12 +57,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row1&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -83,12 +81,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row2&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -107,12 +105,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row3&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -131,12 +129,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row4&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -155,12 +153,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row5&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -179,12 +177,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row6&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -203,12 +201,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row7&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -227,12 +225,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row8&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -251,12 +249,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row9&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -275,12 +273,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row10&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -299,12 +297,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row11&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -323,12 +321,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row12&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -347,12 +345,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row13&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -371,12 +369,12 @@ The text file contains at least one line. Each line contains information about a
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;row14&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -481,23 +479,6 @@ try {
     	+ &quot;&apos;&quot; +_eye + &quot;&apos;&quot; + &quot;,&quot;
     	+ &quot;&apos;&quot; + _comments + &quot;&apos;&quot;
     	+ &quot;)&quot;);
-	log(channelId, &quot;info&quot;, &quot;Database updated with data: &quot;
-		+ &quot; file ID: &apos;&quot; + fileId + &quot;&apos;; &quot;
-		+ &quot; PID: &apos;&quot; + _pid + &quot;&apos;; &quot;
-		+ &quot; Photo ID: &apos;&quot; + _photo_id + &quot;&apos;; &quot;
-		+ &quot; Name: &apos;&quot; + _name + &quot;&apos;; &quot;
-		+ &quot; Date: &apos;&quot; + _exam_date + &quot;&apos;; &quot;
-		+ &quot; Time: &apos;&quot; + _exam_time + &quot;&apos;; &quot;
-		+ &quot; DOB: &apos;&quot; + _dob + &quot;&apos;; &quot;
-		+ &quot; Gender: &apos;&quot; + _gender + &quot;&apos;; &quot;
-		+ &quot; Diagnosis 1: &apos;&quot; + _diagnosis1 + &quot;&apos;; &quot;
-		+ &quot; Diagnosis 2: &apos;&quot; + _diagnosis2 + &quot;&apos;; &quot;
-		+ &quot; Diagnosis 3: &apos;&quot; + _diagnosis3 + &quot;&apos;; &quot;
-		+ &quot; Diagnosis 4: &apos;&quot; + _diagnosis4 + &quot;&apos;; &quot;
-		+ &quot; Examiner: &apos;&quot; + _examiner + &quot;&apos;; &quot;
-		+ &quot; Eye: &apos;&quot; + _eye + &quot;&apos;; &quot;
-		+ &quot; Comments: &apos;&quot; + _comments + &quot;&apos;&quot;
-	);
 } catch (err) {
 	log(channelId, &quot;error&quot;, &quot;Failed to insert stereo text data in to database: &quot;
 		+ err + &quot;. The transformed data was: &quot; + messageObject.getTransformedData());

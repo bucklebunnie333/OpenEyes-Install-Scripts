@@ -7,10 +7,10 @@ All encoding is done using MD5 hash.</description>
   <enabled>true</enabled>
   <version>2.2.1.5861</version>
   <lastModified>
-    <time>1363890483819</time>
+    <time>1363900022101</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>37</revision>
+  <revision>58</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -81,10 +81,9 @@ var testStrategy = null;
 var data = new XML(messageObject.getTransformedData())
 log(channelId, &apos;info&apos;, &apos;data=&apos; + data);
 log(channelId, &apos;info&apos;, &apos;before transformation=&apos; + messageObject.getTransformedData());
-//var filename = data[&apos;originalFilename&apos;];
-var filename = $(&apos;originalFilename&apos;);
+var filename = data[&apos;originalFilename&apos;];
+
 if (filename != null &amp;&amp; filename != &apos;undefined&apos; &amp;&amp; filename.length() &gt; 0) {
-	log(channelId, &apos;info&apos;, &apos;file name is &apos; + filename);
 	var pid = null;
 	var dbConn = getDbConnection();
 
@@ -94,7 +93,6 @@ if (filename != null &amp;&amp; filename != &apos;undefined&apos; &amp;&amp; fil
 		var result = dbConn.executeCachedQuery(sql);
 		result.next();
 		pid = result.getString(1);
-		log(channelId, &apos;info&apos;, &apos;Succesfully got pid &apos; + pid + &apos; from query: &apos; + sql);
 	} catch (err) {
 		log(channelId, &apos;error&apos;, &apos;Failed to execute query for statement \&apos;&apos; + sql + &apos;\&apos;: &apos; + err);
 		log(channelId, &quot;error&quot;, &quot;Filename for image was NULL; (given as &apos;&quot; +
@@ -118,7 +116,6 @@ if (filename != null &amp;&amp; filename != &apos;undefined&apos; &amp;&amp; fil
 			var result = dbConn.executeCachedQuery(sql);
 			result.next();
 			testStrategy = result.getString(1);
-			log(channelId, &apos;info&apos;, &apos;Succesfully got test strategy &apos; + testStrategy + &apos; from query: &apos; + sql);
 		} catch (err) {
 			log(channelId, &apos;error&apos;, &apos;Failed to execute query for statement \&apos;&apos; + sql + &apos;\&apos;: &apos; + err);
 		} finally {
@@ -153,9 +150,12 @@ if (filename != null &amp;&amp; filename != &apos;undefined&apos; &amp;&amp; fil
 		fileLocationChange(&apos;move&apos;, imagesDir + &quot;/&quot; + filename,
 				mkDestDir.getAbsolutePath() + &quot;/&quot; + encodedFile + &quot;.tif&quot;,
 				globalMap.get(&apos;OE_VFA_IMAGES_ERR&apos;));
+		var orig = new java.io.File(mkDestDir, encodedFile + &quot;.tif&quot;);
+		addFile(orig);
 
 		if (testStrategy != null &amp;&amp; testStrategy.toLowerCase() != &apos;sita-standard&apos;) {
 			log(channelId, &apos;info&apos;, &apos;Test strategy &apos; + testStrategy + &apos; is not SITA-Standard; no image manipulation to be done for this test type.&apos;);
+			// TODO - create dir name in vfa images directory and move the file there
 			return;
 		}
 		try {
@@ -189,9 +189,6 @@ if (filename != null &amp;&amp; filename != &apos;undefined&apos; &amp;&amp; fil
 				var src = new java.io.File(mkDestDir, encodedFile);
 				fileAudit(&apos;t&apos;, &apos;f&apos;, mkDestDir.getAbsolutePath(), encodedFile,
 						mkDestDirSubImages.getAbsolutePath(), encodedFile, src.length(), subImage.length());
-				log(channelId, &quot;info&quot;, &quot;Image &quot;
-						+ mkDestDir.getAbsolutePath() + &quot;/&quot; + encodedFile + &quot; cut down to : &quot;
-						+ mkDestDirSubImages.getAbsolutePath() + &quot;/&quot; + encodedFile);
 			} catch(err) {
 				log(channelId, &quot;error&quot;, err);
 			}
@@ -200,7 +197,11 @@ if (filename != null &amp;&amp; filename != &apos;undefined&apos; &amp;&amp; fil
 		}
 		encodedFile = tmpFile;
 		scaleImage(mkDestDirSubImages.getAbsolutePath() + &quot;/&quot; + encodedFile + &quot;.tif&quot;,
-					mkDestDirThumbs.getAbsolutePath() + &quot;/&quot; + encodedFile + &quot;.jpg&quot;, width, height);	
+					mkDestDirThumbs.getAbsolutePath() + &quot;/&quot; + encodedFile + &quot;.jpg&quot;, width, height);
+		var src = new java.io.File(mkDestDirSubImages, encodedFile + &quot;.tif&quot;);
+		addFileWithKey(src, getFileKey(getFileId(orig)));
+		var dest = new java.io.File(mkDestDirThumbs, encodedFile + &quot;.jpg&quot;);
+		addFileWithKey(dest, getFileKey(getFileId(src)));	
 	}
 } else {
 	log(channelId, &quot;error&quot;, &quot;Filename for image was NULL; (given as &apos;&quot; +
@@ -242,6 +243,7 @@ if (filename != null &amp;&amp; filename != &apos;undefined&apos; &amp;&amp; fil
     <property name="transactional">false</property>
   </properties>
   <preprocessingScript>// Modify the message variable below to pre process data
+
 return message;</preprocessingScript>
   <postprocessingScript>// This script executes once after a message has been processed
 return;</postprocessingScript>

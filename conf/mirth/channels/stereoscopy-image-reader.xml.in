@@ -7,10 +7,10 @@ All images will be contained in the same directory for a given patient. Note tha
   <enabled>true</enabled>
   <version>2.2.1.5861</version>
   <lastModified>
-    <time>1363872892573</time>
+    <time>1363897547030</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>26</revision>
+  <revision>34</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -56,12 +56,12 @@ All images will be contained in the same directory for a given patient. Note tha
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>msg[&apos;originalFilename&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
           </data>
         </step>
@@ -79,12 +79,12 @@ All images will be contained in the same directory for a given patient. Note tha
               <string></string>
             </entry>
             <entry>
-              <string>Mapping</string>
-              <string>msg[&apos;pid&apos;].toString()</string>
-            </entry>
-            <entry>
               <string>RegularExpressions</string>
               <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;pid&apos;].toString()</string>
             </entry>
           </data>
         </step>
@@ -102,12 +102,12 @@ All images will be contained in the same directory for a given patient. Note tha
               <string></string>
             </entry>
             <entry>
-              <string>Mapping</string>
-              <string>msg[&apos;photoId&apos;].toString()</string>
-            </entry>
-            <entry>
               <string>RegularExpressions</string>
               <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;photoId&apos;].toString()</string>
             </entry>
           </data>
         </step>
@@ -126,12 +126,12 @@ All images will be contained in the same directory for a given patient. Note tha
               <string></string>
             </entry>
             <entry>
-              <string>RegularExpressions</string>
-              <list/>
-            </entry>
-            <entry>
               <string>Mapping</string>
               <string>channelMap.put(&apos;PATIENT_DIR&apos;, msg[&apos;pid&apos;].toString())</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
             </entry>
             <entry>
               <string>isGlobal</string>
@@ -188,7 +188,6 @@ var sql = &quot;INSERT INTO &quot; + globalMap.get(&apos;OE_DB_SERVICE_BUS_DISC_
     + &quot;, &apos;&quot; + pid + &quot;&apos;)&quot;
 try {
 	var result = dbConn.executeUpdate(sql);
-	log(channelId, &quot;info&quot;, &apos;Successfully executed SQL: &apos; + sql);
 } catch (err) {
 	log(channelId, &apos;error&apos;, &apos;Failed to execute insert for statement \&apos;&apos; + sql + &apos;\&apos;: &apos; + err);
 } finally {
@@ -213,12 +212,12 @@ try {
                 <string></string>
               </entry>
               <entry>
-                <string>RegularExpressions</string>
-                <list/>
-              </entry>
-              <entry>
                 <string>Mapping</string>
                 <string>msg[&apos;originalFilename&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
               </entry>
             </data>
           </step>
@@ -236,12 +235,12 @@ try {
                 <string></string>
               </entry>
               <entry>
-                <string>Mapping</string>
-                <string>msg[&apos;pid&apos;].toString()</string>
-              </entry>
-              <entry>
                 <string>RegularExpressions</string>
                 <list/>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;pid&apos;].toString()</string>
               </entry>
             </data>
           </step>
@@ -259,12 +258,12 @@ try {
                 <string></string>
               </entry>
               <entry>
-                <string>Mapping</string>
-                <string>msg[&apos;photoId&apos;].toString()</string>
-              </entry>
-              <entry>
                 <string>RegularExpressions</string>
                 <list/>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;photoId&apos;].toString()</string>
               </entry>
             </data>
           </step>
@@ -344,7 +343,7 @@ fileAudit(&apos;i&apos;, &apos;f&apos;, globalMap.get(&apos;OE_STEREO_IMAGES_IN&
 var pid = filename.substring(2, filename.lastIndexOf(&apos;-&apos;))
 var tmpPhotoId = &quot;&quot; + filename.split(&apos;-&apos;)[1]
 var photoId = &quot;&quot; + tmpPhotoId.substring(0, tmpPhotoId.lastIndexOf(&apos;.&apos;))
-log(channelId, &quot;info&quot;, &apos;Extracting file data: PID=&apos; + pid + &quot; photo ID=&quot; + photoId + &quot; filename=&quot; + filename);
+log(channelId, &quot;info&quot;, &apos;Extracting file data from file name: filename=&apos; + filename + &apos;, PID=&apos; + pid + &quot;, photo ID=&quot; + photoId);
 
 var xml = &quot;&lt;stereoImage&gt;&quot;
 xml = xml + &quot;&lt;originalFilename&gt;&quot; + filename
