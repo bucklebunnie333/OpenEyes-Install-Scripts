@@ -132,16 +132,16 @@ stop_esb() {
 # 
 pre_process_mirth_config() {
 	# TODO ultimately these will obtained via git
-	ls conf/mirth/channels/*.xml  > /dev/null 2>&1
+	ls $MIRTH_CHANNEL_DIR/*.xml  > /dev/null 2>&1
 	if [ $? -eq 0 ]
 	then
 		log "Removing post-processed XML files"
-		rm conf/mirth/channels/*.xml
+		rm $MIRTH_CHANNEL_DIR/*.xml
 	else
 		log "Performing substitution based on Mirth properties."
 	fi
 	
-	for file in conf/mirth/channels/*.xml.in
+	for file in $MIRTH_CHANNEL_DIR/*.xml.in
 	do
 		NEW_FILE=`echo $file|awk -F".in" '{print $1}'`
 		cp $file $NEW_FILE
@@ -180,7 +180,7 @@ revert_mirth_properties() {
 		OE_DB_PASSWORD=$DB_PASSWORD
 	fi
 
-	for file in conf/mirth/new-channels/*.xml
+	for file in $MIRTH_CHANNEL_DIR/*.xml
 	do
 		MIRTH_XML_FILE="$file.in"
 		cp $file $MIRTH_XML_FILE
@@ -204,7 +204,7 @@ revert_mirth_properties() {
 		perform_substitution $OE_DB_SERVICE_BUS_FILE_AUDIT _OE_DB_SERVICE_BUS_FILE_AUDIT_ $MIRTH_XML_FILE
 		perform_substitution $OE_DB_SERVICE_BUS_DIRECTORY _OE_DB_SERVICE_BUS_DIRECTORY_ $MIRTH_XML_FILE
 		perform_substitution $OE_DB_SERVICE_BUS_UID _OE_DB_SERVICE_BUS_UID_ $MIRTH_XML_FILE
-		perform_substitution $OE_DB_SERVICE_BUS_FILE _OE_DB_SERVICE_BUS_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_SERVICE_BUS_FILE _OE_DB_SERVICE_BUS_FILE_ $MIRTH_XML_FILE
 		perform_substitution $OE_DB_URL _OE_DB_URL_ $MIRTH_XML_FILE
 		perform_substitution $OE_DB_DRIVER _OE_DB_DRIVER_ $MIRTH_XML_FILE
 		perform_substitution $OE_LOG_DIR _OE_LOG_DIR_ $MIRTH_XML_FILE
@@ -274,7 +274,7 @@ deploy() {
 		mkdir $TMP_DIR/mirth
 	fi
 	
-	cp conf/mirth/channels/*.xml $TMP_DIR/mirth
+	cp $MIRTH_CHANNEL_DIR/*.xml $TMP_DIR/mirth
 	MIRTH_TMP_CONFIG_DIR=$TMP_DIR/mirth
 	cd $MIRTH_TMP_CONFIG_DIR
 
@@ -325,7 +325,7 @@ deploy() {
 # remove them.
 # 
 undeploy() {
-	cp conf/mirth/channels/*.xml $TMP_DIR/mirth
+	cp $MIRTH_CHANNEL_DIR/*.xml $TMP_DIR/mirth
 	MIRTH_TMP_CONFIG_DIR=$TMP_DIR/mirth
 	cd $MIRTH_TMP_CONFIG_DIR
 

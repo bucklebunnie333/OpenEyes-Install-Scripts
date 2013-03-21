@@ -10,7 +10,7 @@ Channels access the global template function &apos;log&apos; in order to acheive
     <time>1354523122240</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>3</revision>
+  <revision>4</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>

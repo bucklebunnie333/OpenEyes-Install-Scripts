@@ -7,10 +7,10 @@ All images will be contained in the same directory for a given patient. Note tha
   <enabled>true</enabled>
   <version>2.2.1.5861</version>
   <lastModified>
-    <time>1363860674972</time>
+    <time>1363872892573</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>25</revision>
+  <revision>26</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -20,7 +20,6 @@ All images will be contained in the same directory for a given patient. Note tha
       <property name="binary">1</property>
       <property name="charsetEncoding">DEFAULT_ENCODING</property>
       <property name="checkFileAge">1</property>
-      <property name="directory"></property>
       <property name="fileAge">10000</property>
       <property name="fileFilter">ID*.jpg</property>
       <property name="host">_OE_STEREO_TEXT_IN_</property>
@@ -31,7 +30,6 @@ All images will be contained in the same directory for a given patient. Note tha
       <property name="passive">1</property>
       <property name="password">anonymous</property>
       <property name="pollingFrequency">10000</property>
-      <property name="pollingTime">12:00 AM</property>
       <property name="pollingType">interval</property>
       <property name="processBatchFiles">0</property>
       <property name="regex">0</property>
@@ -363,9 +361,10 @@ var filename = channelMap.get(&quot;originalFilename&quot;);
 var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_IMAGES_IN&apos;)), filename);
 var fout = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_IMAGES_OUT&apos;)), filename);
 
-/*
-chicken vs. egg - need to audit now, BUT it&apos;s the 
-*/
+/* Note - when the postprocessor is invoked, the file to move
+	has still NOT been moved - hence we cannot obtain any
+	file information about it, which is why the move-to directory
+	is not set in this channel. Instead, let&apos;s move it ourselves: */
 
 fileLocationChange(&apos;move&apos;, f.getAbsolutePath(), fout.getAbsolutePath(), globalMap.get(&apos;OE_STEREO_TEXT_ERR&apos;));
 
