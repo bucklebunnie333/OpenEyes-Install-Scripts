@@ -10,7 +10,7 @@ The process of file modification/creation is audited.</description>
     <time>1363852192590</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>17</revision>
+  <revision>18</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>

@@ -38,17 +38,6 @@ function log(channelIdentifier, level, text) {
     <version>2.2.1.5861</version>
   </codeTemplate>
   <codeTemplate>
-    <id>795c6806-4019-4ec3-ba0c-223509626276</id>
-    <name>_OE_DB_USER_Logger</name>
-    <tooltip>Mapped name of the OE logger channel.</tooltip>
-    <code>// modify function_name and parameters as you wish.
-// one function per template is recommended. i.e.) create a new code template for each new function.
-var _OE_DB_USER_Logger - &quot;logger&quot;;</code>
-    <type>VARIABLE</type>
-    <scope>0</scope>
-    <version>2.2.1.5861</version>
-  </codeTemplate>
-  <codeTemplate>
     <id>07465c16-325f-467c-86f7-c29c42b3d3a4</id>
     <name>buildFileUtilMessage</name>
     <tooltip>Build a message used to route to the file utils channel.</tooltip>
@@ -524,11 +513,18 @@ function getFileKey(fileId) {
     <name>addFileWithKey</name>
     <tooltip></tooltip>
     <code>/**
- * Adds a new file. This adds to the main ESB file type that all other file
- * types should create a foreign key to in order to save space for each table.
+ * Adds a new file with the specified key. Note that normally, the key is
+ * based on the time the file was imported - for files arriving on the ESB.
+ * However, all &apos;related&apos; files, that is, all files that are copied or moved,
+ * must retain the key from the file that was moved from or copied from.
+ * This function allows a caller to add the specified ID to the DB
+ * with the original file&apos;s key (use getFileKey(id) to get another file&apos;s
+ * key).
  * 
  * f - an instance of a java.io.File. It is up to the caller to ensure the
  * file exists and that it is not null.
+ * 
+ * key - the key to add with the specified file.
  * 
  * Return - the id of the file insertion if it was successful; -1 otherwise.
  * 

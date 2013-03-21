@@ -10,7 +10,7 @@ The text file contains at least one line. Each line contains information about a
     <time>1363813824639</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>21</revision>
+  <revision>22</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -20,6 +20,7 @@ The text file contains at least one line. Each line contains information about a
       <property name="binary">0</property>
       <property name="charsetEncoding">DEFAULT_ENCODING</property>
       <property name="checkFileAge">1</property>
+      <property name="directory"></property>
       <property name="fileAge">1000</property>
       <property name="fileFilter">ID*.txt</property>
       <property name="host">_OE_STEREO_TEXT_IN_</property>
@@ -30,6 +31,7 @@ The text file contains at least one line. Each line contains information about a
       <property name="passive">1</property>
       <property name="password">anonymous</property>
       <property name="pollingFrequency">1000</property>
+      <property name="pollingTime">12:00 AM</property>
       <property name="pollingType">interval</property>
       <property name="processBatchFiles">1</property>
       <property name="regex">0</property>

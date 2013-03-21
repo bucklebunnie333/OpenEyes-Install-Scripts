@@ -10,7 +10,7 @@ All images will be contained in the same directory for a given patient. Note tha
     <time>1363860674972</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>24</revision>
+  <revision>25</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -20,6 +20,7 @@ All images will be contained in the same directory for a given patient. Note tha
       <property name="binary">1</property>
       <property name="charsetEncoding">DEFAULT_ENCODING</property>
       <property name="checkFileAge">1</property>
+      <property name="directory"></property>
       <property name="fileAge">10000</property>
       <property name="fileFilter">ID*.jpg</property>
       <property name="host">_OE_STEREO_TEXT_IN_</property>
@@ -30,6 +31,7 @@ All images will be contained in the same directory for a given patient. Note tha
       <property name="passive">1</property>
       <property name="password">anonymous</property>
       <property name="pollingFrequency">10000</property>
+      <property name="pollingTime">12:00 AM</property>
       <property name="pollingType">interval</property>
       <property name="processBatchFiles">0</property>
       <property name="regex">0</property>
