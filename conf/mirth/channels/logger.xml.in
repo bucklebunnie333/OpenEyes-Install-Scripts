@@ -1,0 +1,198 @@
+<channel>
+  <id>2af33c3d-d5f8-4080-9715-3916d24b92ce</id>
+  <name>logger</name>
+  <description>Logger to handle an audit trail of messages for all channels.
+
+Channels access the global template function &apos;log&apos; in order to acheive this, which passes the data on to this channel.</description>
+  <enabled>true</enabled>
+  <version>2.2.1.5861</version>
+  <lastModified>
+    <time>1354523122240</time>
+    <timezone>Europe/London</timezone>
+  </lastModified>
+  <revision>1</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="DataType">Channel Reader</property>
+      <property name="responseValue">None</property>
+    </properties>
+    <transformer>
+      <steps>
+        <step>
+          <sequenceNumber>0</sequenceNumber>
+          <script>tmp[&apos;message&apos;] = validate(msg[&apos;message&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;message&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;message&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>1</sequenceNumber>
+          <script>tmp[&apos;channelName&apos;] = validate(msg[&apos;channelName&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;channelName&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;channelName&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>2</sequenceNumber>
+          <script>tmp[&apos;date&apos;] = validate(msg[&apos;date&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;date&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;date&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>3</sequenceNumber>
+          <script>tmp[&apos;level&apos;] = validate(msg[&apos;level&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;level&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;level&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+          </data>
+        </step>
+      </steps>
+      <inboundTemplate encoding="base64">PGxvZz4KICA8Y2hhbm5lbE5hbWU+PC9jaGFubmVsTmFtZT4KICA8bGV2ZWw+PC9sZXZlbD4KICA8
+bWVzc2FnZT48L21lc3NhZ2U+CjwvbG9nPg==</inboundTemplate>
+      <outboundTemplate encoding="base64">PGxvZz4KICA8Y2hhbm5lbE5hbWU+PC9jaGFubmVsTmFtZT4KICA8ZGF0ZT48L2RhdGU+CiAgPGxl
+dmVsPjwvbGV2ZWw+CiAgPG1lc3NhZ2U+PC9tZXNzYWdlPgo8L2xvZz4=</outboundTemplate>
+      <inboundProtocol>XML</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties>
+        <property name="stripNamespaces">true</property>
+      </inboundProperties>
+      <outboundProperties>
+        <property name="stripNamespaces">true</property>
+      </outboundProperties>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>Channel Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <version>2.2.1.5861</version>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector>
+      <name>Destination 1</name>
+      <properties>
+        <property name="DataType">File Writer</property>
+        <property name="FTPAnonymous">1</property>
+        <property name="binary">0</property>
+        <property name="charsetEncoding">DEFAULT_ENCODING</property>
+        <property name="errorOnExists">0</property>
+        <property name="host">_OE_LOG_DIR_</property>
+        <property name="outputAppend">1</property>
+        <property name="outputPattern">_OE_LOG_FILE_</property>
+        <property name="passive">1</property>
+        <property name="password">anonymous</property>
+        <property name="scheme">file</property>
+        <property name="secure">1</property>
+        <property name="template">${XmlUtil.prettyPrint(${message.encodedData})}</property>
+        <property name="temporary">0</property>
+        <property name="timeout">10000</property>
+        <property name="username">anonymous</property>
+        <property name="validateConnections">1</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">true</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">true</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>File Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.2.1.5861</version>
+    </connector>
+  </destinationConnectors>
+  <properties>
+    <property name="clearGlobalChannelMap">true</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="encryptData">false</property>
+    <property name="error_messages_only">false</property>
+    <property name="initialState">started</property>
+    <property name="max_message_age">-1</property>
+    <property name="store_messages">true</property>
+    <property name="synchronous">true</property>
+    <property name="transactional">false</property>
+  </properties>
+  <preprocessingScript>return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <shutdownScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</shutdownScript>
+</channel>

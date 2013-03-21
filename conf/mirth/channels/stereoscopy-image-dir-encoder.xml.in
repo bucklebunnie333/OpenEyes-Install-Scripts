@@ -1,0 +1,153 @@
+<channel>
+  <id>23953081-77dc-42d8-8de7-6c9478b46e3d</id>
+  <name>stereoscopy-image-dir-encoder</name>
+  <description>Takes images and creates an encoded directory based on the patient&apos;s CRN.
+
+The image is also scaled and a smaller copy stored in the thumbs/ directory of the newly created (encoded) directory.</description>
+  <enabled>true</enabled>
+  <version>2.2.1.5861</version>
+  <lastModified>
+    <time>1354541626794</time>
+    <timezone>Europe/London</timezone>
+  </lastModified>
+  <revision>2</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="DataType">File Reader</property>
+      <property name="FTPAnonymous">1</property>
+      <property name="autoDelete">0</property>
+      <property name="binary">0</property>
+      <property name="charsetEncoding">DEFAULT_ENCODING</property>
+      <property name="checkFileAge">1</property>
+      <property name="fileAge">20000</property>
+      <property name="fileFilter">*.jpg</property>
+      <property name="host">_OE_STEREO_IMAGES_OUT_</property>
+      <property name="ignoreDot">1</property>
+      <property name="moveToDirectory"></property>
+      <property name="moveToErrorDirectory">_OE_STEREO_IMAGES_ERR_</property>
+      <property name="moveToPattern"></property>
+      <property name="passive">1</property>
+      <property name="password">anonymous</property>
+      <property name="pollingFrequency">20000</property>
+      <property name="pollingType">interval</property>
+      <property name="processBatchFiles">0</property>
+      <property name="regex">0</property>
+      <property name="scheme">file</property>
+      <property name="secure">1</property>
+      <property name="sortAttribute">date</property>
+      <property name="timeout">10000</property>
+      <property name="username">anonymous</property>
+      <property name="validateConnections">1</property>
+    </properties>
+    <transformer>
+      <steps/>
+      <inboundTemplate encoding="base64">PHN0ZXJlb0ltYWdlRmlsZT4KICA8b3JpZ2luYWxGaWxlbmFtZT52YWx1ZTM8L29yaWdpbmFsRmls
+ZW5hbWU+CiAgPHBpZD52YWx1ZTI8L3BpZD4KICA8cGhvdG9JZD52YWx1ZTE8L3Bob3RvSWQ+Cjwv
+c3RlcmVvSW1hZ2VGaWxlPg==</inboundTemplate>
+      <outboundTemplate encoding="base64"></outboundTemplate>
+      <inboundProtocol>XML</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties>
+        <property name="stripNamespaces">true</property>
+      </inboundProperties>
+      <outboundProperties>
+        <property name="stripNamespaces">true</property>
+      </outboundProperties>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>File Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <version>2.2.1.5861</version>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector>
+      <name>Destination 1</name>
+      <properties>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+        <property name="script">// image scale width value:
+var width = globalMap.get(&apos;OE_IMAGE_STEREO_SCALE_WIDTH&apos;);
+// image scale height value:
+var height = globalMap.get(&apos;OE_IMAGE_STEREO_SCALE_HEIGHT&apos;);
+var data = new XML(messageObject.getTransformedData())
+var photo_id = data[&apos;photoId&apos;]
+var pid = data[&apos;pid&apos;]
+var filename = data[&apos;originalFilename&apos;]
+
+// encoding required to MD5 directory and file names:
+var encodeutils = new Packages.org.statefive.encodeutils.EncodeUtils();
+// the patients directory name as an encoded MD5 value:
+
+var encodedDir = getPatientUniquePrefix(pid) + &apos;-&apos; + encodeutils.md5(pid);
+// the name of the encoded file:
+var encodedFile = encodeutils.md5(filename) + &quot;.jpg&quot;;
+// this is where (encoded) patient directories are created:
+var imagesDir = globalMap.get(&apos;OE_STEREO_IMAGES_OUT&apos;);
+// this is where the thumbnail of the image will be created:
+var mkDestDir = new java.io.File(imagesDir + &quot;/&quot; + encodedDir);
+// ... and the actual thumbnail directory:
+var mkDestDirThumbs = new java.io.File(mkDestDir,  &quot;/thumbs/&quot;);
+
+try {
+	// create the thumbs directory (and all parent directories) where the thumbnail will be stored:		
+	router.routeMessage(&quot;file-utils&quot;, buildFileUtilMessage(
+		&quot;mkdir&quot;, mkDestDirThumbs.getAbsolutePath(), null, null),
+		false);
+
+	// Move the image from the in directory to the encoded directory:		
+	fileLocationChange(&apos;move&apos;, imagesDir + &quot;/&quot; + filename,
+			mkDestDir.getAbsolutePath() + &quot;/&quot; + encodedFile,
+			globalMap.get(&apos;OE_STEREO_IMAGES_ERR&apos;));
+} catch (err) {
+	log(channelId, &apos;error&apos;, &apos;Failed to route message: &apos; + err)
+}
+
+scaleImage(mkDestDir.getAbsolutePath() + &quot;/&quot; + encodedFile,
+			mkDestDirThumbs.getAbsolutePath() + &quot;/&quot; + encodedFile, width, height);</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">true</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">true</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.2.1.5861</version>
+    </connector>
+  </destinationConnectors>
+  <properties>
+    <property name="clearGlobalChannelMap">true</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="encryptData">false</property>
+    <property name="error_messages_only">false</property>
+    <property name="initialState">started</property>
+    <property name="max_message_age">-1</property>
+    <property name="store_messages">true</property>
+    <property name="synchronous">true</property>
+    <property name="transactional">false</property>
+  </properties>
+  <preprocessingScript>// Modify the message variable below to pre process data
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <shutdownScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</shutdownScript>
+</channel>

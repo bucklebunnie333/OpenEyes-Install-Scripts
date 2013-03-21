@@ -1,0 +1,559 @@
+<channel>
+  <id>9c38efc1-7038-41e2-afb0-d1cd7c9bf964</id>
+  <name>stereoscopy-data-reader</name>
+  <description>Reads in a Kowa camera text file.
+
+The text file contains at least one line. Each line contains information about an associated image.</description>
+  <enabled>true</enabled>
+  <version>2.2.1.5861</version>
+  <lastModified>
+    <time>1354523147344</time>
+    <timezone>Europe/London</timezone>
+  </lastModified>
+  <revision>1</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="DataType">File Reader</property>
+      <property name="FTPAnonymous">1</property>
+      <property name="autoDelete">0</property>
+      <property name="binary">0</property>
+      <property name="charsetEncoding">DEFAULT_ENCODING</property>
+      <property name="checkFileAge">1</property>
+      <property name="fileAge">1000</property>
+      <property name="fileFilter">ID*.txt</property>
+      <property name="host">_OE_STEREO_TEXT_IN_</property>
+      <property name="ignoreDot">1</property>
+      <property name="moveToDirectory"></property>
+      <property name="moveToErrorDirectory">_OE_STEREO_TEXT_ERR_</property>
+      <property name="moveToPattern"></property>
+      <property name="passive">1</property>
+      <property name="password">anonymous</property>
+      <property name="pollingFrequency">1000</property>
+      <property name="pollingType">interval</property>
+      <property name="processBatchFiles">1</property>
+      <property name="regex">0</property>
+      <property name="scheme">file</property>
+      <property name="secure">1</property>
+      <property name="sortAttribute">date</property>
+      <property name="timeout">10000</property>
+      <property name="username">anonymous</property>
+      <property name="validateConnections">1</property>
+    </properties>
+    <transformer>
+      <steps>
+        <step>
+          <sequenceNumber>0</sequenceNumber>
+          <name>row1 - column1 (out) &lt;-- row1 - column1 (in)</name>
+          <script>tmp[&apos;row1&apos;][&apos;column1&apos;] = validate(msg[&apos;row1&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row1&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row1&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>1</sequenceNumber>
+          <name>row2 - column1 (out) &lt;-- row2 - column1 (in)</name>
+          <script>tmp[&apos;row2&apos;][&apos;column1&apos;] = validate(msg[&apos;row2&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row2&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row2&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>2</sequenceNumber>
+          <name>row3 - column1 (out) &lt;-- row3 - column1 (in)</name>
+          <script>tmp[&apos;row3&apos;][&apos;column1&apos;] = validate(msg[&apos;row3&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row3&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row3&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>3</sequenceNumber>
+          <name>row4 - column1 (out) &lt;-- row4 - column1 (in)</name>
+          <script>tmp[&apos;row4&apos;][&apos;column1&apos;] = validate(msg[&apos;row4&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row4&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row4&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>4</sequenceNumber>
+          <name>row5 - column1 (out) &lt;-- row5 - column1 (in)</name>
+          <script>tmp[&apos;row5&apos;][&apos;column1&apos;] = validate(msg[&apos;row5&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row5&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row5&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>5</sequenceNumber>
+          <name>row6 - column1 (out) &lt;-- row6 - column1 (in)</name>
+          <script>tmp[&apos;row6&apos;][&apos;column1&apos;] = validate(msg[&apos;row6&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row6&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row6&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>6</sequenceNumber>
+          <name>row7 - column1 (out) &lt;-- row7 - column1 (in)</name>
+          <script>tmp[&apos;row7&apos;][&apos;column1&apos;] = validate(msg[&apos;row7&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row7&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row7&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>7</sequenceNumber>
+          <name>row8 - column1 (out) &lt;-- row8 - column1 (in)</name>
+          <script>tmp[&apos;row8&apos;][&apos;column1&apos;] = validate(msg[&apos;row8&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row8&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row8&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>8</sequenceNumber>
+          <name>row9 - column1 (out) &lt;-- row9 - column1 (in)</name>
+          <script>tmp[&apos;row9&apos;][&apos;column1&apos;] = validate(msg[&apos;row9&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row9&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row9&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>9</sequenceNumber>
+          <name>row10 - column1 (out) &lt;-- row10 - column1 (in)</name>
+          <script>tmp[&apos;row10&apos;][&apos;column1&apos;] = validate(msg[&apos;row10&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row10&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row10&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>10</sequenceNumber>
+          <name>row11 - column1 (out) &lt;-- row11 - column1 (in)</name>
+          <script>tmp[&apos;row11&apos;][&apos;column1&apos;] = validate(msg[&apos;row11&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row11&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row11&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>11</sequenceNumber>
+          <name>row12 - column1 (out) &lt;-- row12 - column1 (in)</name>
+          <script>tmp[&apos;row12&apos;][&apos;column1&apos;] = validate(msg[&apos;row12&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row12&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row12&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>12</sequenceNumber>
+          <name>row13 - column1 (out) &lt;-- row13 - column1 (in)</name>
+          <script>tmp[&apos;row13&apos;][&apos;column1&apos;] = validate(msg[&apos;row13&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row13&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row13&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>13</sequenceNumber>
+          <name>row14 - column1 (out) &lt;-- row14 - column1 (in)</name>
+          <script>tmp[&apos;row14&apos;][&apos;column1&apos;] = validate(msg[&apos;row14&apos;][&apos;column1&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;row14&apos;][&apos;column1&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row14&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+      </steps>
+      <inboundTemplate encoding="base64">CQkJCQkJCQkJCQkJCQk=</inboundTemplate>
+      <outboundTemplate encoding="base64">PGRlbGltaXRlZD4KICAgIDxyb3cxPgogICAgICAgIDxjb2x1bW4xPnZhbHVlPC9jb2x1bW4xPgog
+ICAgPC9yb3cxPgogICAgPHJvdzI+CiAgICAgICAgPGNvbHVtbjE+dmFsdWU8L2NvbHVtbjE+CiAg
+ICA8L3JvdzI+CiAgICA8cm93Mz4KICAgICAgICA8Y29sdW1uMT52YWx1ZTwvY29sdW1uMT4KICAg
+IDwvcm93Mz4KICAgIDxyb3c0PgogICAgICAgIDxjb2x1bW4xPnZhbHVlPC9jb2x1bW4xPgogICAg
+PC9yb3c0PgogICAgPHJvdzU+CiAgICAgICAgPGNvbHVtbjE+dmFsdWU8L2NvbHVtbjE+CiAgICA8
+L3JvdzU+CiAgICA8cm93Nj4KICAgICAgICA8Y29sdW1uMT52YWx1ZTwvY29sdW1uMT4KICAgIDwv
+cm93Nj4KICAgIDxyb3c3PgogICAgICAgIDxjb2x1bW4xPnZhbHVlPC9jb2x1bW4xPgogICAgPC9y
+b3c3PgogICAgPHJvdzg+CiAgICAgICAgPGNvbHVtbjE+dmFsdWU8L2NvbHVtbjE+CiAgICA8L3Jv
+dzg+CiAgICA8cm93OT4KICAgICAgICA8Y29sdW1uMT52YWx1ZTwvY29sdW1uMT4KICAgIDwvcm93
+OT4KICAgIDxyb3cxMD4KICAgICAgICA8Y29sdW1uMT52YWx1ZTwvY29sdW1uMT4KICAgIDwvcm93
+MTA+CiAgICA8cm93MTE+CiAgICAgICAgPGNvbHVtbjE+dmFsdWU8L2NvbHVtbjE+CiAgICA8L3Jv
+dzExPgogICAgPHJvdzEyPgogICAgICAgIDxjb2x1bW4xPnZhbHVlPC9jb2x1bW4xPgogICAgPC9y
+b3cxMj4KICAgIDxyb3cxMz4KICAgICAgICA8Y29sdW1uMT52YWx1ZTwvY29sdW1uMT4KICAgIDwv
+cm93MTM+CiAgICA8cm93MTQ+CiAgICAgICAgPGNvbHVtbjE+dmFsdWU8L2NvbHVtbjE+CiAgICA8
+L3JvdzE0PgogICAgPHJvdzE1PgogICAgICAgIDxjb2x1bW4xPnZhbHVlPC9jb2x1bW4xPgogICAg
+PC9yb3cxNT4KPC9kZWxpbWl0ZWQ+Cg==</outboundTemplate>
+      <inboundProtocol>DELIMITED</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties>
+        <property name="batchGroupingColumn"></property>
+        <property name="batchMessageDelimiter">\n</property>
+        <property name="batchMessageDelimiterIncluded">false</property>
+        <property name="batchScript"></property>
+        <property name="batchSkipRecords">0</property>
+        <property name="batchSplitByRecord">false</property>
+        <property name="columnDelimiter">,</property>
+        <property name="columnNames"></property>
+        <property name="columnWidths"></property>
+        <property name="escapeWithDoubleQuote">false</property>
+        <property name="ignoreCR">true</property>
+        <property name="numberedRows">true</property>
+        <property name="quoteChar">&quot;</property>
+        <property name="quoteEscapeChar">\</property>
+        <property name="recordDelimiter">	</property>
+      </inboundProperties>
+      <outboundProperties>
+        <property name="stripNamespaces">true</property>
+      </outboundProperties>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>File Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <version>2.2.1.5861</version>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector>
+      <name>Destination 1</name>
+      <properties>
+        <property name="DataType">Database Writer</property>
+        <property name="URL">_OE_DB_URL_</property>
+        <property name="driver">_OE_DB_DRIVER_</property>
+        <property name="host">query</property>
+        <property name="password">_OE_DB_PASSWORD_</property>
+        <property name="query"></property>
+        <property name="script">var dbConn = getDbConnection();
+
+var data = new XML(messageObject.getTransformedData())
+var _photo_id = data[&apos;row1&apos;][&apos;column1&apos;]
+var _pid = data[&apos;row2&apos;][&apos;column1&apos;]
+var _name = data[&apos;row3&apos;][&apos;column1&apos;]
+var _exam_date = data[&apos;row4&apos;][&apos;column1&apos;]
+var _exam_time = data[&apos;row5&apos;][&apos;column1&apos;]
+var _dob = data[&apos;row6&apos;][&apos;column1&apos;]
+var _gender = data[&apos;row7&apos;][&apos;column1&apos;]
+var _diagnosis1 = data[&apos;row8&apos;][&apos;column1&apos;]
+var _diagnosis2 = data[&apos;row9&apos;][&apos;column1&apos;]
+var _diagnosis3 = data[&apos;row10&apos;][&apos;column1&apos;]
+var _diagnosis4 = data[&apos;row11&apos;][&apos;column1&apos;]
+var _examiner = data[&apos;row12&apos;][&apos;column1&apos;]
+var _eye = data[&apos;row13&apos;][&apos;column1&apos;]
+var _comments = data[&apos;row14&apos;][&apos;column1&apos;]
+var date_string = _exam_date.split(&apos;.&apos;)
+var time_string = _exam_time.split(&apos;:&apos;)
+try {
+	var result = dbConn.executeUpdate(&quot;INSERT INTO &quot;
+		+ globalMap.get(&apos;OE_DB_SERVICE_BUS_DISC_INFO&apos;)
+		+ &quot; (photo_id, pid, name, exam_date, exam_time, dob, gender, diagnosis1, diagnosis2, diagnosis3, diagnosis4, examiner, eye, comments)&quot;
+    	+ &quot; VALUES (&quot; + _photo_id
+    	+ &quot;, &apos;&quot; + _pid + &quot;&apos;&quot; + &quot;,&quot;
+    	+ &quot;&apos;&quot; + _name + &quot;&apos;&quot; + &quot;,&quot;
+    	+  &quot;&apos;20&quot; + date_string[2] + &quot;-&quot; + date_string[1] + &quot;-&quot; + date_string[0] + &quot;&apos;, &apos;&quot;
+    	+ time_string[0] + &quot;:&quot; + time_string[1] + &quot;:&quot; + time_string[2] + &quot;&apos;,&quot;
+    	+ &quot;&apos;&quot; + _dob + &quot;&apos;&quot; + &quot;,&quot;
+    	+ &quot;&apos;&quot; + _gender + &quot;&apos;&quot; +&quot;,&quot;
+    	+ &quot;&apos;&quot; + _diagnosis1 + &quot;&apos;&quot; + &quot;,&quot;
+    	+ &quot;&apos;&quot; + _diagnosis2 + &quot;&apos;&quot; + &quot;,&quot;
+    	+ &quot;&apos;&quot; + _diagnosis3 + &quot;&apos;&quot; + &quot;,&quot;
+    	+ &quot;&apos;&quot; + _diagnosis4 + &quot;&apos;&quot; + &quot;,&quot;
+    	+ &quot;&apos;&quot; + _examiner + &quot;&apos;&quot; + &quot;,&quot;
+    	+ &quot;&apos;&quot; +_eye + &quot;&apos;&quot; + &quot;,&quot;
+    	+ &quot;&apos;&quot; + _comments + &quot;&apos;&quot;
+    	+ &quot;)&quot;);
+	log(channelId, &quot;info&quot;, &quot;Database updated with data: &quot;
+		+ &quot; PID: &apos;&quot; + _pid + &quot;&apos;; &quot;
+		+ &quot; Photo ID: &apos;&quot; + _photo_id + &quot;&apos;; &quot;
+		+ &quot; Name: &apos;&quot; + _name + &quot;&apos;; &quot;
+		+ &quot; Date: &apos;&quot; + _exam_date + &quot;&apos;; &quot;
+		+ &quot; Time: &apos;&quot; + _exam_time + &quot;&apos;; &quot;
+		+ &quot; DOB: &apos;&quot; + _dob + &quot;&apos;; &quot;
+		+ &quot; Gender: &apos;&quot; + _gender + &quot;&apos;; &quot;
+		+ &quot; Diagnosis 1: &apos;&quot; + _diagnosis1 + &quot;&apos;; &quot;
+		+ &quot; Diagnosis 2: &apos;&quot; + _diagnosis2 + &quot;&apos;; &quot;
+		+ &quot; Diagnosis 3: &apos;&quot; + _diagnosis3 + &quot;&apos;; &quot;
+		+ &quot; Diagnosis 4: &apos;&quot; + _diagnosis4 + &quot;&apos;; &quot;
+		+ &quot; Examiner: &apos;&quot; + _examiner + &quot;&apos;; &quot;
+		+ &quot; Eye: &apos;&quot; + _eye + &quot;&apos;; &quot;
+		+ &quot; Comments: &apos;&quot; + _comments + &quot;&apos;&quot;
+	);
+} catch (err) {
+	log(channelId, &quot;error&quot;, &quot;Failed to insert stereo text data in to database: &quot;
+		+ err + &quot;. The transformed data was: &quot; + messageObject.getTransformedData());
+}
+
+dbConn.close();</property>
+        <property name="useScript">1</property>
+        <property name="username">oe</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate encoding="base64"></inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">true</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">true</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>Database Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.2.1.5861</version>
+    </connector>
+  </destinationConnectors>
+  <properties>
+    <property name="clearGlobalChannelMap">true</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="encryptData">false</property>
+    <property name="error_messages_only">false</property>
+    <property name="initialState">started</property>
+    <property name="max_message_age">-1</property>
+    <property name="store_messages">true</property>
+    <property name="synchronous">true</property>
+    <property name="transactional">false</property>
+  </properties>
+  <preprocessingScript>// Modify the message variable below to pre process data
+var messageData = &quot;&quot; + message;
+var filename = muleContext.getMessage().getProperty(&quot;originalFilename&quot;);
+var size = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_TEXT_IN&apos;)), filename).length();
+fileAudit(&apos;i&apos;, &apos;f&apos;, globalMap.get(&apos;OE_STEREO_TEXT_IN&apos;), filename, null, null, size, -1);
+log(channelId, &quot;info&quot;, &apos;Pre-processing stereoscopy text file: \&apos;&apos; + filename + &apos;\&apos;&apos;);
+log(channelId, &quot;info&quot;, filename + &apos; contents : &apos; + messageData.trim());
+return message;</preprocessingScript>
+  <postprocessingScript>var filename = channelMap.get(&quot;originalFilename&quot;);
+
+var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_TEXT_IN&apos;)), filename);
+var systime = new java.util.Date().getTime();
+var fout = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_TEXT_OUT&apos;)), systime + &quot;-&quot; + filename);
+
+fileLocationChange(&apos;move&apos;, f.getAbsolutePath(), fout.getAbsolutePath(), globalMap.get(&apos;OE_STEREO_TEXT_ERR&apos;));
+
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <shutdownScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</shutdownScript>
+</channel>

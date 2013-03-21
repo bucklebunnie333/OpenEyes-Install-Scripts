@@ -1,0 +1,343 @@
+<list>
+  <codeTemplate>
+    <id>4e7b7377-8c88-4009-8fde-fa03e6790e46</id>
+    <name>log</name>
+    <tooltip>Logs a message to the logger channel along with the specified details.</tooltip>
+    <code>/**
+ * Logs a message to the logger channel along with the specified details.
+ * Callers should use the global variable &apos;channelId&apos; as the value passed
+ * as the channel identifier. A date element is also added as the
+ * current date at time of logging. The level is changed to upper case.
+ * 
+ * Logs are output in the following format:
+ * 
+ * &lt;log&gt;
+ *   &lt;date&gt;&lt;/date&gt;
+ *   &lt;level&gt;&lt;/level&gt;
+ *   &lt;channelName&gt;&lt;/channelName&gt;
+ *   &lt;message&gt;&lt;/message&gt;
+ * &lt;/log&gt;
+ * 
+ * 
+ * channelIdentifier - the ID of the source channel.
+ * level - the logging level, as a text string.
+ * text - the text of the message.
+ * 
+ */
+function log(channelIdentifier, level, text) {
+	var channelName = Packages.com.mirth.connect.server.controllers.ChannelController.getInstance().getDeployedChannelById(channelIdentifier).getName();
+    var messageDate = DateUtil.getCurrentDate(&quot;yyyy-MM-dd HH:mm:ss:SSS&quot;);
+    var xmlMessage = &quot;&lt;log&gt;&lt;date&gt;&quot; + messageDate + &quot;&lt;/date&gt;&lt;channelName&gt;&quot;
+                     + channelName + &quot;&lt;/channelName&gt;&lt;level&gt;&quot; 
+                     + level.toUpperCase() + &quot;&lt;/level&gt;&lt;message&gt;&quot;
+                     + text + &quot;&lt;/message&gt;&lt;/log&gt;&quot;;
+	router.routeMessage(&quot;logger&quot;, xmlMessage);
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>795c6806-4019-4ec3-ba0c-223509626276</id>
+    <name>oeLogger</name>
+    <tooltip>Mapped name of the OE logger channel.</tooltip>
+    <code>// modify function_name and parameters as you wish.
+// one function per template is recommended. i.e.) create a new code template for each new function.
+var oeLogger - &quot;logger&quot;;</code>
+    <type>VARIABLE</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>07465c16-325f-467c-86f7-c29c42b3d3a4</id>
+    <name>buildFileUtilMessage</name>
+    <tooltip>Build a message used to route to the file utils channel.</tooltip>
+    <code>/**
+ * Build a message used to route to the file utils channel.
+ * 
+ * Both &apos;move&apos; and &apos;copy&apos; require that the source directory and file,
+ * as well as destination directory and file, to be present.
+ * 
+ * To use &apos;mkdir&apos;, only the source directory needs to be specified;
+ * all parent directories will be created if the parent directories
+ * do not exist.
+ * 
+ * op - one of &apos;move&apos;, &apos;copy&apos; or &apos;mkdir&apos;.
+ * srcDir - an existing source directory to copy/move the file from,
+ * or the name of a directory (including all parent directories)
+ * to be created.
+ * srcFilename - the name of the file to copy/move.
+ * destDir - a directory to copy/move the file to
+ * destFilename - the name of the file to copy/move to.
+ * 
+ */
+function buildFileUtilMessage(op, srcDir, srcFilename, destDir, destFilename) {
+	return &quot;&lt;fileOperation&gt;&quot;
+		+ &quot;&lt;operation&gt;&quot; + op + &quot;&lt;/operation&gt;&quot;
+		+ &quot;&lt;sourceDir&gt;&quot; + srcDir + &quot;&lt;/sourceDir&gt;&quot;
+		+ &quot;&lt;destDir&gt;&quot; + destDir + &quot;&lt;/destDir&gt;&quot;
+		+ &quot;&lt;fileName&gt;&quot; + srcFilename + &quot;&lt;/fileName&gt;&quot;
+		+ &quot;&lt;destFileName&gt;&quot; + destFilename + &quot;&lt;/destFileName&gt;&quot;
+		+ &quot;&lt;/fileOperation&gt;)&quot;
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>d06b9498-a08a-4d9a-a8d4-00e668780f37</id>
+    <name>fileAudit</name>
+    <tooltip>Audit file information.</tooltip>
+    <code>/**
+  * Audit information about a given file/directory to the database.
+  * 
+  * Audits occur when a file is imported, moved, copied, deleted or
+  * changed in any way. The following operation codes are used
+  * to track such changes:
+  * 
+  * &apos;i&apos;: shows the initial import of tracking the file/directory in
+  *      to OpenEyes. For such an audit, the destination file and
+  *      directory are empty;
+  * &apos;m&apos;: move a given file or directory to a new location;
+  * &apos;c&apos;: copy the given file or directory to a new location;
+  * &apos;t&apos;: transform the file (or directory) that is copied/moved
+  *      to record that some file is being copied in to another
+  *      file, where the copied file is a subset
+  *      or superset of the original file. Ultimately it details that
+  *      the data in the transformed file takes some, or all, of some,
+  *      or all of the transforming source file. A file may contain
+  *      many audits of several files transforming in to one file.
+  *      Examples include image scaling, taking portions of text or
+  *      image subsets of other files and copying them in to the file
+  *      to be transformed;
+  * &apos;d&apos;: delete the given file or directory.
+  * 
+  * In all cases, this call only audits database information - it is up
+  * to callers to determine that the audit information is correct with
+  * regard to recent file/directory transactions.
+  * 
+  * For auditing creation or deletion of files, the &apos;dest[Parent|Child] parameters
+  * do not need to be set. When auditing copy, move or transform operations, the
+  * dest[Parent|Child] parameters MUST be set.
+  * 
+  * Note that the created_date field (mandatory for all OE tables) is filled
+  * in at the time of the audit.
+  * 
+  * TODO need to update user ID too.
+  * 
+  * operation - char, one of &apos;i&apos; (import/initialise/create), &apos;c&apos; (copy),
+  *    &apos;m&apos; (move), &apos;d&apos; (delete) or &apos;t&apos; (transform);
+  * type - char, one of &apos;f&apos; (file) or &apos;d&apos; (directory);
+  * srcParent - the parent directory of the file/directory being audited;
+  * srcChild - the actual file/directory being audited;
+  * destParent - the parent directory where the file/directory is being moved/copied
+  *    to; for delete or import/create audits, this will be blank.
+  * destChild - the actual file/directory being copied/moved; for delete or
+  *     import/create audits, this will be blank;
+  * srcSize - the size of the file, in bytes, of the source file/dir being audited.
+  * destSize - the size of the file, in bytes, of the destinationfile/dir being audited.
+  * 
+  */
+function fileAudit(operation, type, srcParent, srcChild, destParent, destChild, srcSize, destSize) {
+	var dbConn = getDbConnection();
+	var now = new java.util.Date();
+	if (destSize == undefined || destSize &lt; 0) {
+		destSize = null;
+	}
+	var sql = &quot;INSERT INTO &quot;
+		+ globalMap.get(&apos;OE_DB_SERVICE_BUS_FILE_AUDIT&apos;)
+		+ &quot; (created_date, src_size, dest_size, operation, type, src_parent, src_child, dest_parent, dest_child)&quot;
+    	+ &quot; VALUES (&apos;&quot; +
+// TODO getYear is deprecated, but getFullYear fails - sort out js version/libs
+		(now.getYear()+1900) + &quot;-&quot; + (now.getMonth()+1) + &quot;-&quot; + now.getDate() + &quot; &quot; + now.getHours() + &quot;:&quot; + now.getMinutes() + &quot;:&quot; + now.getSeconds() + &quot;&apos;, &quot;
+		+ srcSize + &quot;, &quot;
+		+ destSize + &quot;, &apos;&quot;
+		+ operation + &quot;&apos;,&apos;&quot;
+    	+ type + &quot;&apos;,&quot;
+    	+ &quot;&apos;&quot; + srcParent + &quot;&apos;,&quot;
+	    + &quot;&apos;&quot; + srcChild + &quot;&apos;,&quot;
+    	+ &quot;&apos;&quot; + destParent + &quot;&apos;,&quot;
+    	+ &quot;&apos;&quot; + destChild + &quot;&apos;)&quot;
+	try {
+		var result = dbConn.executeUpdate(sql);
+		try {
+    	    log(channelId, &quot;info&quot;, sql);
+    	    log(channelId, &quot;info&quot;, &quot;Audit: operation=&quot; + operation 
+				+ &quot;, type=&quot; + type
+				+ &quot;, src(parent)=&quot; + srcParent 
+				+ &quot;, src(child)=&quot; + srcChild 
+				+ &quot;, dest(parent)=&quot; + destParent 
+				+ &quot;, dest(child)=&quot; + destChild 
+				+ &quot;, srcSize=&quot; + srcSize 
+				+ &quot;, destSize=&quot; + destSize);
+		} catch (err) {
+			log(channelId, &apos;error&apos;, &apos;Audit failure; failed to log audit information: &apos; + err);
+		}
+	} catch (err) {
+		log(channelId, &apos;error&apos;, &apos;Audit failure; failed to execute audit statement \&apos;&apos; + sql + &apos;\&apos;: &apos; + err);
+	} finally {
+		dbConn.close();
+	}
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>2646bab9-9bac-458a-9c9a-77417fa44c7f</id>
+    <name>getDbConnection</name>
+    <tooltip>Utility to get main database connection.</tooltip>
+    <code>/**
+ * Gets the DB connection for the OE database.
+ */
+function getDbConnection() {
+	return DatabaseConnectionFactory.createDatabaseConnection(
+			&apos;com.mysql.jdbc.Driver&apos;,
+			&apos;jdbc:mysql://&apos; + globalMap.get(&apos;OE_DB_HOST&apos;) +&apos;:&apos; + globalMap.get(&apos;OE_DB_PORT&apos;) + &apos;/&apos; + globalMap.get(&apos;OE_DB_NAME&apos;),
+			globalMap.get(&apos;OE_DB_USER&apos;), globalMap.get(&apos;OE_DB_PASSWORD&apos;));
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>f88d9b6e-90af-4486-bf05-6f2dd88b25cc</id>
+    <name>fileLocationChange</name>
+    <tooltip></tooltip>
+    <code>/**
+ * Used as a wrapper call for a move or copy operation for the file utils channel.
+ * 
+ * If the destination file exists, the source file is moved from
+ * the source directory to the specified error directory. The
+ * name of the moved file will be based on the time in milliseconds
+ * recorded within this call (plus the original file&apos;s suffix).
+ * 
+ * The process of moving/copying files is audited.
+ * 
+ * operation - one of &apos;move&apos; or &apos;copy&apos;;
+ * src - the source file including full path;
+ * dest - the destination file to copy or move (not a directory),
+ * including full path to the file;
+ * errDest - the error directory (must exist) that the
+ * destination file will be moved to if the destination file
+ * already exists.
+ * 
+ * If the copy/move to file already exists, the file is moved to
+ * the error directory, named as the current system time (in
+ * milliseconds) followed by a period and the file name that
+ * produced the error.
+ */
+function fileLocationChange(operation, src, dest, errDest) {
+	var destFile = new java.io.File(dest);
+	var destDir = destFile.getParentFile();
+	var src = new java.io.File(src);
+	var srcDir = src.getParentFile();
+	var errDestDir = new java.io.File(errDest);
+	if (!destFile.exists()) {
+		// Move the image from the in directory to the encoded directory:		
+		router.routeMessage(&quot;file-utils&quot;, buildFileUtilMessage(
+			operation, srcDir.getAbsolutePath(), src.getName(), destDir.getAbsolutePath(), destFile.getName()),
+			false);
+	} else {
+		// if we can, move the file to the error directory:
+		timeFilename = new java.util.Date().getTime()  + &quot;.&quot; + src.getName();
+		
+		router.routeMessage(&quot;file-utils&quot;, buildFileUtilMessage(
+			operation, srcDir.getAbsolutePath(), src.getName(), errDestDir.getAbsolutePath(), timeFilename),
+			false);
+		log(channelId, &apos;error&apos;, &apos;Destination file exists; moving &apos; + src + &apos; to &apos; + errDest + &quot;/&quot; + timeFilename);
+		return;
+	}
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>2e0ba014-c7ef-47a6-ae87-3ecd9098a419</id>
+    <name>scaleImage</name>
+    <tooltip></tooltip>
+    <code>/**
+ * Scales the specified source image to the given destination image,
+ * width and height. The process of file modification/creation is audited.
+ * 
+ * srcImage - the source image to scale; must exist and be a valid image format;
+ * destImage - the (non-existant) file to scale the image to;
+ * width - the width, in pixels, of the scaled image;
+ * height - the height, in pixels, of the scaled image
+ * 
+ */
+function scaleImage(srcImage, destImage, width, height) {
+	var imageutils = null;
+	try {
+		imageutils = new Packages.org.statefive.imageutils.ImageUtils();
+	} catch(err) {
+		log(channelId, &quot;error&quot;, &quot;Failed to load java library: org.statefive.imageutils.ImageUtils&quot;);
+		return;
+	}
+
+	var srcImageFile = new java.io.File(srcImage);
+	var srcImageDir = srcImageFile.getParentFile();
+	var destImageFile = new java.io.File(destImage);
+	var destImageDir = destImageFile.getParentFile();
+	try {
+		imageutils.scale(srcImage, width, height, destImage);
+		try {
+			fileAudit(&apos;t&apos;, &apos;f&apos;, srcImageDir.getAbsolutePath(), srcImageFile.getName(),
+					destImageDir.getAbsolutePath(), destImageFile.getName(), srcImageFile.length(), destImageFile.length());
+			log(channelId, &quot;info&quot;, &quot;Image &quot;
+					+ srcImage + &quot; scaled to : &quot; + destImage);
+		}
+		catch(err) {
+			log(channelId, &quot;error&quot;, err);
+		}
+	} catch(err) {
+		log(channelId, &quot;error&quot;, &quot;Library invocation failure scaling image: &quot; + err);
+	}
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>7abc3bd3-53c2-4392-ab16-272356d8e7ac</id>
+    <name>getPatientUniquePrefix</name>
+    <tooltip></tooltip>
+    <code>/**
+ * Gets the patient DB ID associated with the specified hospital number.
+ * 
+ * hosNum - the hospital number to query the DB with.
+ * 
+ * return - the patient&apos;s ID, if there is one; null otherwise.
+ */
+function getPatientUniquePrefix(hosNum) {
+	var sql = &quot;SELECT count(*) from mod_servicebus_uid where pid=&apos;&quot; + hosNum + &quot;&apos;&quot;;
+	var prefix = null;
+	var dbConn = getDbConnection();
+	try {
+		var result = dbConn.executeCachedQuery(sql);
+		result.next();
+		// if we don&apos;t have it, assume first visit and create it:
+		if (0 == result.getInt(1)) {
+			sql = &apos;INSERT into mod_servicebus_uid (pid) values (\&apos;&apos; + hosNum + &apos;\&apos;)&apos;;
+			log(channelId, &apos;info&apos;, &apos;No UID given for \&apos;&apos; + hosNum + &apos;\&apos;; patient\&apos;s first visit - creating UID&apos;);
+			result = dbConn.executeUpdate(sql);
+			log(channelId, &apos;info&apos;, &apos;UID successfully created with statement: &apos; + sql);
+		}
+		sql = &quot;SELECT id from mod_servicebus_uid where pid=&apos;&quot; + hosNum + &quot;&apos;&quot;;
+		result = dbConn.executeCachedQuery(sql);
+		result.next();
+		prefix = result.getString(1);
+		log(channelId, &apos;info&apos;, &apos;prefix &apos; + pid);
+	} catch (err) {
+		log(channelId, &apos;error&apos;, &apos;Failed to execute query for statement \&apos;&apos; + sql + &apos;\&apos;: &apos; + err);
+	} finally {
+		dbConn.close();
+	}
+	return prefix;
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+</list>

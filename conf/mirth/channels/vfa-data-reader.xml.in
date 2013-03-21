@@ -1,0 +1,649 @@
+<channel>
+  <id>60b743ae-a445-456d-b796-9bcb2a650a10</id>
+  <name>vfa-data-reader</name>
+  <description>Reads in the XML file in short data format produced from a VFA exam.</description>
+  <enabled>true</enabled>
+  <version>2.2.1.5861</version>
+  <lastModified>
+    <time>1354525020060</time>
+    <timezone>Europe/London</timezone>
+  </lastModified>
+  <revision>2</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="DataType">File Reader</property>
+      <property name="FTPAnonymous">1</property>
+      <property name="autoDelete">0</property>
+      <property name="binary">0</property>
+      <property name="charsetEncoding">DEFAULT_ENCODING</property>
+      <property name="checkFileAge">1</property>
+      <property name="fileAge">1000</property>
+      <property name="fileFilter">*.xml</property>
+      <property name="host">_OE_VFA_TEXT_IN_</property>
+      <property name="ignoreDot">1</property>
+      <property name="moveToDirectory"></property>
+      <property name="moveToErrorDirectory">_OE_VFA_TEXT_IN_</property>
+      <property name="moveToPattern"></property>
+      <property name="passive">1</property>
+      <property name="password">anonymous</property>
+      <property name="pollingFrequency">1000</property>
+      <property name="pollingType">interval</property>
+      <property name="processBatchFiles">0</property>
+      <property name="regex">0</property>
+      <property name="scheme">file</property>
+      <property name="secure">1</property>
+      <property name="sortAttribute">date</property>
+      <property name="timeout">10000</property>
+      <property name="username">anonymous</property>
+      <property name="validateConnections">1</property>
+    </properties>
+    <transformer>
+      <steps>
+        <step>
+          <sequenceNumber>0</sequenceNumber>
+          <name>pid (out) &lt;-- DataSet - CZM_HFA_EMR_IOD - Patient_M - patient_id (in)</name>
+          <script>tmp[&apos;pid&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patient_id&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;pid&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patient_id&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>1</sequenceNumber>
+          <name>familyName (out) &lt;-- DataSet - CZM_HFA_EMR_IOD - Patient_M - patients_name - family_name (in)</name>
+          <script>tmp[&apos;familyName&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patients_name&apos;][&apos;family_name&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;familyName&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patients_name&apos;][&apos;family_name&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>2</sequenceNumber>
+          <name>givenName (out) &lt;-- DataSet - CZM_HFA_EMR_IOD - Patient_M - patients_name - given_name (in)</name>
+          <script>tmp[&apos;givenName&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patients_name&apos;][&apos;given_name&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;givenName&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patients_name&apos;][&apos;given_name&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>3</sequenceNumber>
+          <name>middleName (out) &lt;-- DataSet - CZM_HFA_EMR_IOD - Patient_M - patients_name - middle_name (in)</name>
+          <script>tmp[&apos;middleName&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patients_name&apos;][&apos;middle_name&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;middleName&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patients_name&apos;][&apos;middle_name&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>4</sequenceNumber>
+          <name>birthDate (out) &lt;-- DataSet - CZM_HFA_EMR_IOD - Patient_M - patients_birth_date (in)</name>
+          <script>tmp[&apos;birthDate&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patients_birth_date&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;birthDate&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patients_birth_date&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>5</sequenceNumber>
+          <name>gender (out) &lt;-- DataSet - CZM_HFA_EMR_IOD - Patient_M - patients_sex (in)</name>
+          <script>tmp[&apos;gender&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patients_sex&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;gender&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;Patient_M&apos;][&apos;patients_sex&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>6</sequenceNumber>
+          <name>fileReference (out) &lt;-- Dataset - CZM_HFA_EMR_IOD - Patient_M - file_reference</name>
+          <script>tmp[&apos;fileReference&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;ReferencedImage_M&apos;][&apos;file_reference&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;fileReference&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;ReferencedImage_M&apos;][&apos;file_reference&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>7</sequenceNumber>
+          <name>studyDate (out) &lt;-- Dataset - CZM_HFA_EMR_IOD - Patient_M - study_date</name>
+          <script>tmp[&apos;studyDate&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;GeneralStudy_M&apos;][&apos;study_date&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;studyDate&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;GeneralStudy_M&apos;][&apos;study_date&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>8</sequenceNumber>
+          <name>studyTime (out) &lt;-- Dataset - CZM_HFA_EMR_IOD - Patient_M - study_time</name>
+          <script>tmp[&apos;studyTime&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;GeneralStudy_M&apos;][&apos;study_time&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;studyTime&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;GeneralStudy_M&apos;][&apos;study_time&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>9</sequenceNumber>
+          <name>eye (out) &lt;-- Dataset - CZM_HFA_EMR_IOD - Patient_M - laterality</name>
+          <script>tmp[&apos;eye&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;GeneralSeries_M&apos;][&apos;laterality&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;eye&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;GeneralSeries_M&apos;][&apos;laterality&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>10</sequenceNumber>
+          <name>testStrategy (out) &lt;-- Dataset - CZM_HFA_EMR_IOD - CZM_HFA_SERIES_M test_strategy</name>
+          <script>tmp[&apos;testStrategy&apos;] = validate(msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;CZM_HFA_Series_M&apos;][&apos;test_strategy&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;testStrategy&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;DataSet&apos;][&apos;CZM_HFA_EMR_IOD&apos;][&apos;CZM_HFA_Series_M&apos;][&apos;test_strategy&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+      </steps>
+      <inboundTemplate encoding="base64">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxDWk0tWE1MIHhtbG5zPSJo
+dHRwOi8vd3d3Lm1lZGl0ZWMuemVpc3MuY29tL2N6bSIgeG1sbnM6eHNpPSJodHRwOi8vd3d3Lncz
+Lm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8v
+d3d3Lm1lZGl0ZWMuemVpc3MuY29tL0NaTS1YTUwtUm9vdC54c2QiPg0KCTxIZWFkZXI+DQoJCTxj
+em1feG1sX3ZlcnNpb24gVlI9IkxPIiBjb2RpbmdTY2hlbWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTEs
+MTEwMiIgY29kZU1lYW5pbmc9IkNaTSBYTUwgVmVyc2lvbiI+PC9jem1feG1sX3ZlcnNpb24+DQoJ
+CTx1c2VyX25hbWUgVlI9IlNIIiBjb2RpbmdTY2hlbWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTEsMTEw
+MyIgY29kZU1lYW5pbmc9IlVzZXIgTmFtZSIvPg0KCQk8c291cmNlX2FldCBWUj0iQUUiIGNvZGlu
+Z1NjaGVtZT0iRENNIiBjb2RlSWQ9IjAwMDIsMDAxNiIgY29kZU1lYW5pbmc9IlNvdXJjZSBBcHBs
+aWNhdGlvbiBFbnRpdHkgVGl0bGUiPjwvc291cmNlX2FldD4NCgkJPGRlc3RpbmF0aW9uX2FldCBW
+Uj0iQUUiIGNvZGluZ1NjaGVtZT0iRENNIiBjb2RlSWQ9IjIxMDAsMDE0MCIgY29kZU1lYW5pbmc9
+IkRlc3RpbmF0aW9uIEFwcGxpY2F0aW9uIEVudGl0eSI+PC9kZXN0aW5hdGlvbl9hZXQ+DQoJCTxs
+YW5ndWFnZSBWUj0iQ1MiIGNvZGluZ1NjaGVtZT0iOTlDWk0iIGNvZGVJZD0iNzcxMSwxMTEwIiBj
+b2RlTWVhbmluZz0iTGFuZ3VhZ2UiLz4NCgkJPGNvdW50cnkgVlI9IkNTIiBjb2RpbmdTY2hlbWU9
+Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTEsMTExMSIgY29kZU1lYW5pbmc9IkNvdW50cnkiLz4NCgk8L0hl
+YWRlcj4NCjxDb21tYW5kPg0KCTxjem1fY29tbWFuZCBWUj0iQ1MiIGNvZGluZ1NjaGVtZT0iOTlD
+Wk0iIGNvZGVJZD0iNzcxMSwxMTAxIiBjb2RlTWVhbmluZz0iQ1pNIENvbW1hbmQiPjwvY3ptX2Nv
+bW1hbmQ+DQogICAgPGFmZmVjdGVkX3NvcF9jbGFzc191aWQgVlI9IlVJIiBjb2RpbmdTY2hlbWU9
+IkRDTSIgY29kZUlkPSIwMDAwLDAwMDIiIGNvZGVNZWFuaW5nPSJBZmZlY3RlZCBTT1AgQ2xhc3Mg
+VUlEIj4xLjIuODI2LjAuMS4zNjgwMDQzLjIuMTM5LjMuMi4yPC9hZmZlY3RlZF9zb3BfY2xhc3Nf
+dWlkPg0KCTxhZmZlY3RlZF9zb3BfaW5zdGFuY2VfdWlkIFZSPSJVSSIgY29kaW5nU2NoZW1lPSJE
+Q00iIGNvZGVJZD0iMDAwMCwxMDAwIiBjb2RlTWVhbmluZz0iQWZmZWN0ZWQgU09QIEluc3RhbmNl
+IFVJRCI+MS4yLjgyNi4wLjEuMzY4MDA0My4yLjEzOS4zLjIuMi43NDAxNTg1MjA3MDkzMDA1NTAx
+MzA4ODMwMTQ1NDwvYWZmZWN0ZWRfc29wX2luc3RhbmNlX3VpZD4NCgk8bWVzc2FnZV9pZCBWUj0i
+VVMiIGNvZGluZ1NjaGVtZT0iRENNIiBjb2RlSWQ9IjAwMDAsMDExMCIgY29kZU1lYW5pbmc9Ik1l
+c3NhZ2UgSUQiPjwvbWVzc2FnZV9pZD4NCgk8bWVzc2FnZV9pZF9iZWluZ19yZXNwb25kZWRfdG8g
+VlI9IlVTIiBjb2RpbmdTY2hlbWU9IkRDTSIgY29kZUlkPSIwMDAwLDAxMjAiIGNvZGVNZWFuaW5n
+PSJNZXNzYWdlIElEIEJlaW5nIFJlc3BvbmRlZCBUbyIvPg0KCTxwcmlvcml0eSBWUj0iVVMiIGNv
+ZGluZ1NjaGVtZT0iRENNIiBjb2RlSWQ9IjAwMDAsMDcwMCIgY29kZU1lYW5pbmc9IlByaW9yaXR5
+Ii8+DQoJPHN0YXR1cyBWUj0iVVMiIGNvZGluZ1NjaGVtZT0iRENNIiBjb2RlSWQ9IjAwMDAsMDkw
+MCIgY29kZU1lYW5pbmc9IlN0YXR1cyIvPg0KCTxlcnJvcl9jb21tZW50IFZSPSJMTyIgY29kaW5n
+U2NoZW1lPSJEQ00iIGNvZGVJZD0iMDAwMCwwOTAyIiBjb2RlTWVhbmluZz0iU3RhdHVzIi8+DQoJ
+PGVycm9yX2lkIFZSPSJVUyIgY29kaW5nU2NoZW1lPSJEQ00iIGNvZGVJZD0iMDAwMCwwOTAzIiBj
+b2RlTWVhbmluZz0iRXJyb3IgSUQiLz4NCjwvQ29tbWFuZD4NCjxEYXRhU2V0Pg0KICAgIDxDWk1f
+SEZBX0VNUl9JT0Q+DQogICAgICAgIDxpb2RfdmVyc2lvbiBWUj0iTE8iIGNvZGluZ1NjaGVtZT0i
+OTlDWk0iIGNvZGVJZD0iNzcxMSwxMjAyIiBjb2RlTWVhbmluZz0iSU9EIFZlcnNpb24iPjEuMTwv
+aW9kX3ZlcnNpb24+DQoJICAgIDxQYXRpZW50X00+DQoJCSAgICA8cGF0aWVudHNfbmFtZSBWUj0i
+UE4iIGNvZGluZ1NjaGVtZT0iRENNIiBjb2RlSWQ9IjAwMTAsMDAxMCIgY29kZU1lYW5pbmc9IlBh
+dGllbnQncyBOYW1lIj4NCgkJCSAgICA8ZmFtaWx5X25hbWU+U0ZHMzEwMzwvZmFtaWx5X25hbWU+
+DQoJCQkgICAgPGdpdmVuX25hbWU+U0ZHMzEwMzwvZ2l2ZW5fbmFtZT4NCgkJCSAgICA8bWlkZGxl
+X25hbWU+PC9taWRkbGVfbmFtZT4NCgkJCSAgICA8bmFtZV9wcmVmaXg+PC9uYW1lX3ByZWZpeD4N
+CgkJCSAgICA8bmFtZV9zdWZmaXg+PC9uYW1lX3N1ZmZpeD4NCgkJICAgIDwvcGF0aWVudHNfbmFt
+ZT4NCgkJICAgIDxwYXRpZW50X2lkIFZSPSJMTyIgY29kaW5nU2NoZW1lPSJEQ00iIGNvZGVJZD0i
+MDAxMCwwMDIwIiBjb2RlTWVhbmluZz0iUGF0aWVudCBJRCI+U0ZHMzEwMzwvcGF0aWVudF9pZD4N
+CiAgICAgICAgICAgIDxpc3N1ZXJfb2ZfcGF0aWVudF9pZCBWUj0iTE8iIGNvZGluZ1NjaGVtZT0i
+RENNIiBjb2RlSWQ9IjAwMTAsMDAyMSIgY29kZU1lYW5pbmc9Iklzc3VlciBvZiBQYXRpZW50IElE
+Ij48L2lzc3Vlcl9vZl9wYXRpZW50X2lkPg0KCQkgICAgPHBhdGllbnRzX2JpcnRoX2RhdGUgVlI9
+IkRBIiBjb2RpbmdTY2hlbWU9IkRDTSIgY29kZUlkPSIwMDEwLDAwMzAiIGNvZGVNZWFuaW5nPSJQ
+YXRpZW50J3MgQmlydGggRGF0ZSI+MTk0Ny0xMi0yMzwvcGF0aWVudHNfYmlydGhfZGF0ZT4NCgkJ
+ICAgIDxwYXRpZW50c19zZXggVlI9IkNTIiBjb2RpbmdTY2hlbWU9IkRDTSIgY29kZUlkPSIwMDEw
+LDAwNDAiIGNvZGVNZWFuaW5nPSJQYXRpZW50J3MgU2V4Ij48L3BhdGllbnRzX3NleD4NCgkJICAg
+IDxvdGhlcl9wYXRpZW50X2lkcyBWUj0iTE8iIGNvZGluZ1NjaGVtZT0iRENNIiBjb2RlSWQ9IjAw
+MTAsMTAwMCIgY29kZU1lYW5pbmc9Ik90aGVyIFBhdGllbnQgSURzIj4NCgkJCSAgICA8dmFsdWU+
+PC92YWx1ZT4NCgkJICAgIDwvb3RoZXJfcGF0aWVudF9pZHM+DQoJCSAgICA8cGF0aWVudF9jb21t
+ZW50cyBWUj0iTFQiIGNvZGluZ1NjaGVtZT0iRENNIiBjb2RlSWQ9IjAwMTAsNDAwMCIgY29kZU1l
+YW5pbmc9IlBhdGllbnQgQ29tbWVudHMiLz4NCgkgICAgPC9QYXRpZW50X00+DQoJICAgIDxHZW5l
+cmFsU3R1ZHlfTT4NCgkJICAgIDxzdHVkeV9pbnN0YW5jZV91aWQgVlI9IlVJIiBjb2RpbmdTY2hl
+bWU9IkRDTSIgY29kZUlkPSIwMDIwLDAwMEQiIGNvZGVNZWFuaW5nPSJTdHVkeSBJbnN0YW5jZSBV
+SUQiPjEuMi44MjYuMC4xLjM2ODAwNDMuMi4xMzkuMy4yLjMuNzQwLjE1ODUyLjIwMTEzMy4xMzE0
+NTg8L3N0dWR5X2luc3RhbmNlX3VpZD4NCgkJICAgIDxzdHVkeV9kYXRlIFZSPSJEQSIgY29kaW5n
+U2NoZW1lPSJEQ00iIGNvZGVJZD0iMDAwOCwwMDIwIiBjb2RlTWVhbmluZz0iU3R1ZHkgRGF0ZSI+
+MjAxMS0wMy0wMzwvc3R1ZHlfZGF0ZT4NCgkJICAgIDxzdHVkeV90aW1lIFZSPSJUTSIgY29kaW5n
+U2NoZW1lPSJEQ00iIGNvZGVJZD0iMDAwOCwwMDMwIiBjb2RlTWVhbmluZz0iU3R1ZHkgVGltZSI+
+MTM6MTQ6NTguMDAwPC9zdHVkeV90aW1lPg0KCQkgICAgPHJlZmVycmluZ19waHlzaWNpYW5zX25h
+bWUgVlI9IlBOIiBjb2RpbmdTY2hlbWU9IkRDTSIgY29kZUlkPSIwMDA4LDAwOTAiIGNvZGVNZWFu
+aW5nPSJSZWZlcnJpbmcgUGh5c2ljaWFuJ3MgTmFtZSI+DQoJCQkgICAgPGZhbWlseV9uYW1lLz4N
+CgkJCSAgICA8Z2l2ZW5fbmFtZS8+DQoJCQkgICAgPG1pZGRsZV9uYW1lLz4NCgkJCSAgICA8bmFt
+ZV9wcmVmaXgvPg0KCQkJICAgIDxuYW1lX3N1ZmZpeC8+DQoJCSAgICA8L3JlZmVycmluZ19waHlz
+aWNpYW5zX25hbWU+DQoJCSAgICA8c3R1ZHlfaWQgVlI9IlNIIiBjb2RpbmdTY2hlbWU9IkRDTSIg
+Y29kZUlkPSIwMDIwLDAwMTAiIGNvZGVNZWFuaW5nPSJTdHVkeSBJRCIvPg0KCQkgICAgPGFjY2Vz
+c2lvbl9udW1iZXIgVlI9IlNIIiBjb2RpbmdTY2hlbWU9IkRDTSIgY29kZUlkPSIwMDA4LDAwNTAi
+IGNvZGVNZWFuaW5nPSJBY2Nlc3Npb24gTnVtYmVyIj48L2FjY2Vzc2lvbl9udW1iZXI+DQoJCSAg
+ICA8cGxhY2VyX29yZGVyX251bWJlcl9pbWFnaW5nX3NlcnZpY2VfcmVxdWVzdCBWUj0iTE8iIGNv
+ZGluZ1NjaGVtZT0iRENNIiBjb2RlSWQ9IjAwNDAsMjAxNiIgY29kZU1lYW5pbmc9IlBsYWNlciBP
+cmRlciBOdW1iZXIgLyBJbWFnaW5nIFNlcnZpY2UgUmVxdWVzdCI+PC9wbGFjZXJfb3JkZXJfbnVt
+YmVyX2ltYWdpbmdfc2VydmljZV9yZXF1ZXN0Pg0KCQkgICAgPHN0dWR5X2Rlc2NyaXB0aW9uIFZS
+PSJMTyIgY29kaW5nU2NoZW1lPSJEQ00iIGNvZGVJZD0iMDAwOCwxMDMwIiBjb2RlTWVhbmluZz0i
+U3R1ZHkgRGVzY3JpcHRpb24iLz4NCgkgICAgPC9HZW5lcmFsU3R1ZHlfTT4NCgkgICAgPEdlbmVy
+YWxTZXJpZXNfTT4NCgkJICAgIDxtb2RhbGl0eSBWUj0iQ1MiIGNvZGluZ1NjaGVtZT0iRENNIiBj
+b2RlSWQ9IjAwMDgsMDA2MCIgY29kZU1lYW5pbmc9Ik1vZGFsaXR5Ij5DWk1fSEZBPC9tb2RhbGl0
+eT4NCgkJICAgIDxzZXJpZXNfaW5zdGFuY2VfdWlkIFZSPSJVSSIgY29kaW5nU2NoZW1lPSJEQ00i
+IGNvZGVJZD0iMDAyMCwwMDBFIiBjb2RlTWVhbmluZz0iU2VyaWVzIEluc3RhbmNlIFVJRCI+MS4y
+LjgyNi4wLjEuMzY4MDA0My4yLjEzOS4zLjIuMS43NDAxNTg1MjA3MDkzMDA1NTAxMzA4ODMwMTQ1
+NTwvc2VyaWVzX2luc3RhbmNlX3VpZD4NCgkJICAgIDxzZXJpZXNfbnVtYmVyIFZSPSJJUyIgY29k
+aW5nU2NoZW1lPSJEQ00iIGNvZGVJZD0iMDAyMCwwMDExIiBjb2RlTWVhbmluZz0iU2VyaWVzIE51
+bWJlciIvPg0KCQkgICAgPGxhdGVyYWxpdHkgVlI9IkNTIiBjb2RpbmdTY2hlbWU9IkRDTSIgY29k
+ZUlkPSIwMDIwLDAwNjAiIGNvZGVNZWFuaW5nPSJMYXRlcmFsaXR5Ij5SPC9sYXRlcmFsaXR5Pg0K
+CQkgICAgPHNlcmllc19kYXRlIFZSPSJEQSIgY29kaW5nU2NoZW1lPSJEQ00iIGNvZGVJZD0iMDAw
+OCwwMDIxIiBjb2RlTWVhbmluZz0iU2VyaWVzIERhdGUiPjIwMTEtMDYtMjM8L3Nlcmllc19kYXRl
+Pg0KCQkgICAgPHNlcmllc190aW1lIFZSPSJUTSIgY29kaW5nU2NoZW1lPSJEQ00iIGNvZGVJZD0i
+MDAwOCwwMDMxIiBjb2RlTWVhbmluZz0iU2VyaWVzIFRpbWUiPjExOjU1OjUwLjAwMDwvc2VyaWVz
+X3RpbWU+DQoJCSAgICA8cGVyZm9ybWluZ19waHlzaWNpYW5zX25hbWUgY29kaW5nU2NoZW1lPSJE
+Q00iIGNvZGVJZD0iMDAwOCwxMDUwIiBjb2RlTWVhbmluZz0iUGVyZm9ybWluZyBQaHlzaWNpYW4n
+cyBOYW1lIj4NCgkJCSAgICA8dmFsdWU+DQoJCQkJICAgIDxmYW1pbHlfbmFtZS8+DQoJCQkJICAg
+IDxnaXZlbl9uYW1lLz4NCgkJCQkgICAgPG1pZGRsZV9uYW1lLz4NCgkJCQkgICAgPG5hbWVfcHJl
+Zml4Lz4NCgkJCQkgICAgPG5hbWVfc3VmZml4Lz4NCgkJCSAgICA8L3ZhbHVlPg0KCQkgICAgPC9w
+ZXJmb3JtaW5nX3BoeXNpY2lhbnNfbmFtZT4NCgkJICAgIDxjb21tZW50c19vbl90aGVfcGVyZm9y
+bWVkX3Byb2NlZHVyZV9zdGVwIFZSPSJTVCIgY29kaW5nU2NoZW1lPSJEQ00iIGNvZGVJZD0iMDA0
+MCwwMjgwIiBjb2RlTWVhbmluZz0iQ29tbWVudHMgb24gdGhlIFBlcmZvcm1lZCBQcm9jZWR1cmUg
+U3RlcCI+PC9jb21tZW50c19vbl90aGVfcGVyZm9ybWVkX3Byb2NlZHVyZV9zdGVwPg0KCSAgICA8
+L0dlbmVyYWxTZXJpZXNfTT4NCgkgICAgPEdlbmVyYWxFcXVpcG1lbnRfTT4NCgkJICAgIDxtYW51
+ZmFjdHVyZXIgVlI9IkxPIiBjb2RpbmdTY2hlbWU9IkRDTSIgY29kZUlkPSIwMDA4LDAwNzAiIGNv
+ZGVNZWFuaW5nPSJNYW51ZmFjdHVyZXIiPkNhcmwgWmVpc3MgTWVkaXRlYyBJbmMuPC9tYW51ZmFj
+dHVyZXI+DQoJCSAgICA8c3RhdGlvbl9uYW1lIFZSPSJTSCIgY29kaW5nU2NoZW1lPSJEQ00iIGNv
+ZGVJZD0iMDAwOCwxMDEwIiBjb2RlTWVhbmluZz0iU3RhdGlvbiBOYW1lIj48L3N0YXRpb25fbmFt
+ZT4NCgkJICAgIDxtYW51ZmFjdHVyZXJzX21vZGVsX25hbWUgVlI9IkxPIiBjb2RpbmdTY2hlbWU9
+IkRDTSIgY29kZUlkPSIwMDA4LDEwOTAiIGNvZGVNZWFuaW5nPSJNYW51ZmFjdHVyZXIncyBNb2Rl
+bCBOYW1lIj43NDA8L21hbnVmYWN0dXJlcnNfbW9kZWxfbmFtZT4NCgkJICAgIDxkZXZpY2Vfc2Vy
+aWFsX251bWJlciBWUj0iTE8iIGNvZGluZ1NjaGVtZT0iRENNIiBjb2RlSWQ9IjAwMTgsMTAwMCIg
+Y29kZU1lYW5pbmc9IkRldmljZSBTZXJpYWwgTnVtYmVyIj4xNTg1MjwvZGV2aWNlX3NlcmlhbF9u
+dW1iZXI+DQoJCSAgICA8c29mdHdhcmVfdmVyc2lvbnMgVlI9IkxPIiBjb2RpbmdTY2hlbWU9IkRD
+TSIgY29kZUlkPSIwMDE4LDEwMjAiIGNvZGVNZWFuaW5nPSJTb2Z0d2FyZSBWZXJzaW9ucyI+DQoJ
+CQkgICAgPHZhbHVlPjQuMiA8L3ZhbHVlPg0KCQkgICAgPHZhbHVlPjc0MC0xNTg1MiA0LjI8L3Zh
+bHVlPg0KPC9zb2Z0d2FyZV92ZXJzaW9ucz4NCgkgICAgPC9HZW5lcmFsRXF1aXBtZW50X00+DQoJ
+ICAgIDxTT1BDb21tb25fTT4NCgkJICAgIDxzb3BfaW5zdGFuY2VfdWlkIFZSPSJVSSIgY29kaW5n
+U2NoZW1lPSJEQ00iIGNvZGVJZD0iMDAwOCwwMDE4IiBjb2RlTWVhbmluZz0iU09QIEluc3RhbmNl
+IFVJRCI+MS4yLjgyNi4wLjEuMzY4MDA0My4yLjEzOS4zLjIuMi43NDAxNTg1MjA3MDkzMDA1NTAx
+MzA4ODMwMTQ1Njwvc29wX2luc3RhbmNlX3VpZD4NCgkJICAgIDxpbnN0YW5jZV9jcmVhdGlvbl9k
+YXRlIFZSPSJEQSIgY29kaW5nU2NoZW1lPSJEQ00iIGNvZGVJZD0iMDAwOCwwMDEyIiBjb2RlTWVh
+bmluZz0iSW5zdGFuY2UgQ3JlYXRpb24gRGF0ZSI+MjAxMS0wNi0yMzwvaW5zdGFuY2VfY3JlYXRp
+b25fZGF0ZT4NCgkJICAgIDxpbnN0YW5jZV9jcmVhdGlvbl90aW1lIFZSPSJUTSIgY29kaW5nU2No
+ZW1lPSJEQ00iIGNvZGVJZD0iMDAwOCwwMDEzIiBjb2RlTWVhbmluZz0iSW5zdGFuY2UgQ3JlYXRp
+b24gVGltZSI+MTE6NTU6NTAuMDAwPC9pbnN0YW5jZV9jcmVhdGlvbl90aW1lPg0KCQkgICAgPGlu
+c3RhbmNlX2NyZWF0b3JfdWlkIFZSPSJVSSIgY29kaW5nU2NoZW1lPSJEQ00iIGNvZGVJZD0iMDAw
+OCwwMDE0IiBjb2RlTWVhbmluZz0iSW5zdGFuY2UgQ3JlYXRvciBVSUQiLz4NCgkJICAgIDxpbnN0
+YW5jZV9udW1iZXIgVlI9IklTIiBjb2RpbmdTY2hlbWU9IkRDTSIgY29kZUlkPSIwMDIwLDAwMTMi
+IGNvZGVNZWFuaW5nPSJJbnN0YW5jZSBOdW1iZXIiLz4NCgkgICAgPC9TT1BDb21tb25fTT4NCgkg
+ICAgPENaTV9IRkFfU2VyaWVzX00+DQoJCSAgICA8dGVzdF9kYXRlIFZSPSJEQSIgY29kaW5nU2No
+ZW1lPSI5OUNaTSIgY29kZUlkPSI3NzE3LDE3MzIiIGNvZGVNZWFuaW5nPSJUZXN0IERhdGUiPjIw
+MTEtMDMtMDM8L3Rlc3RfZGF0ZT4NCgkJICAgIDx0ZXN0X3RpbWUgVlI9IlRNIiBjb2RpbmdTY2hl
+bWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTcsMTczMyIgY29kZU1lYW5pbmc9IlRlc3QgVGltZSI+MTM6
+MTQ6NTguMDAwPC90ZXN0X3RpbWU+DQoJCSAgICA8dGVzdF9uYW1lIFZSPSJMTyIgY29kaW5nU2No
+ZW1lPSI5OUNaTSIgY29kZUlkPSI3NzE3LDE3MDEiIGNvZGVNZWFuaW5nPSJUZXN0IE5hbWUiPkNl
+bnRyYWwgMjQtMiBUaHJlc2hvbGQgVGVzdDwvdGVzdF9uYW1lPg0KCQkgICAgPHRlc3Rfc3RyYXRl
+Z3kgVlI9IkxPIiBjb2RpbmdTY2hlbWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTcsMTcwMiIgY29kZU1l
+YW5pbmc9IlRlc3QgU3RyYXRlZ3kiPlNJVEEtU3RhbmRhcmQ8L3Rlc3Rfc3RyYXRlZ3k+DQoJCSAg
+ICA8c3RpbXVsdXNfc2l6ZSBWUj0iQ1MiIGNvZGluZ1NjaGVtZT0iOTlDWk0iIGNvZGVJZD0iNzcx
+NywxNzAzIiBjb2RlTWVhbmluZz0iU3RpbXVsdXMgU2l6ZSI+SUlJPC9zdGltdWx1c19zaXplPg0K
+CQkgICAgPHN0aW11bHVzX2NvbG9yIFZSPSJTSCIgY29kaW5nU2NoZW1lPSI5OUNaTSIgY29kZUlk
+PSI3NzE3LDE3MDQiIGNvZGVNZWFuaW5nPSJTdGltdWx1cyBDb2xvciI+V2hpdGU8L3N0aW11bHVz
+X2NvbG9yPg0KCQkgICAgPGJhY2tncm91bmRfc3RhdGUgVlI9IlNIIiBjb2RpbmdTY2hlbWU9Ijk5
+Q1pNIiBjb2RlSWQ9Ijc3MTcsMTcwNSIgY29kZU1lYW5pbmc9IkJhY2tncm91bmQgU3RhdGUiPldo
+aXRlPC9iYWNrZ3JvdW5kX3N0YXRlPg0KCQkgICAgPGZvdmVhbF9yZXN1bHQgVlI9IkNTIiBjb2Rp
+bmdTY2hlbWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTcsMTcwNiIgY29kZU1lYW5pbmc9IkZvdmVhbCBS
+ZXN1bHQiPk5PVC1URVNURUQ8L2ZvdmVhbF9yZXN1bHQ+DQoJICAgICAgICA8c2NyZWVuaW5nX21v
+ZGUgVlI9IkxPIiBjb2RpbmdTY2hlbWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTcsMTcwNyIgY29kZU1l
+YW5pbmc9IlNjcmVlbmluZyBNb2RlIj48L3NjcmVlbmluZ19tb2RlPg0KCSAgICAgICAgPHB1cGls
+X2RpYW1ldGVyIFZSPSJEUyIgY29kaW5nU2NoZW1lPSI5OUNaTSIgY29kZUlkPSI3NzE3LDE3MjYi
+IGNvZGVNZWFuaW5nPSJQdXBpbCBEaWFtZXRlciI+PC9wdXBpbF9kaWFtZXRlcj4NCgkJICAgIDx2
+aXN1YWxfYWN1aXR5IFZSPSJTSCIgY29kaW5nU2NoZW1lPSI5OUNaTSIgY29kZUlkPSI3NzE3LDE3
+MzAiIGNvZGVNZWFuaW5nPSJWaXN1YWwgQWN1aXR5Ij48L3Zpc3VhbF9hY3VpdHk+DQoJICAgICAg
+ICA8Zml4YXRpb25fbW9uaXRvciBWUj0iTE8iIGNvZGluZ1NjaGVtZT0iOTlDWk0iIGNvZGVJZD0i
+NzcxNywxNzI0IiBjb2RlTWVhbmluZz0iRml4YXRpb24gTW9uaXRvciI+R2F6ZS9CbGluZCBTcG90
+PC9maXhhdGlvbl9tb25pdG9yPg0KCSAgICAgICAgPGZpeGF0aW9uX3RhcmdldCBWUj0iTE8iIGNv
+ZGluZ1NjaGVtZT0iOTlDWk0iIGNvZGVJZD0iNzcxNywxNzI1IiBjb2RlTWVhbmluZz0iRml4YXRp
+b24gVGFyZ2V0Ij5DZW50cmFsPC9maXhhdGlvbl90YXJnZXQ+DQoJCSAgICA8Zml4YXRpb25fdHJp
+YWxzIFZSPSJJUyIgY29kaW5nU2NoZW1lPSI5OUNaTSIgY29kZUlkPSI3NzE3LDE3MDgiIGNvZGVN
+ZWFuaW5nPSJGaXhhdGlvbiBUcmlhbHMiPjE1PC9maXhhdGlvbl90cmlhbHM+DQoJCSAgICA8Zml4
+YXRpb25fZXJyb3JzIFZSPSJJUyIgY29kaW5nU2NoZW1lPSI5OUNaTSIgY29kZUlkPSI3NzE3LDE3
+MDkiIGNvZGVNZWFuaW5nPSJGaXhhdGlvbiBFcnJvcnMiPjI8L2ZpeGF0aW9uX2Vycm9ycz4NCgkJ
+ICAgIDxmYWxzZV9wb3NpdGl2ZXM+DQoJCQkgICAgPGZhbHNlX3Bvc2l0aXZlX3BlcmNlbnQgVlI9
+IkRTIiBjb2RpbmdTY2hlbWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTcsMTcxMCIgY29kZU1lYW5pbmc9
+IkZhbHNlIFBvc2l0aXZlIFBlcmNlbnQiPjIwPC9mYWxzZV9wb3NpdGl2ZV9wZXJjZW50Pg0KCQkJ
+ICAgIDwvZmFsc2VfcG9zaXRpdmVzPg0KCQkgICAgPGZhbHNlX25lZ2F0aXZlcz4NCgkJCSAgICA8
+ZmFsc2VfbmVnYXRpdmVfcGVyY2VudCBWUj0iRFMiIGNvZGluZ1NjaGVtZT0iOTlDWk0iIGNvZGVJ
+ZD0iNzcxNywxNzEzIiBjb2RlTWVhbmluZz0iRmFsc2UgTmVnYXRpdmUgUGVyY2VudCI+NzwvZmFs
+c2VfbmVnYXRpdmVfcGVyY2VudD4NCgkJCSAgICA8L2ZhbHNlX25lZ2F0aXZlcz4NCgkJICAgIDx0
+cmlhbF9yeD4NCgkJCSAgICA8c3BoZXJlIFZSPSJEUyIgY29kaW5nU2NoZW1lPSI5OUNaTSIgY29k
+ZUlkPSI3NzE3LDE3MjciIGNvZGVNZWFuaW5nPSJTcGhlcmUiPiszLjI1PC9zcGhlcmU+DQoJCQkg
+ICAgPGN5bGluZGVyIFZSPSJEUyIgY29kaW5nU2NoZW1lPSI5OUNaTSIgY29kZUlkPSI3NzE3LDE3
+MjgiIGNvZGVNZWFuaW5nPSJDeWxpbmRlciI+PC9jeWxpbmRlcj4NCgkJCSAgICA8YXhpcyBWUj0i
+SVMiIGNvZGluZ1NjaGVtZT0iOTlDWk0iIGNvZGVJZD0iNzcxNywxNzI5IiBjb2RlTWVhbmluZz0i
+QXhpcyI+PC9heGlzPg0KCQkgICAgPC90cmlhbF9yeD4NCgkgICAgPC9DWk1fSEZBX1Nlcmllc19N
+Pg0KICAgICAgICA8Q1pNX0hGQV9BbmFseXNpc19NPg0KCQkgICAgPG1lYW5fZGV2aWF0aW9uIFZS
+PSJEUyIgY29kaW5nU2NoZW1lPSI5OUNaTSIgY29kZUlkPSI3NzE3LDE3MTYiIGNvZGVNZWFuaW5n
+PSJNZWFuIERldmlhdGlvbiI+LTAuNTI8L21lYW5fZGV2aWF0aW9uPg0KCQkgICAgPG1lYW5fZGV2
+aWF0aW9uX3Byb2JhYmlsaXR5IFZSPSJTSCIgY29kaW5nU2NoZW1lPSI5OUNaTSIgY29kZUlkPSI3
+NzE3LDE3MTciIGNvZGVNZWFuaW5nPSJNZWFuIERldmlhdGlvbiBQcm9iYWJpbGl0eSI+Tm90IFNp
+Z25pZmljYW50PC9tZWFuX2RldmlhdGlvbl9wcm9iYWJpbGl0eT4NCgkJICAgIDxwYXR0ZXJuX3N0
+YW5kYXJkX2RldmlhdGlvbiBWUj0iRFMiIGNvZGluZ1NjaGVtZT0iOTlDWk0iIGNvZGVJZD0iNzcx
+NywxNzE4IiBjb2RlTWVhbmluZz0iUGF0dGVybiBTdGFuZGFyZCBEZXZpYXRpb24iPjIuMDM8L3Bh
+dHRlcm5fc3RhbmRhcmRfZGV2aWF0aW9uPg0KCQkgICAgPHBhdHRlcm5fc3RhbmRhcmRfZGV2aWF0
+aW9uX3Byb2JhYmlsaXR5IFZSPSJTSCIgY29kaW5nU2NoZW1lPSI5OUNaTSIgY29kZUlkPSI3NzE3
+LDE3MTkiIGNvZGVNZWFuaW5nPSJQYXR0ZXJuIFN0YW5kYXJkIERldmlhdGlvbiBQcm9iYWJpbGl0
+eSI+cCAmbHQ7IDUlPC9wYXR0ZXJuX3N0YW5kYXJkX2RldmlhdGlvbl9wcm9iYWJpbGl0eT4NCgkJ
+ICAgIDxzaG9ydF90ZXJtX2ZsdWN0dWF0aW9uIFZSPSJEUyIgY29kaW5nU2NoZW1lPSI5OUNaTSIg
+Y29kZUlkPSI3NzE3LDE3MjAiIGNvZGVNZWFuaW5nPSJTaG9ydC10ZXJtIEZsdWN0dWF0aW9uIj48
+L3Nob3J0X3Rlcm1fZmx1Y3R1YXRpb24+DQoJCSAgICA8c2hvcnRfdGVybV9mbHVjdHVhdGlvbl9w
+cm9iYWJpbGl0eSBWUj0iU0giIGNvZGluZ1NjaGVtZT0iOTlDWk0iIGNvZGVJZD0iNzcxNywxNzMx
+IiBjb2RlTWVhbmluZz0iU2hvcnQtdGVybSBGbHVjdHVhdGlvbiBQcm9iYWJpbGl0eSI+PC9zaG9y
+dF90ZXJtX2ZsdWN0dWF0aW9uX3Byb2JhYmlsaXR5Pg0KCQkgICAgPGNvcnJlY3RlZF9wYXR0ZXJu
+X3N0YW5kYXJkX2RldmlhdGlvbiBWUj0iRFMiIGNvZGluZ1NjaGVtZT0iOTlDWk0iIGNvZGVJZD0i
+NzcxNywxNzIxIiBjb2RlTWVhbmluZz0iQ29ycmVjdGVkIFBhdHRlcm4gU3RhbmRhcmQgRGV2aWF0
+aW9uIj48L2NvcnJlY3RlZF9wYXR0ZXJuX3N0YW5kYXJkX2RldmlhdGlvbj4NCgkJICAgIDxjb3Jy
+ZWN0ZWRfcGF0dGVybl9zdGFuZGFyZF9kZXZpYXRpb25fcHJvYmFiaWxpdHkgVlI9IlNIIiBjb2Rp
+bmdTY2hlbWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTcsMTcyMiIgY29kZU1lYW5pbmc9IkNvcnJlY3Rl
+ZCBQYXR0ZXJuIFN0YW5kYXJkIERldmlhdGlvbiBQcm9iYWJpbGl0eSI+PC9jb3JyZWN0ZWRfcGF0
+dGVybl9zdGFuZGFyZF9kZXZpYXRpb25fcHJvYmFiaWxpdHk+DQogICAgCSAgICA8Z2xhdWNvbWFf
+aGVtaWZpZWxkX3Rlc3QgVlI9IkxPIiBjb2RpbmdTY2hlbWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTcs
+MTcyMyIgY29kZU1lYW5pbmc9IkdsYXVjb21hIEhlbWlmaWVsZCBUZXN0Ij5Cb3JkZXJsaW5lPC9n
+bGF1Y29tYV9oZW1pZmllbGRfdGVzdD4NCiAgICAJPC9DWk1fSEZBX0FuYWx5c2lzX00+DQoJICAg
+IDxHZW5lcmFsSW1hZ2VfTT4NCgkJICAgIDxpbnN0YW5jZV9udW1iZXIgVlI9IklTIiBjb2RpbmdT
+Y2hlbWU9IkRDTSIgY29kZUlkPSIwMDIwLDAwMTMiIGNvZGVNZWFuaW5nPSJJbnN0YW5jZSBOdW1i
+ZXIiPjAwMTwvaW5zdGFuY2VfbnVtYmVyPg0KCQkgICAgPGNvbnRlbnRfZGF0ZSBWUj0iREEiIGNv
+ZGluZ1NjaGVtZT0iRENNIiBjb2RlSWQ9IjAwMDgsMDAyMyIgY29kZU1lYW5pbmc9IkNvbnRlbnQg
+RGF0ZSIvPg0KCQkgICAgPGNvbnRlbnRfdGltZSBWUj0iVE0iIGNvZGluZ1NjaGVtZT0iRENNIiBj
+b2RlSWQ9IjAwMDgsMDAzMyIgY29kZU1lYW5pbmc9IkNvbnRlbnQgVGltZSIvPg0KCQkgICAgPGlt
+YWdlX3R5cGUgVlI9IkNTIiBjb2RpbmdTY2hlbWU9IkRDTSIgY29kZUlkPSIwMDA4LDAwMDgiIGNv
+ZGVNZWFuaW5nPSJJbWFnZSBUeXBlIj4NCgkJCSAgICA8dmFsdWUvPg0KCQkgICAgPC9pbWFnZV90
+eXBlPg0KCQkgICAgPGRlcml2YXRpb25fZGVzY3JpcHRpb24gVlI9IlNUIiBjb2RpbmdTY2hlbWU9
+IkRDTSIgY29kZUlkPSIwMDA4LDIxMTEiIGNvZGVNZWFuaW5nPSJEZXJpdmF0aW9uIERlc2NyaXB0
+aW9uIj5TRkE8L2Rlcml2YXRpb25fZGVzY3JpcHRpb24+DQoJCSAgICA8aW1hZ2VfY29tbWVudHMg
+VlI9IkxUIiBjb2RpbmdTY2hlbWU9IkRDTSIgY29kZUlkPSIwMDIwLDQwMDAiIGNvZGVNZWFuaW5n
+PSJJbWFnZSBDb21tZW50cyIvPg0KCSAgICA8L0dlbmVyYWxJbWFnZV9NPg0KCSAgICA8UmVmZXJl
+bmNlZEltYWdlX00+DQoJCSAgICA8dHJhbnNmZXJfcHJvdG9jb2wgVlI9IkNTIiBjb2RpbmdTY2hl
+bWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTEsMTEwNCIgY29kZU1lYW5pbmc9IkNaTSBUcmFuc2ZlciBQ
+cm90b2NvbCI+RklMRTwvdHJhbnNmZXJfcHJvdG9jb2w+DQoJCSAgICA8c2VydmVyX25hbWUgVlI9
+IkxUIiBjb2RpbmdTY2hlbWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTEsMTEwOSIgY29kZU1lYW5pbmc9
+IlNlcnZlciBOYW1lIi8+DQoJCSAgICA8ZmlsZV9yZWZlcmVuY2UgVlI9IkxUIiBjb2RpbmdTY2hl
+bWU9Ijk5Q1pNIiBjb2RlSWQ9Ijc3MTEsMTEwOCIgY29kZU1lYW5pbmc9IkZpbGUgUmVmZXJlbmNl
+Ij5TRkdfMjAxMTAzMDNfMTMxNDU4X09EXzc0MDE1ODUyX1NGQS5wZGY8L2ZpbGVfcmVmZXJlbmNl
+Pg0KCQkgICAgPHR5cGVfaWRlbnRpZmllciBWUj0iQ1MiIGNvZGluZ1NjaGVtZT0iOTlDWk0iIGNv
+ZGVJZD0iNzcxMSwxMTA3IiBjb2RlTWVhbmluZz0iVHlwZSBJZGVudGlmaWVyIj5QREY8L3R5cGVf
+aWRlbnRpZmllcj4NCgkgICAgPC9SZWZlcmVuY2VkSW1hZ2VfTT4NCiAgICA8L0NaTV9IRkFfRU1S
+X0lPRD4NCiA8L0RhdGFTZXQ+DQo8L0NaTS1YTUw+</inboundTemplate>
+      <outboundTemplate encoding="base64">PHZmYT4KCTxwaWQ+PC9waWQ+Cgk8YmlydGhEYXRlPjwvYmlydGhEYXRlPgoJPGdlbmRlcj48L2dl
+bmRlcj4KCTxmYW1pbHlOYW1lPjwvZmFtaWx5TmFtZT4KCTxnaXZlbk5hbWU+PC9naXZlbk5hbWU+
+Cgk8bWlkZGxlTmFtZT48L21pZGRsZU5hbWU+Cgk8ZmlsZVJlZmVyZW5jZT48L2ZpbGVSZWZlcmVu
+Y2U+Cgk8c3R1ZHlEYXRlPjwvc3R1ZHlEYXRlPgoJPHN0dWR5VGltZT48L3N0dWR5VGltZT4KCTxl
+eWU+PC9leWU+Cgk8dGVzdFN0cmF0ZWd5PjwvdGVzdFN0cmF0ZWd5Pgo8L3ZmYT4=</outboundTemplate>
+      <inboundProtocol>XML</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties>
+        <property name="stripNamespaces">true</property>
+      </inboundProperties>
+      <outboundProperties>
+        <property name="stripNamespaces">true</property>
+      </outboundProperties>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>File Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <version>2.2.1.5861</version>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector>
+      <name>Destination 1</name>
+      <properties>
+        <property name="DataType">Database Writer</property>
+        <property name="URL">_OE_DB_URL</property>
+        <property name="driver">_OE_DB_DRIVER_</property>
+        <property name="host">query</property>
+        <property name="password">_OE_DB_PASSWORD_</property>
+        <property name="query"></property>
+        <property name="script">var dbConn = getDbConnection();
+
+var data = new XML(messageObject.getTransformedData());
+var sql = &quot;INSERT INTO &quot;
+	+ globalMap.get(&apos;OE_DB_SERVICE_BUS_VFA_XML_INFO&apos;)
+	+ &quot; (pid, eye, gender, birth_date, study_date, study_time, given_name, middle_name, family_name, file_name, test_strategy)&quot;
+    + &quot; VALUES (&apos;&quot; + data[&apos;pid&apos;] + &quot;&apos;&quot; + &quot;,&quot;
+    + &quot;&apos;&quot; + data[&apos;eye&apos;] + &quot;&apos;,&quot;
+    + &quot;&apos;&quot; + data[&apos;gender&apos;] + &quot;&apos;,&quot;
+    + &quot;&apos;&quot; + data[&apos;birthDate&apos;] + &quot;&apos;,&quot;
+    + &quot;&apos;&quot; + data[&apos;studyDate&apos;] + &quot;&apos;,&quot;
+    + &quot;&apos;&quot; + data[&apos;studyTime&apos;] + &quot;&apos;,&quot;
+    + &quot;&apos;&quot; + data[&apos;givenName&apos;] + &quot;&apos;,&quot;
+    + &quot;&apos;&quot; + data[&apos;middleName&apos;] + &quot;&apos;,&quot;
+    + &quot;&apos;&quot; + data[&apos;familyName&apos;] + &quot;&apos;,&quot;
+    + &quot;&apos;&quot; + data[&apos;fileReference&apos;] + &quot;&apos;,&quot;
+    + &quot;&apos;&quot; + data[&apos;testStrategy&apos;] + &quot;&apos;)&quot;
+
+try {
+	var result = dbConn.executeUpdate(sql);
+	// now move the file to the encoded patient directory:
+	// TODO
+	log(channelId, &quot;info&quot;, &quot;Success: &quot; + sql);
+} catch(err) {
+	log(channelId, &quot;error&quot;, err);
+} finally {
+	dbConn.close();
+}</property>
+        <property name="useScript">1</property>
+        <property name="username">oe</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">true</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">true</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>Database Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.2.1.5861</version>
+    </connector>
+  </destinationConnectors>
+  <properties>
+    <property name="clearGlobalChannelMap">true</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="encryptData">false</property>
+    <property name="error_messages_only">false</property>
+    <property name="initialState">started</property>
+    <property name="max_message_age">-1</property>
+    <property name="store_messages">true</property>
+    <property name="synchronous">true</property>
+    <property name="transactional">false</property>
+  </properties>
+  <preprocessingScript>// Modify the message variable below to pre process data
+message = message.replace(&quot;&lt;CZM-XML xmlns=\&quot;http://www.meditec.zeiss.com/czm\&quot; xmlns:xsi=\&quot;http://www.w3.org/2001/XMLSchema-instance\&quot; xsi:schemaLocation=\&quot;http://www.meditec.zeiss.com/CZM-XML-Root.xsd\&quot;&gt;&quot;, &quot;&lt;CZM-XML&gt;&quot;);
+
+var filename = muleContext.getMessage().getProperty(&quot;originalFilename&quot;);
+var size = new java.io.File(new java.io.File(globalMap.get(&apos;OE_VFA_TEXT_IN&apos;)), filename).length();
+fileAudit(&apos;i&apos;, &apos;f&apos;, globalMap.get(&apos;OE_VFA_TEXT_IN&apos;), filename, null, null, size, -1);
+return message;</preprocessingScript>
+  <postprocessingScript>var filename = channelMap.get(&quot;originalFilename&quot;);
+
+var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_VFA_TEXT_IN&apos;)), filename);
+var systime = new java.util.Date().getTime();
+var fout = new java.io.File(new java.io.File(globalMap.get(&apos;OE_VFA_TEXT_OUT&apos;)), systime + &quot;-&quot; + filename);
+
+fileLocationChange(&apos;move&apos;, f.getAbsolutePath(), fout.getAbsolutePath(), globalMap.get(&apos;OE_VFA_TEXT_ERR&apos;));
+
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <shutdownScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</shutdownScript>
+</channel>

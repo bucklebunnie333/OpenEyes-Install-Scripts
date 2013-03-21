@@ -1,0 +1,234 @@
+<channel>
+  <id>d7dac5c5-37bd-4942-ba30-cf4b768b0a8c</id>
+  <name>vfa-image-reader</name>
+  <description>Reads in VFA (TIFF) images, audits the file movements and sends to the file encoder.
+
+Note that this channel checks less often than is required; XML files should be processed first (see the data reader).</description>
+  <enabled>true</enabled>
+  <version>2.2.1.5861</version>
+  <lastModified>
+    <time>1354613440314</time>
+    <timezone>Europe/London</timezone>
+  </lastModified>
+  <revision>6</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="DataType">File Reader</property>
+      <property name="FTPAnonymous">1</property>
+      <property name="autoDelete">0</property>
+      <property name="binary">1</property>
+      <property name="charsetEncoding">DEFAULT_ENCODING</property>
+      <property name="checkFileAge">1</property>
+      <property name="fileAge">10000</property>
+      <property name="fileFilter">*.tif</property>
+      <property name="host">_OE_VFA_TEXT_IN_</property>
+      <property name="ignoreDot">1</property>
+      <property name="moveToDirectory">_OE_VFA_IMAGES_OUT_</property>
+      <property name="moveToErrorDirectory">_OE_VFA_TEXT_ERR_</property>
+      <property name="moveToPattern">${ORIGINALNAME}</property>
+      <property name="passive">1</property>
+      <property name="password">anonymous</property>
+      <property name="pollingFrequency">1000</property>
+      <property name="pollingType">interval</property>
+      <property name="processBatchFiles">0</property>
+      <property name="regex">0</property>
+      <property name="scheme">file</property>
+      <property name="secure">1</property>
+      <property name="sortAttribute">date</property>
+      <property name="timeout">10000</property>
+      <property name="username">anonymous</property>
+      <property name="validateConnections">1</property>
+    </properties>
+    <transformer>
+      <steps>
+        <step>
+          <sequenceNumber>0</sequenceNumber>
+          <name>original filename</name>
+          <script>tmp[&apos;originalFilename&apos;] = validate(msg[&apos;originalFilename&apos;].toString(), &apos;&apos;, new Array());</script>
+          <type>Message Builder</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>tmp[&apos;originalFilename&apos;]</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;originalFilename&apos;].toString()</string>
+            </entry>
+          </data>
+        </step>
+      </steps>
+      <inboundTemplate encoding="base64">PHZmYUltYWdlPgogIDxvcmlnaW5hbEZpbGVuYW1lPnZhbHVlMzwvb3JpZ2luYWxGaWxlbmFtZT4K
+PC92ZmFJbWFnZT4=</inboundTemplate>
+      <outboundTemplate encoding="base64">PHZmYUltYWdlPgogIDxvcmlnaW5hbEZpbGVuYW1lPnZhbHVlMzwvb3JpZ2luYWxGaWxlbmFtZT4K
+PC92ZmFJbWFnZT4=</outboundTemplate>
+      <inboundProtocol>XML</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties>
+        <property name="stripNamespaces">true</property>
+      </inboundProperties>
+      <outboundProperties>
+        <property name="stripNamespaces">true</property>
+      </outboundProperties>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>File Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <version>2.2.1.5861</version>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector>
+      <name>Destination 1</name>
+      <properties>
+        <property name="DataType">Database Writer</property>
+        <property name="URL">x</property>
+        <property name="driver">com.mysql.jdbc.Driver</property>
+        <property name="host">query</property>
+        <property name="password">z</property>
+        <property name="query"></property>
+        <property name="script">var dbConn = getDbConnection();
+
+var data = new XML(messageObject.getTransformedData());
+var filename = data[&apos;originalFilename&apos;]&#xd;
+var sql = &quot;INSERT INTO &quot; + globalMap.get(&apos;OE_DB_SERVICE_BUS_VFA_FILES&apos;) + &quot; (original_filename)&quot;
+    + &quot; VALUES (&apos;&quot; + filename + &quot;&apos;)&quot;
+// first, insert this new data in to the DB:
+try {
+	log(channelId, &apos;info&apos;, &apos;About to execute SQL: &apos; + sql);
+	var result = dbConn.executeUpdate(sql);
+	log(channelId, &apos;info&apos;, &apos;Successfully executed insert for SQL: &apos; + sql);
+} catch (err) {
+	log(channelId, &apos;error&apos;, &apos;Failed to execute insert for statement \&apos;&apos; + sql + &apos;\&apos;: &apos; + err);
+} finally {
+	dbConn.close();
+}</property>
+        <property name="useScript">1</property>
+        <property name="username">y</property>
+      </properties>
+      <transformer>
+        <steps>
+          <step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>original filename</name>
+            <script>tmp[&apos;originalFilename&apos;] = validate(msg[&apos;originalFilename&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;originalFilename&apos;]</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;originalFilename&apos;].toString()</string>
+              </entry>
+            </data>
+          </step>
+        </steps>
+        <inboundTemplate encoding="base64">PHZmYUltYWdlPgogIDxvcmlnaW5hbEZpbGVuYW1lPnZhbHVlMzwvb3JpZ2luYWxGaWxlbmFtZT4K
+PC92ZmFJbWFnZT4=</inboundTemplate>
+        <outboundTemplate encoding="base64">PHZmYUltYWdlPgogIDxvcmlnaW5hbEZpbGVuYW1lPnZhbHVlMzwvb3JpZ2luYWxGaWxlbmFtZT4K
+PC92ZmFJbWFnZT4=</outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">true</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">true</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>Database Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.2.1.5861</version>
+    </connector>
+    <connector>
+      <name>Destination 2</name>
+      <properties>
+        <property name="DataType">Channel Writer</property>
+        <property name="host">558e170a-57bb-4797-936c-1f0c14594a15</property>
+        <property name="synchronised">0</property>
+        <property name="template">${message.encodedData}</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">true</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">true</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>Channel Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.2.1.5861</version>
+    </connector>
+  </destinationConnectors>
+  <properties>
+    <property name="clearGlobalChannelMap">true</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="encryptData">false</property>
+    <property name="error_messages_only">false</property>
+    <property name="initialState">started</property>
+    <property name="max_message_age">-1</property>
+    <property name="store_messages">true</property>
+    <property name="synchronous">true</property>
+    <property name="transactional">false</property>
+  </properties>
+  <preprocessingScript>var filename = muleContext.getMessage().getProperty(&quot;originalFilename&quot;);
+
+var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_VFA_IMAGES_IN&apos;)), filename);
+
+fileAudit(&apos;i&apos;, &apos;f&apos;, globalMap.get(&apos;OE_VFA_IMAGES_IN&apos;), filename, null, null, f.length(), -1);
+
+var xml = &quot;&lt;vfaImage&gt;&quot;
+xml = xml + &quot;&lt;originalFilename&gt;&quot; + filename
+xml = xml + &quot;&lt;/originalFilename&gt;&quot;
+xml = xml + &quot;&lt;/vfaImage&gt;&quot;
+
+return xml;</preprocessingScript>
+  <postprocessingScript>
+var filename = channelMap.get(&quot;originalFilename&quot;);
+
+var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_VFA_IMAGES_IN&apos;)), filename);
+var fout = new java.io.File(new java.io.File(globalMap.get(&apos;OE_VFA_IMAGES_OUT&apos;)), filename);
+
+fileAudit(&apos;m&apos;, &apos;f&apos;, f.getParentFile().getAbsolutePath(), f.getName(), fout.getParentFile().getAbsolutePath(), fout.getName(), f.length(), f.length());
+
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <shutdownScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</shutdownScript>
+</channel>
