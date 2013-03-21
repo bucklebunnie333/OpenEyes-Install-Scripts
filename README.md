@@ -1,3 +1,16 @@
+Export Installation Script Directory
+====================================
+
+Before running any scripts, the main installation directory where the scripts were downloaded to needs to be set.
+
+This can be achieved on bash-compatible shells by exporting the `OE_INSTALL_SCRIPTS_DIR` to the directory where the scripts are located. Say, for example, the scripts were located in `/home/dev/Openeyes-Install-Scripts`; then the command to export the installation directory would be:
+
+  export OE_INSTALL_SCRIPTS_DIR=/home/dev/Openeyes-Install-Scripts
+
+Also, the directory can be exported when in the root directory of the installation script project by running
+
+  export OE_INSTALL_SCRIPTS_DIR=`pwd`
+
 Introduction
 ============
 
