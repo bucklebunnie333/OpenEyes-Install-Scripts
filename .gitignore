@@ -1,2 +1,4 @@
 README.html
 conf/mirth/channels/*.xml
+dev/esb-data/sample-stereo
+dev/esb-data/sample-vfa
