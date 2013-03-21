@@ -172,6 +172,52 @@ perform_substitution() {
 #
 # $1 - the file to make substitutions in.
 #
+revert_mirth_properties() {
+
+	if [ -z $OE_DB_PASSWORD ]
+	then
+		log "DB password not specified; reading from stdin:"
+		read_root_db_password
+		OE_DB_PASSWORD=$DB_PASSWORD
+	fi
+
+	for file in conf/mirth/new-channels/*.xml
+	do
+		MIRTH_XML_FILE="$file.in"
+		cp $file $MIRTH_XML_FILE
+		perform_substitution $OE_STEREO_TEXT_IN _OE_STEREO_TEXT_IN_ $MIRTH_XML_FILE
+		perform_substitution $OE_STEREO_IMAGES_IN _OE_STEREO_IMAGES_IN_ $MIRTH_XML_FILE
+		perform_substitution $OE_STEREO_IMAGES_OUT _OE_STEREO_IMAGES_OUT_ $MIRTH_XML_FILE
+		perform_substitution $OE_STEREO_TEXT_OUT _OE_STEREO_TEXT_OUT_ $MIRTH_XML_FILE
+		perform_substitution $OE_STEREO_IMAGES_ERR _OE_STEREO_IMAGES_ERR_ $MIRTH_XML_FILE
+		perform_substitution $OE_STEREO_TEXT_ERR _OE_STEREO_TEXT_ERR_ $MIRTH_XML_FILE
+		perform_substitution $OE_VFA_TEXT_IN _OE_VFA_TEXT_IN_ $MIRTH_XML_FILE
+		perform_substitution $OE_VFA_TEXT_OUT _OE_VFA_TEXT_OUT_ $MIRTH_XML_FILE
+		perform_substitution $OE_VFA_IMAGES_IN _OE_VFA_IMAGES_IN_ $MIRTH_XML_FILE
+		perform_substitution $OE_VFA_IMAGES_OUT _OE_VFA_IMAGES_OUT_ $MIRTH_XML_FILE
+		perform_substitution $OE_VFA_IMAGES_HOLDING _OE_VFA_IMAGES_HOLDING_ $MIRTH_XML_FILE
+		perform_substitution $OE_VFA_IMAGES_ERR _OE_VFA_IMAGES_ERR_ $MIRTH_XML_FILE
+		perform_substitution $OE_VFA_TEXT_ERR _OE_VFA_TEXT_ERR_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_SERVICE_BUS_DISC_FILES _OE_DB_SERVICE_BUS_DISC_FILES_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_SERVICE_BUS_DISC_INFO _OE_DB_SERVICE_BUS_DISC_INFO_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_SERVICE_BUS_VFA_FILES _OE_DB_SERVICE_BUS_VFA_FILES_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_SERVICE_BUS_VFA_XML_INFO _OE_DB_SERVICE_BUS_VFA_XML_INFO_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_SERVICE_BUS_FILE_AUDIT _OE_DB_SERVICE_BUS_FILE_AUDIT_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_URL _OE_DB_URL_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_DRIVER _OE_DB_DRIVER_ $MIRTH_XML_FILE
+		perform_substitution $OE_LOG_DIR _OE_LOG_DIR_ $MIRTH_XML_FILE
+		perform_substitution $OE_MIRTH_LOG_FILE _OE_MIRTH_LOG_FILE_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_PASSWORD _OE_DB_PASSWORD_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_USER _OE_DB_USER_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_HOST _OE_DB_HOST_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_PORT _OE_DB_PORT_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_NAME _OE_DB_NAME_ $MIRTH_XML_FILE
+	done
+}
+
+#
+# $1 - the file to make substitutions in.
+#
 substitute_mirth_properties() {
 	MIRTH_XML_FILE=$1
 	if [ -z $OE_DB_PASSWORD ]
@@ -360,6 +406,13 @@ print_help() {
 	echo "All options marked with an asterix require an external connection; the"
 	echo "asterix is not required for invocation."
 	echo ""
+	echo "  -r: Revert channel XML files from their Mirth-downloaded format to"
+	echo "      .xml.in files. These are the same files (.xml.in) copied during"
+	echo "      invocation of '-d'. Used for development when exporting Mirth"
+	echo "      channel files back to be saved after new changes are made,"
+	echo "      this target does a reverse substitution of the variable values"
+	echo "      to their actual names (so 'var/openeyes/vfa-in' would be"
+	echo "      changed to 'OE_VFA_TEXT_IN', for example)."
 	echo "  -u: Undeploy OpenEyes channels. Depends: -d. Uses: -P"
 	echo "* -a: Install all targets following this one, in the order they appear."
 	echo "      Uses: all configuration options relevant to any of the given targets."
@@ -389,7 +442,7 @@ print_help() {
 #
 # Inspired by http://wiki.bash-hackers.org/howto/getopts_tutorial
 # 
-while getopts ":ajgcidumshP:L:D:M:" opt; do
+while getopts ":ajgcidumsrhP:L:D:M:" opt; do
 	case $opt in
 		P)
 			MIRTH_PASSWORD="$OPTARG"
@@ -441,7 +494,10 @@ while getopts ":ajgcidumshP:L:D:M:" opt; do
 			;;
 		s)
 			compile_and_install_maven_sources
-			copy_java_project	s_to_esb_lib
+			copy_java_projects_to_esb_lib
+			;;
+		r)
+			revert_mirth_properties
 			;;
 		h)
 			print_help
