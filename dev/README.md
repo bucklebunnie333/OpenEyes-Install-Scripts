@@ -95,4 +95,8 @@ where `<PREFIX>` is the prefix specified when performing the backup; if no prefi
 
 Again, the warnings can be ignored.
 
-These development scripts can (and should) be used in conjunction with the main install script when switching to various repositories and branches for development of OpenEyes. 
+Using the `esb-utils` Scripts
+=======================
+
+The `esb-utils.sh` script is used for creating images imported via the (Mirth) ESB.
+

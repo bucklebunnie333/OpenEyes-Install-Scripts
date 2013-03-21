@@ -1,20 +1,28 @@
 . $OE_INSTALL_SCRIPTS_DIR/base.sh
 . $OE_INSTALL_SCRIPTS_DIR/esb/mirth/mirth-install.properties
 
+# Patient ID, or hospital number
 PID=1000001
+# Name of the patient to include in certain files
 GIVEN_NAME=Chey
+# Family name of patient
 FAMILY_NAME=Close
 
-TMP_VFA_DIR=L
-TMP_VFA_DIR=R
+# Pause to give the ESB time to process files? Set this to 0 if not:
+ESB_SLEEP=0
+# Pause between copying XML and (then) TIF files? Set to 0 for no pause:
+ESB_VFA_SLEEP=2
 
+# Template files - these are used and processed in to a separate directory
 TEMPLATE_STEREO_DIR=$OE_INSTALL_SCRIPTS_DIR/dev/esb-data/kowa-stereo
 TEMPLATE_VFA_DIR=$OE_INSTALL_SCRIPTS_DIR/dev/esb-data/zeiss-vfa
+
+# Where template data, after processing, os written to
 SAMPLE_STEREO_DIR=$OE_INSTALL_SCRIPTS_DIR/dev/esb-data/sample-stereo
 SAMPLE_VFA_DIR=$OE_INSTALL_SCRIPTS_DIR/dev/esb-data/sample-vfa
 
 # 
-# 
+# Copy sample data to the ESB.
 # 
 copy_sample_data() {
 	if [ -d $SAMPLE_STEREO_DIR ]
@@ -30,10 +38,23 @@ copy_sample_data() {
 			report_success $? "Copied $file to $OE_STEREO_IMAGES_IN"
 		done
 	fi
+	if [ -d $SAMPLE_VFA_DIR ]
+	then
+		for file in `ls -v $SAMPLE_VFA_DIR/*.*`
+		do
+			cp $file $OE_VFA_TEXT_IN
+			report_success $? "Copied $file to $OE_VFA_TEXT_IN"			
+			if [ $ESB_VFA_SLEEP -gt 0 ]
+			then
+				log "Sleeping for $ESB_VFA_SLEEP seconds before copying more files..."
+				sleep $ESB_VFA_SLEEP
+			fi
+		done
+	fi
 }
 
 # 
-# 
+# Remove data produced from creating sample data
 # 
 clean_sample_data() {
 	if [ -d $SAMPLE_STEREO_DIR ]
@@ -49,7 +70,7 @@ clean_sample_data() {
 }
 
 # 
-# 
+# Generate sample data for the Kowa stereo images.
 # 
 generate_sample_stereo_data() {
 	mkdir -p $SAMPLE_STEREO_DIR;
@@ -74,8 +95,14 @@ generate_sample_stereo_data() {
 }
 
 # 
+# Generate VFA data in $SAMPLE_VFA_DIR; creates 11
+# files each for each eye, each for an image and XML
+# configuration file (for a total of 44 files).
 # 
-# 
+# Note the XML files relate directly to the image file,
+# and the XML file MUST be processed BEFORE the image
+# file is processed.
+#
 generate_sample_vfa_data() {
 	
 	TMP_VFA_DIR=$SAMPLE_VFA_DIR/tmp
@@ -128,30 +155,31 @@ generate_sample_vfa_data() {
 # Prints help information.
 # 
 print_help() {
+  echo "Utilities for creating ESB files from basic templates,"
+  echo "based on given patient data. By default, PID 1000001,"
+  echo "forename 'Chey' and surname 'Close' are used. This,"
+  echo "for convenience, matches the patient Chey Close from"
+  echo "the MEH sample data, of the same PID."
   echo ""
-  echo ""
-  echo ""
-  echo ""
-  echo ""
-  echo ""
-  echo ""
+  echo "Currently, only Kowa Stereo images and Zeiss VFA images"
+  echo "are catered for, along with text files (.txt and .xml"
+  echo "respectively)."
   echo ""
   echo "Configuration options should be provided first, followed"
   echo "by installation targets which are executed in the order"
   echo "they are specified."
   echo ""
   echo "Configuration options:"
-  echo "  -H <hos_num>: prefix for specifying a backup or restore;"
-  echo "      the prefix is mandatory for restoring."
-  echo "  -G <given_name>: prefix for specifying a backup or restore;"
-  echo "      the prefix is mandatory for restoring."
-  echo "  -F <family_name>: prefix for specifying a backup or restore;"
-  echo "      the prefix is mandatory for restoring."
+  echo ""
+  echo "  -H <hos_num>: specify hospital number."
+  echo "  -G <given_name>: specify forename/given name."
+  echo "  -F <family_name>: specify family name."
   echo ""
   echo "Script targets:"
   echo ""
   echo "  -c: Copy all files to the relevant ESB directories."
-  echo "  -x: Remove sample data directories."
+  echo "  -x: Remove sample data directories, generated from"
+  echo "      invoking one of the targets to generate file data."
   echo "  -s: Generate Kowa stereo images and text files."
   echo "  -v: Generate Zeiss VFA images and XML files."
   echo "  -h: Print this help then quit."
@@ -169,16 +197,16 @@ print_help() {
 # 
 while getopts ":csvxhH:G:F:" opt; do
   case $opt in
-    P)
-      log "PID specified: $OPTARG" >&2
+    H)
+      log "Patient ID/hospital number specified: $OPTARG" >&2
       PID="$OPTARG"
       ;;
     F)
-      log "PID specified: $OPTARG" >&2
+      log "Given name specified: $OPTARG" >&2
       GIVEN_NAME="$OPTARG"
       ;;
     G)
-      log "PID specified: $OPTARG" >&2
+      log "Family name specified: $OPTARG" >&2
       FAMILY_NAME="$OPTARG"
       ;;
     x)

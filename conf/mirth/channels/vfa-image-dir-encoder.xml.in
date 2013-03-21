@@ -7,10 +7,10 @@ All encoding is done using MD5 hash.</description>
   <enabled>true</enabled>
   <version>2.2.1.5861</version>
   <lastModified>
-    <time>1354631343932</time>
+    <time>1363890483819</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>24</revision>
+  <revision>37</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -20,7 +20,6 @@ All encoding is done using MD5 hash.</description>
       <property name="binary">0</property>
       <property name="charsetEncoding">DEFAULT_ENCODING</property>
       <property name="checkFileAge">1</property>
-      <property name="directory"></property>
       <property name="fileAge">20000</property>
       <property name="fileFilter">*.tif</property>
       <property name="host">_OE_VFA_IMAGES_OUT_</property>
@@ -31,7 +30,6 @@ All encoding is done using MD5 hash.</description>
       <property name="passive">1</property>
       <property name="password">anonymous</property>
       <property name="pollingFrequency">1000</property>
-      <property name="pollingTime">12:00 AM</property>
       <property name="pollingType">interval</property>
       <property name="processBatchFiles">0</property>
       <property name="regex">0</property>
@@ -83,9 +81,9 @@ var testStrategy = null;
 var data = new XML(messageObject.getTransformedData())
 log(channelId, &apos;info&apos;, &apos;data=&apos; + data);
 log(channelId, &apos;info&apos;, &apos;before transformation=&apos; + messageObject.getTransformedData());
-var filename = data[&apos;originalFilename&apos;]
-log(channelId, &apos;info&apos;, &apos;filename=&apos; + filename);
-if (filename != null &amp;&amp; filename.length() &gt; 0) {
+//var filename = data[&apos;originalFilename&apos;];
+var filename = $(&apos;originalFilename&apos;);
+if (filename != null &amp;&amp; filename != &apos;undefined&apos; &amp;&amp; filename.length() &gt; 0) {
 	log(channelId, &apos;info&apos;, &apos;file name is &apos; + filename);
 	var pid = null;
 	var dbConn = getDbConnection();
@@ -99,6 +97,12 @@ if (filename != null &amp;&amp; filename.length() &gt; 0) {
 		log(channelId, &apos;info&apos;, &apos;Succesfully got pid &apos; + pid + &apos; from query: &apos; + sql);
 	} catch (err) {
 		log(channelId, &apos;error&apos;, &apos;Failed to execute query for statement \&apos;&apos; + sql + &apos;\&apos;: &apos; + err);
+		log(channelId, &quot;error&quot;, &quot;Filename for image was NULL; (given as &apos;&quot; +
+			$(&apos;originalFilename&apos;) + &quot;&apos; in the destination mapping; moving to holding directory.&quot;);
+		fileLocationChange(&apos;move&apos;, globalMap.get(&apos;OE_VFA_IMAGES_OUT&apos;) + &quot;/&quot; + $(&apos;originalFilename&apos;),
+			globalMap.get(&apos;OE_VFA_IMAGES_HOLDING&apos;) + &quot;/&quot; + $(&apos;originalFilename&apos;),
+			globalMap.get(&apos;OE_VFA_IMAGES_ERR&apos;));
+		return;
 	} finally {
 		dbConn.close();
 	}
@@ -123,8 +127,9 @@ if (filename != null &amp;&amp; filename.length() &gt; 0) {
 
 		// encoding required to MD5 directory and file names:
 		var encodeutils = new Packages.org.statefive.encodeutils.EncodeUtils();
+		var pidEncodedDir = getPatientUniquePrefix(pid);
 		// the patients directory name as an encoded MD5 value:
-		var encodedDir = getPatientUniquePrefix(pid) + &apos;-&apos; + encodeutils.md5(pid);
+		var encodedDir = pidEncodedDir + &apos;-&apos; + encodeutils.md5(pid);
 		// the name of the encoded file:
 		var encodedFile = encodeutils.md5(filename);
 		// this is where (encoded) patient directories are created:
@@ -197,6 +202,12 @@ if (filename != null &amp;&amp; filename.length() &gt; 0) {
 		scaleImage(mkDestDirSubImages.getAbsolutePath() + &quot;/&quot; + encodedFile + &quot;.tif&quot;,
 					mkDestDirThumbs.getAbsolutePath() + &quot;/&quot; + encodedFile + &quot;.jpg&quot;, width, height);	
 	}
+} else {
+	log(channelId, &quot;error&quot;, &quot;Filename for image was NULL; (given as &apos;&quot; +
+		$(&apos;originalFilename&apos;) + &quot;&apos; in the destination mapping; moving to holding directory.&quot;);
+	fileLocationChange(&apos;move&apos;, globalMap.get(&apos;OE_VFA_IMAGES_OUT&apos;) + &quot;/&quot; + $(&apos;originalFilename&apos;),
+			globalMap.get(&apos;OE_VFA_IMAGES_HOLDING&apos;) + &quot;/&quot; + $(&apos;originalFilename&apos;),
+			globalMap.get(&apos;OE_VFA_IMAGES_ERR&apos;));
 }</property>
       </properties>
       <transformer>

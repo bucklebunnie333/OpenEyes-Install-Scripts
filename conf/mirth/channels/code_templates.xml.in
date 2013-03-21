@@ -303,7 +303,7 @@ function scaleImage(srcImage, destImage, width, height) {
  */
 function getPatientUniquePrefix(hosNum) {
 	var sql = &quot;SELECT count(*) from _OE_DB_SERVICE_BUS_UID_ where pid=&apos;&quot; + hosNum + &quot;&apos;&quot;;
-	var prefix = null;
+	var prefix = &apos;undefined&apos;;
 	var dbConn = getDbConnection();
 	try {
 		var result = dbConn.executeCachedQuery(sql);
