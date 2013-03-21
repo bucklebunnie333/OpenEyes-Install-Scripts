@@ -173,7 +173,6 @@ perform_substitution() {
 # $1 - the file to make substitutions in.
 #
 revert_mirth_properties() {
-
 	if [ -z $OE_DB_PASSWORD ]
 	then
 		log "DB password not specified; reading from stdin:"
@@ -203,6 +202,9 @@ revert_mirth_properties() {
 		perform_substitution $OE_DB_SERVICE_BUS_VFA_FILES _OE_DB_SERVICE_BUS_VFA_FILES_ $MIRTH_XML_FILE
 		perform_substitution $OE_DB_SERVICE_BUS_VFA_XML_INFO _OE_DB_SERVICE_BUS_VFA_XML_INFO_ $MIRTH_XML_FILE
 		perform_substitution $OE_DB_SERVICE_BUS_FILE_AUDIT _OE_DB_SERVICE_BUS_FILE_AUDIT_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_SERVICE_BUS_DIRECTORY _OE_DB_SERVICE_BUS_DIRECTORY_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_SERVICE_BUS_UID _OE_DB_SERVICE_BUS_UID_ $MIRTH_XML_FILE
+		perform_substitution $OE_DB_SERVICE_BUS_FILE _OE_DB_SERVICE_BUS_ $MIRTH_XML_FILE
 		perform_substitution $OE_DB_URL _OE_DB_URL_ $MIRTH_XML_FILE
 		perform_substitution $OE_DB_DRIVER _OE_DB_DRIVER_ $MIRTH_XML_FILE
 		perform_substitution $OE_LOG_DIR _OE_LOG_DIR_ $MIRTH_XML_FILE
@@ -211,6 +213,7 @@ revert_mirth_properties() {
 		perform_substitution $OE_DB_USER _OE_DB_USER_ $MIRTH_XML_FILE
 		perform_substitution $OE_DB_HOST _OE_DB_HOST_ $MIRTH_XML_FILE
 		perform_substitution $OE_DB_PORT _OE_DB_PORT_ $MIRTH_XML_FILE
+		# Note - since this is 'openeyes' do it last so it doesn't conflict with directories etc. with the name 'openeyes' in them:
 		perform_substitution $OE_DB_NAME _OE_DB_NAME_ $MIRTH_XML_FILE
 	done
 }
@@ -249,6 +252,9 @@ substitute_mirth_properties() {
 	perform_substitution _OE_DB_SERVICE_BUS_VFA_FILES_ $OE_DB_SERVICE_BUS_VFA_FILES $MIRTH_XML_FILE
 	perform_substitution _OE_DB_SERVICE_BUS_VFA_XML_INFO_ $OE_DB_SERVICE_BUS_VFA_XML_INFO $MIRTH_XML_FILE
 	perform_substitution _OE_DB_SERVICE_BUS_FILE_AUDIT_ $OE_DB_SERVICE_BUS_FILE_AUDIT $MIRTH_XML_FILE
+	perform_substitution _OE_DB_SERVICE_BUS_FILE_ $OE_DB_SERVICE_BUS_FILE $MIRTH_XML_FILE
+	perform_substitution _OE_DB_SERVICE_BUS_DIRECTORY_ $OE_DB_SERVICE_BUS_DIRECTORY $MIRTH_XML_FILE
+	perform_substitution _OE_DB_SERVICE_BUS_FILE_UID_ $OE_DB_SERVICE_BUS_FILE_UID $MIRTH_XML_FILE
 	perform_substitution _OE_DB_URL_ $OE_DB_URL $MIRTH_XML_FILE
 	perform_substitution _OE_DB_DRIVER_ $OE_DB_DRIVER $MIRTH_XML_FILE
 	perform_substitution _OE_LOG_DIR_ $OE_LOG_DIR $MIRTH_XML_FILE

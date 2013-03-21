@@ -7,10 +7,10 @@ All images will be contained in the same directory for a given patient. Note tha
   <enabled>true</enabled>
   <version>2.2.1.5861</version>
   <lastModified>
-    <time>1354613449727</time>
+    <time>1363860674972</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>4</revision>
+  <revision>24</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -24,9 +24,9 @@ All images will be contained in the same directory for a given patient. Note tha
       <property name="fileFilter">ID*.jpg</property>
       <property name="host">_OE_STEREO_TEXT_IN_</property>
       <property name="ignoreDot">1</property>
-      <property name="moveToDirectory">_OE_STEREO_IMAGES_OUT_</property>
-      <property name="moveToErrorDirectory">_OE_STEREO_TEXT_ERR_</property>
-      <property name="moveToPattern">${ORIGINALNAME}</property>
+      <property name="moveToDirectory"></property>
+      <property name="moveToErrorDirectory">_OE_STEREO_IMAGES_ERR_</property>
+      <property name="moveToPattern"></property>
       <property name="passive">1</property>
       <property name="password">anonymous</property>
       <property name="pollingFrequency">10000</property>
@@ -173,16 +173,19 @@ c3RlcmVvSW1hZ2VGaWxlPg==</outboundTemplate>
         <property name="host">query</property>
         <property name="password">_OE_DB_PASSWORD_</property>
         <property name="query"></property>
-        <property name="script">var dbConn = getDbConnection();
+        <property name="script">var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_IMAGES_IN&apos;)), $(&apos;originalFilename&apos;));
+var fileId = getFileId(f);
+
+var dbConn = getDbConnection();
 
 var data = new XML(messageObject.getTransformedData());
 var photo_id = data[&apos;photoId&apos;]
 var pid = data[&apos;pid&apos;]
-var filename = data[&apos;originalFilename&apos;]&#xd;
-var sql = &quot;INSERT INTO &quot; + globalMap.get(&apos;OE_DB_SERVICE_BUS_DISC_FILES&apos;) + &quot; (photo_id, pid, original_filename)&quot;
-    + &quot; VALUES (&quot; + photo_id
-    + &quot;, &apos;&quot; + pid + &quot;&apos;&quot; + &quot;,&quot;
-    + &quot;&apos;&quot; + filename + &quot;&apos;)&quot;
+// var filename = data[&apos;originalFilename&apos;]&#xd;
+var sql = &quot;INSERT INTO &quot; + globalMap.get(&apos;OE_DB_SERVICE_BUS_DISC_FILES&apos;) + &quot; (file_id, photo_id, pid)&quot;
+    + &quot; VALUES (&quot; + fileId
+	+ &quot;,&quot; + photo_id
+    + &quot;, &apos;&quot; + pid + &quot;&apos;)&quot;
 try {
 	var result = dbConn.executeUpdate(sql);
 	log(channelId, &quot;info&quot;, &apos;Successfully executed SQL: &apos; + sql);
@@ -192,7 +195,7 @@ try {
 	dbConn.close();
 }</property>
         <property name="useScript">1</property>
-        <property name="username">oe</property>
+        <property name="username">_OE_DB_USER_</property>
       </properties>
       <transformer>
         <steps>
@@ -332,6 +335,9 @@ c3RlcmVvSW1hZ2VGaWxlPg==</outboundTemplate>
 var filename = muleContext.getMessage().getProperty(&quot;originalFilename&quot;);
 
 var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_IMAGES_IN&apos;)), filename);
+var size = f.length();
+
+var fileId = addFile(f);
 
 fileAudit(&apos;i&apos;, &apos;f&apos;, globalMap.get(&apos;OE_STEREO_IMAGES_IN&apos;), filename, null, null, f.length(), -1);
 
@@ -355,7 +361,11 @@ var filename = channelMap.get(&quot;originalFilename&quot;);
 var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_IMAGES_IN&apos;)), filename);
 var fout = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_IMAGES_OUT&apos;)), filename);
 
-fileAudit(&apos;m&apos;, &apos;f&apos;, f.getParentFile().getAbsolutePath(), f.getName(), fout.getParentFile().getAbsolutePath(), fout.getName(), f.length(), f.length());
+/*
+chicken vs. egg - need to audit now, BUT it&apos;s the 
+*/
+
+fileLocationChange(&apos;move&apos;, f.getAbsolutePath(), fout.getAbsolutePath(), globalMap.get(&apos;OE_STEREO_TEXT_ERR&apos;));
 
 return;</postprocessingScript>
   <deployScript>// This script executes once when the channel is deployed

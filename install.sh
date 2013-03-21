@@ -100,11 +100,11 @@ quit_if_fail_db_call() {
 # 
 db_admin() {
 	databases="openeyes openeyestest"
-	mysql -u root --password=$DB_PASSWORD -e "select user.User from user where user.User='$OE_USER'" mysql | grep -q $OE_USER
+	mysql -u root --password=$DB_PASSWORD -e "select user.User from user where user.User='$OE_DB_USER'" mysql | grep -q $OE_DB_USER
 	if [ $? -ne 0 ]
 	then
 			log "OE database user does not exist; creating user now..."
-			mysql -u root --password=$DB_PASSWORD -e "create user $OE_USER@'localhost' IDENTIFIED BY '$DB_USER_PASSWORD';"
+			mysql -u root --password=$DB_PASSWORD -e "create user $OE_DB_USER@'localhost' IDENTIFIED BY '$DB_USER_PASSWORD';"
 			report_success $? "Creation of database user 'oe'"
 	else
 		log "OE database user already exists; skipping creation."
@@ -113,9 +113,9 @@ db_admin() {
 			mysql -u root --password=$DB_PASSWORD -e "create database if not exists $db"
 			X=$?
 			quit_if_fail_db_call $X "database '$db' exists." "Could not create database '$db'"
-			mysql -u root --password=$DB_PASSWORD -e "use $db; grant all privileges on $db.* to $OE_USER@'localhost' identified by '$DB_USER_PASSWORD'"
+			mysql -u root --password=$DB_PASSWORD -e "use $db; grant all privileges on $db.* to $OE_DB_USER@'localhost' identified by '$DB_USER_PASSWORD'"
 			X=$?
-			quit_if_fail_db_call $X "'$OE_USER' has necessary privileges for $db" "Privileges not granted to '$OE_USER' on $db"
+			quit_if_fail_db_call $X "'$OE_DB_USER' has necessary privileges for $db" "Privileges not granted to '$OE_DB_USER' on $db"
 	done
 }
 
@@ -256,12 +256,12 @@ configure_oe_code() {
 	#report_success $? "Copying $SITE_OE_CONFIG_DIR/local/common.sample.php to $SITE_OE_CONFIG_DIR/local/common.php"
 	sudo sed -i 's/_OE_PASSWORD_/'$DB_USER_PASSWORD'/g' $SITE_OE_CONFIG_DIR/core/common.php
 	report_success $? "Substituted _OE_PASSWORD_ in file $SITE_OE_CONFIG_DIR/core/common.php"
-	sudo sed -i "s/'username' => 'oe'/'username' => '$OE_USER'/g" $SITE_OE_CONFIG_DIR/core/common.php
-	report_success $? "Substituted DB user 'oe' for $OE_USER in file $SITE_OE_CONFIG_DIR/core/common.php"
+	sudo sed -i "s/'username' => 'oe'/'username' => '$OE_DB_USER'/g" $SITE_OE_CONFIG_DIR/core/common.php
+	report_success $? "Substituted DB user 'oe' for $OE_DB_USER in file $SITE_OE_CONFIG_DIR/core/common.php"
 	sudo cp $SITE_OE_CONFIG_DIR/local/common.sample.php $SITE_OE_CONFIG_DIR/local/common.php
 	report_success $? "Copied $SITE_OE_CONFIG_DIR/local/common.sample.php to $SITE_OE_CONFIG_DIR/local/common.php"
-	sudo sed -i "s/'username' => 'root'/'username' => '$OE_USER'/g" $SITE_OE_CONFIG_DIR/local/common.php
-	report_success $? "Substituted DB user 'oe' for $OE_USER in file $SITE_OE_CONFIG_DIR/local/common.php"
+	sudo sed -i "s/'username' => 'root'/'username' => '$OE_DB_USER'/g" $SITE_OE_CONFIG_DIR/local/common.php
+	report_success $? "Substituted DB user 'oe' for $OE_DB_USER in file $SITE_OE_CONFIG_DIR/local/common.php"
 	sudo sed -i "s/'password' => ''/'password' => '$DB_USER_PASSWORD'/g" $SITE_OE_CONFIG_DIR/local/common.php
 	report_success $? "Substituted empty password in file $SITE_OE_CONFIG_DIR/local/common.php"
 	RUNTIME_DIR=$SITE_DIR/openeyes/protected/runtime
@@ -514,7 +514,7 @@ print_help() {
 	echo "    stage. Depends: -u. Uses: -P, -R"
 	echo "  -d: create OE databases and user, including test DB. Use -R"
 	echo "    for password prompt for root create access, and -Q to specify"
-	echo "    the password for the '$OE_USER' DB user (or omit either to leave"
+	echo "    the password for the '$OE_DB_USER' DB user (or omit either to leave"
 	echo "    blank). Depends: -i. Uses: -Q, -R"
 	echo "* -y: download YII code, specified with the YII repo and YII file options"
 	echo "    -Y and -G. Depends: -i. Uses: -Y, -G"

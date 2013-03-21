@@ -39,11 +39,11 @@ function log(channelIdentifier, level, text) {
   </codeTemplate>
   <codeTemplate>
     <id>795c6806-4019-4ec3-ba0c-223509626276</id>
-    <name>oeLogger</name>
+    <name>_OE_DB_USER_Logger</name>
     <tooltip>Mapped name of the OE logger channel.</tooltip>
     <code>// modify function_name and parameters as you wish.
 // one function per template is recommended. i.e.) create a new code template for each new function.
-var oeLogger - &quot;logger&quot;;</code>
+var _OE_DB_USER_Logger - &quot;logger&quot;;</code>
     <type>VARIABLE</type>
     <scope>0</scope>
     <version>2.2.1.5861</version>
@@ -192,7 +192,7 @@ function fileAudit(operation, type, srcParent, srcChild, destParent, destChild, 
  */
 function getDbConnection() {
 	return DatabaseConnectionFactory.createDatabaseConnection(
-			&apos;com.mysql.jdbc.Driver&apos;,
+			&apos;_OE_DB_DRIVER_&apos;,
 			&apos;jdbc:mysql://&apos; + globalMap.get(&apos;OE_DB_HOST&apos;) +&apos;:&apos; + globalMap.get(&apos;OE_DB_PORT&apos;) + &apos;/&apos; + globalMap.get(&apos;OE_DB_NAME&apos;),
 			globalMap.get(&apos;OE_DB_USER&apos;), globalMap.get(&apos;OE_DB_PASSWORD&apos;));
 }</code>
@@ -292,7 +292,8 @@ function scaleImage(srcImage, destImage, width, height) {
 			log(channelId, &quot;error&quot;, err);
 		}
 	} catch(err) {
-		log(channelId, &quot;error&quot;, &quot;Library invocation failure scaling image: &quot; + err);
+		log(channelId, &quot;error&quot;, &quot;Library invocation failure scaling image: &quot; + err
+			+ &quot;; src=&quot; + srcImage + &quot;, dest=&quot; + destImage + &quot;, width=&quot; + width + &quot;, height=&quot; + height);
 	}
 }</code>
     <type>FUNCTION</type>
@@ -305,13 +306,14 @@ function scaleImage(srcImage, destImage, width, height) {
     <tooltip></tooltip>
     <code>/**
  * Gets the patient DB ID associated with the specified hospital number.
+ * If it does not exist, it is inserted and then returned.
  * 
  * hosNum - the hospital number to query the DB with.
  * 
  * return - the patient&apos;s ID, if there is one; null otherwise.
  */
 function getPatientUniquePrefix(hosNum) {
-	var sql = &quot;SELECT count(*) from mod_servicebus_uid where pid=&apos;&quot; + hosNum + &quot;&apos;&quot;;
+	var sql = &quot;SELECT count(*) from _OE_DB_SERVICE_BUS_UID_ where pid=&apos;&quot; + hosNum + &quot;&apos;&quot;;
 	var prefix = null;
 	var dbConn = getDbConnection();
 	try {
@@ -319,22 +321,241 @@ function getPatientUniquePrefix(hosNum) {
 		result.next();
 		// if we don&apos;t have it, assume first visit and create it:
 		if (0 == result.getInt(1)) {
-			sql = &apos;INSERT into mod_servicebus_uid (pid) values (\&apos;&apos; + hosNum + &apos;\&apos;)&apos;;
+			sql = &apos;INSERT into &apos; + globalMap.get(&apos;OE_DB_SERVICE_BUS_UID&apos;) + &apos; (pid) values (\&apos;&apos; + hosNum + &apos;\&apos;)&apos;;
 			log(channelId, &apos;info&apos;, &apos;No UID given for \&apos;&apos; + hosNum + &apos;\&apos;; patient\&apos;s first visit - creating UID&apos;);
 			result = dbConn.executeUpdate(sql);
 			log(channelId, &apos;info&apos;, &apos;UID successfully created with statement: &apos; + sql);
 		}
-		sql = &quot;SELECT id from mod_servicebus_uid where pid=&apos;&quot; + hosNum + &quot;&apos;&quot;;
+		sql = &quot;SELECT id from &quot; + globalMap.get(&apos;OE_DB_SERVICE_BUS_UID&apos;) + &quot; where pid=&apos;&quot; + hosNum + &quot;&apos;&quot;;
 		result = dbConn.executeCachedQuery(sql);
 		result.next();
 		prefix = result.getString(1);
-		log(channelId, &apos;info&apos;, &apos;prefix &apos; + pid);
 	} catch (err) {
 		log(channelId, &apos;error&apos;, &apos;Failed to execute query for statement \&apos;&apos; + sql + &apos;\&apos;: &apos; + err);
 	} finally {
 		dbConn.close();
 	}
 	return prefix;
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>b3d87f98-3ffd-444c-88fe-f569ce959f7e</id>
+    <name>addFile</name>
+    <tooltip></tooltip>
+    <code>/**
+ * Adds a new file. This adds to the main ESB file type that all other file
+ * types should create a foreign key to in order to save space for each table.
+ * 
+ * f - an instance of a java.io.File. It is up to the caller to ensure the
+ * file exists and that it is not null.
+ * 
+ * Return - the id of the file insertion if it was successful; -1 otherwise.
+ * 
+ */
+function addFile(f) {
+		
+	/* Note - java.io.File.lastModified trims off time to 1 second for
+		for ext4 file systems. So we&apos;ll use the current time, which should
+		be unique for most installations... */
+	var currentTime = java.lang.System.currentTimeMillis();
+	addFileWithKey(f, currentTime);
+	return getFileId(f);
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>95b81f24-eba4-4426-a0de-bcded305a736</id>
+    <name>addDirectory</name>
+    <tooltip></tooltip>
+    <code>/**
+ * Adds the specified directory if it does not already exist
+ * as an entry in the database.
+ * 
+ * dir - an instance of a java.io.File. It is up to the caller to ensure the
+ * directory exists and that it is not null.
+ * 
+ * Return the id of the directory; -1 otherwise.
+ */
+function addDirectory(dir) {
+	var path = dir.getAbsolutePath();
+	var sql = &quot;SELECT count(*) from &quot; + globalMap.get(&apos;OE_DB_SERVICE_BUS_DIRECTORY&apos;) + &quot; where path=&apos;&quot; + path + &quot;&apos;&quot;;
+	var dbConn = getDbConnection();
+	var result = null;
+	try {
+		result = dbConn.executeCachedQuery(sql);
+		result.next();
+		if (0 == result.getInt(1)) {
+			sql = &apos;INSERT into &apos;
+				+ globalMap.get(&apos;OE_DB_SERVICE_BUS_DIRECTORY&apos;)
+				+ &apos; (path, modified) values (\&apos;&apos;
+				+ path + &apos;\&apos;, &apos; + dir.lastModified() + &apos;)&apos;;
+			log(channelId, &apos;info&apos;, &apos;No existing directory entry for \&apos;&apos; + path + &apos;\&apos;; adding it.&apos;);
+			result = dbConn.executeUpdate(sql);
+			log(channelId, &apos;info&apos;, &apos;Directory successfully inserted with statement: &apos; + sql);
+		}
+	} catch (ex) {
+		log(channelId, &apos;error&apos;, &quot;Failed to insert directory for statement &quot; + sql + &quot;, error: &quot; + ex);
+		
+	} finally {
+		dbConn.close();
+	}
+	return getDirectoryId(dir);
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>f45ba3b4-a8d7-4c22-9384-5da71d5930de</id>
+    <name>getFileId</name>
+    <tooltip></tooltip>
+    <code>/**
+ * Gets the file id for the specified file in the database,
+ * if it exists.
+ * 
+ * f - an instance of a java.io.File. It is up to the caller to ensure the
+ * file exists and that it is not null.
+ * 
+ * return the id, or -1 if it doesn&apos;t exist.
+ */ 
+function getFileId(f) {
+	var dbConn = getDbConnection();
+	var fileId = -1;
+	var dir = f.getParentFile();
+	var dir_id = getDirectoryId(dir);
+	var sql = null;
+	try {
+		sql = &quot;SELECT id from &quot; + globalMap.get(&apos;OE_DB_SERVICE_BUS_FILE&apos;) + &quot; where name=&apos;&quot; + f.getName()
+			+ &quot;&apos; AND modified=&quot; + f.lastModified() + &quot; AND length=&quot; + f.length()
+			+ &quot; AND dir_id=&quot; + dir_id;
+		var result = dbConn.executeCachedQuery(sql);
+		if (result.next()) {
+			fileId = result.getInt(1);
+		}
+	} catch(err) {
+		log(channelId, &apos;error&apos;, &quot;Failed to execute SQL: &quot; + sql + &quot;, error: &quot; + err);
+	} finally {
+		dbConn.close();
+	}
+	return fileId;
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>1ff0a986-9879-4054-a5ca-885c1a68b5eb</id>
+    <name>getDirectoryId</name>
+    <tooltip></tooltip>
+    <code>/**
+ * Gets the directory id for the specified directory, if it exists
+ * in the database.
+ * 
+ * dir - an instance of a java.io.File. It is up to the caller to ensure the
+ * directory exists and that it is not null.
+ * 
+ * The id, if the entry for the directory exists; -1 otherwise.
+ */ 
+function getDirectoryId(dir) {
+	var dbConn = getDbConnection();
+	var path = dir.getAbsolutePath();
+	var dirId = -1;
+	var sql = null; 
+	try {
+		sql = &quot;SELECT id from &quot; + globalMap.get(&apos;OE_DB_SERVICE_BUS_DIRECTORY&apos;) + &quot; where path=&apos;&quot; + path + &quot;&apos;&quot;;
+		var result = dbConn.executeCachedQuery(sql);
+		if (result.next()) {
+			dirId = result.getInt(1);
+		}
+	} catch(err) {
+		log(channelId, &apos;error&apos;, &quot;Failed to execute SQL: &quot; + sql + &quot;, error: &quot; + err);
+	} finally {
+		dbConn.close();
+	}
+	return dirId;
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>7cb03aa4-af8f-40c2-8162-634c7f5281f7</id>
+    <name>getFileKey</name>
+    <tooltip></tooltip>
+    <code>/**
+ * Gets the unique key for the specified file identifier,
+ * if it exists.
+ * 
+ * fileId - the unique file ID.
+ * 
+ * Return - the file&apos;s key, if it could be found; -1 otherwise.
+ */
+function getFileKey(fileId) {
+	var fileKey = -1;
+
+	var dbConn = getDbConnection();
+	var sql = null;
+	try {
+		sql = &quot;SELECT chronological_key from &quot;
+			+ globalMap.get(&apos;OE_DB_SERVICE_BUS_FILE&apos;)
+			+ &quot; where id=&quot; + fileId;
+		var result = dbConn.executeCachedQuery(sql);
+		if (result.next()) {
+			fileKey = result.getLong(1);
+		}
+	} catch(err) {
+		log(channelId, &apos;error&apos;, &quot;Failed to execute SQL: &quot; + sql + &quot;, error: &quot; + err);
+	} finally {
+		dbConn.close();
+	}
+	return fileKey;
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.2.1.5861</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>41c93948-6c48-45da-8c63-2883b2ef8292</id>
+    <name>addFileWithKey</name>
+    <tooltip></tooltip>
+    <code>/**
+ * Adds a new file. This adds to the main ESB file type that all other file
+ * types should create a foreign key to in order to save space for each table.
+ * 
+ * f - an instance of a java.io.File. It is up to the caller to ensure the
+ * file exists and that it is not null.
+ * 
+ * Return - the id of the file insertion if it was successful; -1 otherwise.
+ * 
+ */
+function addFileWithKey(f, key) {
+	var dir = f.getParentFile();
+	var dir_id = addDirectory(dir);
+	if (getFileId(f) &lt; 0) {
+		var dbConn = getDbConnection();
+		var tstamp = f.lastModified();
+		var length = f.length();
+		var name = f.getName();
+
+		var sql = &apos;INSERT into &apos; + globalMap.get(&apos;OE_DB_SERVICE_BUS_FILE&apos;)
+			+ &apos; (name, modified, length, chronological_key, dir_id) &apos;
+			+ &apos;values (\&apos;&apos;
+			+ f.getName() + &apos;\&apos;,&apos; + f.lastModified() + &apos;,&apos; + f.length() + &apos;,&apos; + key + &apos;,&apos; + dir_id + &apos;)&apos;;
+		try {
+			var result = dbConn.executeUpdate(sql);
+			log(channelId, &apos;info&apos;, &apos;File successfully inserted with statement: &apos; + sql);
+		} catch(err) {
+			log(channelId, &apos;error&apos;, &apos;Failed to execute query: &apos; + sql + &quot;, error: &quot; + err);
+		} finally {
+			dbConn.close();
+		}
+	}
+	return getFileId(f);
 }</code>
     <type>FUNCTION</type>
     <scope>0</scope>

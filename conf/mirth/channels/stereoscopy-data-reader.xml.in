@@ -7,10 +7,10 @@ The text file contains at least one line. Each line contains information about a
   <enabled>true</enabled>
   <version>2.2.1.5861</version>
   <lastModified>
-    <time>1354523147344</time>
+    <time>1363813824639</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>1</revision>
+  <revision>21</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -25,7 +25,7 @@ The text file contains at least one line. Each line contains information about a
       <property name="host">_OE_STEREO_TEXT_IN_</property>
       <property name="ignoreDot">1</property>
       <property name="moveToDirectory"></property>
-      <property name="moveToErrorDirectory">_OE_STEREO_TEXT_ERR_</property>
+      <property name="moveToErrorDirectory">_OE_STEREO_IMAGES_ERR_</property>
       <property name="moveToPattern"></property>
       <property name="passive">1</property>
       <property name="password">anonymous</property>
@@ -437,7 +437,10 @@ PC9yb3cxNT4KPC9kZWxpbWl0ZWQ+Cg==</outboundTemplate>
         <property name="host">query</property>
         <property name="password">_OE_DB_PASSWORD_</property>
         <property name="query"></property>
-        <property name="script">var dbConn = getDbConnection();
+        <property name="script">var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_TEXT_IN&apos;)), $(&apos;originalFilename&apos;));
+var fileId = getFileId(f);
+
+var dbConn = getDbConnection();
 
 var data = new XML(messageObject.getTransformedData())
 var _photo_id = data[&apos;row1&apos;][&apos;column1&apos;]
@@ -459,8 +462,9 @@ var time_string = _exam_time.split(&apos;:&apos;)
 try {
 	var result = dbConn.executeUpdate(&quot;INSERT INTO &quot;
 		+ globalMap.get(&apos;OE_DB_SERVICE_BUS_DISC_INFO&apos;)
-		+ &quot; (photo_id, pid, name, exam_date, exam_time, dob, gender, diagnosis1, diagnosis2, diagnosis3, diagnosis4, examiner, eye, comments)&quot;
-    	+ &quot; VALUES (&quot; + _photo_id
+		+ &quot; (file_id, photo_id, pid, name, exam_date, exam_time, dob, gender, diagnosis1, diagnosis2, diagnosis3, diagnosis4, examiner, eye, comments)&quot;
+    	+ &quot; VALUES (&quot; + fileId
+		+ &quot;, &quot; + _photo_id
     	+ &quot;, &apos;&quot; + _pid + &quot;&apos;&quot; + &quot;,&quot;
     	+ &quot;&apos;&quot; + _name + &quot;&apos;&quot; + &quot;,&quot;
     	+  &quot;&apos;20&quot; + date_string[2] + &quot;-&quot; + date_string[1] + &quot;-&quot; + date_string[0] + &quot;&apos;, &apos;&quot;
@@ -476,6 +480,7 @@ try {
     	+ &quot;&apos;&quot; + _comments + &quot;&apos;&quot;
     	+ &quot;)&quot;);
 	log(channelId, &quot;info&quot;, &quot;Database updated with data: &quot;
+		+ &quot; file ID: &apos;&quot; + fileId + &quot;&apos;; &quot;
 		+ &quot; PID: &apos;&quot; + _pid + &quot;&apos;; &quot;
 		+ &quot; Photo ID: &apos;&quot; + _photo_id + &quot;&apos;; &quot;
 		+ &quot; Name: &apos;&quot; + _name + &quot;&apos;; &quot;
@@ -498,7 +503,7 @@ try {
 
 dbConn.close();</property>
         <property name="useScript">1</property>
-        <property name="username">oe</property>
+        <property name="username">_OE_DB_USER_</property>
       </properties>
       <transformer>
         <steps/>
@@ -536,8 +541,14 @@ dbConn.close();</property>
   <preprocessingScript>// Modify the message variable below to pre process data
 var messageData = &quot;&quot; + message;
 var filename = muleContext.getMessage().getProperty(&quot;originalFilename&quot;);
-var size = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_TEXT_IN&apos;)), filename).length();
-fileAudit(&apos;i&apos;, &apos;f&apos;, globalMap.get(&apos;OE_STEREO_TEXT_IN&apos;), filename, null, null, size, -1);
+
+var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_TEXT_IN&apos;)), filename);
+var size = f.length();
+
+var fileId = addFile(f);
+
+fileAudit(&apos;i&apos;, &apos;f&apos;, globalMap.get(&apos;OE_STEREO_TEXT_IN&apos;), fileId, null, null, size, -1);
+
 log(channelId, &quot;info&quot;, &apos;Pre-processing stereoscopy text file: \&apos;&apos; + filename + &apos;\&apos;&apos;);
 log(channelId, &quot;info&quot;, filename + &apos; contents : &apos; + messageData.trim());
 return message;</preprocessingScript>
@@ -546,6 +557,12 @@ return message;</preprocessingScript>
 var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_TEXT_IN&apos;)), filename);
 var systime = new java.util.Date().getTime();
 var fout = new java.io.File(new java.io.File(globalMap.get(&apos;OE_STEREO_TEXT_OUT&apos;)), systime + &quot;-&quot; + filename);
+
+/*
+TODO - send the chronological key with the file, obtained by calling
+var fileId = getFileId(f);
+var fileKey = getFileKey(fileId);
+*/
 
 fileLocationChange(&apos;move&apos;, f.getAbsolutePath(), fout.getAbsolutePath(), globalMap.get(&apos;OE_STEREO_TEXT_ERR&apos;));
 

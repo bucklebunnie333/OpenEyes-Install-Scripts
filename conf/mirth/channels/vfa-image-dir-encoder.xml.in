@@ -10,7 +10,7 @@ All encoding is done using MD5 hash.</description>
     <time>1354631343932</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>22</revision>
+  <revision>24</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -20,6 +20,7 @@ All encoding is done using MD5 hash.</description>
       <property name="binary">0</property>
       <property name="charsetEncoding">DEFAULT_ENCODING</property>
       <property name="checkFileAge">1</property>
+      <property name="directory"></property>
       <property name="fileAge">20000</property>
       <property name="fileFilter">*.tif</property>
       <property name="host">_OE_VFA_IMAGES_OUT_</property>
@@ -30,6 +31,7 @@ All encoding is done using MD5 hash.</description>
       <property name="passive">1</property>
       <property name="password">anonymous</property>
       <property name="pollingFrequency">1000</property>
+      <property name="pollingTime">12:00 AM</property>
       <property name="pollingType">interval</property>
       <property name="processBatchFiles">0</property>
       <property name="regex">0</property>

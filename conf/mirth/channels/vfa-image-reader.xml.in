@@ -7,10 +7,10 @@ Note that this channel checks less often than is required; XML files should be p
   <enabled>true</enabled>
   <version>2.2.1.5861</version>
   <lastModified>
-    <time>1354613440314</time>
+    <time>1363811405313</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>6</revision>
+  <revision>13</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -25,7 +25,7 @@ Note that this channel checks less often than is required; XML files should be p
       <property name="host">_OE_VFA_TEXT_IN_</property>
       <property name="ignoreDot">1</property>
       <property name="moveToDirectory">_OE_VFA_IMAGES_OUT_</property>
-      <property name="moveToErrorDirectory">_OE_VFA_TEXT_ERR_</property>
+      <property name="moveToErrorDirectory">_OE_VFA_IMAGES_ERR_</property>
       <property name="moveToPattern">${ORIGINALNAME}</property>
       <property name="passive">1</property>
       <property name="password">anonymous</property>
@@ -94,16 +94,19 @@ PC92ZmFJbWFnZT4=</outboundTemplate>
       <properties>
         <property name="DataType">Database Writer</property>
         <property name="URL">x</property>
-        <property name="driver">com.mysql.jdbc.Driver</property>
+        <property name="driver">_OE_DB_DRIVER_</property>
         <property name="host">query</property>
         <property name="password">z</property>
         <property name="query"></property>
-        <property name="script">var dbConn = getDbConnection();
+        <property name="script">var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_VFA_IMAGES_IN&apos;)), $(&apos;originalFilename&apos;));
+var fileId = getFileId(f);
+
+var dbConn = getDbConnection();
 
 var data = new XML(messageObject.getTransformedData());
-var filename = data[&apos;originalFilename&apos;]&#xd;
-var sql = &quot;INSERT INTO &quot; + globalMap.get(&apos;OE_DB_SERVICE_BUS_VFA_FILES&apos;) + &quot; (original_filename)&quot;
-    + &quot; VALUES (&apos;&quot; + filename + &quot;&apos;)&quot;
+//var filename = data[&apos;originalFilename&apos;]&#xd;
+var sql = &quot;INSERT INTO &quot; + globalMap.get(&apos;OE_DB_SERVICE_BUS_VFA_FILES&apos;) + &quot; (file_id)&quot;
+    + &quot; VALUES (&apos;&quot; + fileId + &quot;&apos;)&quot;
 // first, insert this new data in to the DB:
 try {
 	log(channelId, &apos;info&apos;, &apos;About to execute SQL: &apos; + sql);
@@ -207,6 +210,9 @@ PC92ZmFJbWFnZT4=</outboundTemplate>
   <preprocessingScript>var filename = muleContext.getMessage().getProperty(&quot;originalFilename&quot;);
 
 var f = new java.io.File(new java.io.File(globalMap.get(&apos;OE_VFA_IMAGES_IN&apos;)), filename);
+var size = f.length();
+
+var fileId = addFile(f);
 
 fileAudit(&apos;i&apos;, &apos;f&apos;, globalMap.get(&apos;OE_VFA_IMAGES_IN&apos;), filename, null, null, f.length(), -1);
 

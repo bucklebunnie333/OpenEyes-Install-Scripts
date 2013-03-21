@@ -10,6 +10,13 @@ return;</string>
     <string>// This script executes once when all channels start up from a redeploy
 // You only have access to the globalMap here to persist data
 
+// Note that theses scripts are intended to be used with the
+// main OE installer scripts, especially for the purposes of
+// substituting values used within these files.
+// 
+// 
+// 
+
 // image pixel width for thumbnail of stereo images:
 globalMap.put(&apos;OE_IMAGE_STEREO_SCALE_WIDTH&apos;, 300);
 // image pixel height for thumbnail of stereo images:
@@ -34,7 +41,7 @@ globalMap.put(&apos;OE_DB_NAME&apos;, &apos;_OE_DB_NAME_&apos;);
 // location for picking up stereo text files:
 globalMap.put(&apos;OE_STEREO_TEXT_IN&apos;, &apos;_OE_STEREO_TEXT_IN_&apos;);
 // location for picking up stereo image files:
-globalMap.put(&apos;OE_STEREO_IMAGES_IN&apos;, &apos;_OE_STEREO_IMAGES_IN_&apos;);
+globalMap.put(&apos;OE_STEREO_IMAGES_IN&apos;, &apos;_OE_STEREO_TEXT_IN_&apos;);
 // location for moving images files to (contains encoded patient directories):
 globalMap.put(&apos;OE_STEREO_IMAGES_OUT&apos;, &apos;_OE_STEREO_IMAGES_OUT_&apos;);
 // location for moving error images files to:
@@ -42,13 +49,13 @@ globalMap.put(&apos;OE_STEREO_IMAGES_ERR&apos;, &apos;_OE_STEREO_IMAGES_ERR_&apo
 // location for moving text files:
 globalMap.put(&apos;OE_STEREO_TEXT_OUT&apos;, &apos;_OE_STEREO_TEXT_OUT_&apos;);
 // location for stereodisc error files:
-globalMap.put(&apos;OE_STEREO_TEXT_ERR&apos;, &apos;_OE_STEREO_TEXT_ERR_&apos;);
+globalMap.put(&apos;OE_STEREO_TEXT_ERR&apos;, &apos;_OE_STEREO_IMAGES_ERR_&apos;);
 
 /* VFA related variables */
 // location for picking up stereo image text (XML) files:
 globalMap.put(&apos;OE_VFA_TEXT_IN&apos;, &apos;_OE_VFA_TEXT_IN_&apos;);
 // location for picking up stereo image files:
-globalMap.put(&apos;OE_VFA_IMAGES_IN&apos;, &apos;_OE_VFA_IMAGES_IN_&apos;);
+globalMap.put(&apos;OE_VFA_IMAGES_IN&apos;, &apos;_OE_VFA_TEXT_IN_&apos;);
 // location for moving images files to (contains encoded patient directories):
 globalMap.put(&apos;OE_VFA_IMAGES_OUT&apos;, &apos;_OE_VFA_IMAGES_OUT_&apos;);
 // location for moving error images files to:
@@ -58,7 +65,7 @@ globalMap.put(&apos;OE_VFA_IMAGES_HOLDING&apos;, &apos;_OE_VFA_IMAGES_HOLDING_&a
 // location for moving text files:
 globalMap.put(&apos;OE_VFA_TEXT_OUT&apos;, &apos;_OE_VFA_TEXT_OUT_&apos;);
 // location for VFA error files:
-globalMap.put(&apos;OE_VFA_TEXT_ERR&apos;, &apos;_OE_VFA_TEXT_ERR_&apos;);
+globalMap.put(&apos;OE_VFA_TEXT_ERR&apos;, &apos;_OE_VFA_IMAGES_ERR_&apos;);
 
 /* DB-related variables */
 globalMap.put(&apos;OE_DB_SERVICE_BUS_DISC_FILES&apos;, &apos;_OE_DB_SERVICE_BUS_DISC_FILES_&apos;);
@@ -66,6 +73,9 @@ globalMap.put(&apos;OE_DB_SERVICE_BUS_DISC_INFO&apos;, &apos;_OE_DB_SERVICE_BUS_
 globalMap.put(&apos;OE_DB_SERVICE_BUS_VFA_FILES&apos;, &apos;_OE_DB_SERVICE_BUS_VFA_FILES_&apos;);
 globalMap.put(&apos;OE_DB_SERVICE_BUS_VFA_XML_INFO&apos;, &apos;_OE_DB_SERVICE_BUS_VFA_XML_INFO_&apos;);
 globalMap.put(&apos;OE_DB_SERVICE_BUS_FILE_AUDIT&apos;, &apos;_OE_DB_SERVICE_BUS_FILE_AUDIT_&apos;);
+globalMap.put(&apos;OE_DB_SERVICE_BUS_UID&apos;, &apos;_OE_DB_SERVICE_BUS_UID_&apos;);
+globalMap.put(&apos;OE_DB_SERVICE_BUS_FILE&apos;, &apos;_OE_DB_SERVICE_BUS_&apos;);
+globalMap.put(&apos;OE_DB_SERVICE_BUS_DIRECTORY&apos;, &apos;_OE_DB_SERVICE_BUS_DIRECTORY_&apos;);
 
 return;</string>
   </entry>

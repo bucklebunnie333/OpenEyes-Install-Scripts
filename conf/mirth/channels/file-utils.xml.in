@@ -7,10 +7,10 @@ The process of file modification/creation is audited.</description>
   <enabled>true</enabled>
   <version>2.2.1.5861</version>
   <lastModified>
-    <time>1354523138296</time>
+    <time>1363852192590</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>1</revision>
+  <revision>17</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -207,7 +207,7 @@ return message;</preprocessingScript>
  * is not one of &apos;move&apos;, &apos;copy&apos; or &apos;mkdir&apos;.
  * The source directory and file name to copy from that
  * directory MUST exist. The destination directory&apos;
- * if it does not exist, is created. If creation fails
+ * if it d_OE_DB_USER_s not exist, is created. If creation fails
  * an error is reported. An error is also reported if
  * the move or copy fails. Success is also reported.
  * In all cases for reporting, the details of the file
@@ -255,22 +255,28 @@ if (destFilename == null) {
 	destFilename = &apos;&apos;;
 }
 
+var src = new java.io.File(new java.io.File(srcDir), filename);
+var size = src.length();
+var fileId = getFileId(src);
+var fileKey = getFileKey(fileId);
+
 if (operation == &apos;move&apos;) {
 	var dir = new java.io.File(destDir);
-	var moveToFile = new java.io.File(new java.io.File(srcDir), filename);
-	var size = moveToFile.length();
 	var f = new java.io.File(dir, destFilename);
 	try {
-		var moved = moveToFile.renameTo(f);
+		var moved = src.renameTo(f);
 		if (moved == &apos;false&apos;) {
 			log(channelId, &apos;error&apos;, &quot;Failed to move file: &quot; + fileData)
 		} else {
 			log(channelId, &apos;info&apos;, &quot;Success: &quot; + fileData);
 			var type = &apos;d&apos;;
 			if (!f.isDirectory()) {
+				addFileWithKey(f, fileKey);
 				type = &apos;f&apos;;
+			} else {
+				addDirectory(f);
 			}
-			fileAudit(&apos;m&apos;, type, moveToFile.getParentFile().getAbsolutePath(), moveToFile.getName(),
+			fileAudit(&apos;m&apos;, type, src.getParentFile().getAbsolutePath(), src.getName(),
 					f.getParentFile().getAbsolutePath(), f.getName(), size, f.length());
 		}
 	} catch(err) {
@@ -278,7 +284,6 @@ if (operation == &apos;move&apos;) {
 	}
 } else if (operation == &apos;copy&apos;) {
 	try {
-		var src = new java.io.File(new java.io.File(srcDir), filename);
 		var dest = new java.io.File(destDir);
 		// TODO AUDIT THIS! CLEAN IT UP!
 		dest.mkdirs();
@@ -295,6 +300,7 @@ if (operation == &apos;move&apos;) {
 		inp.close();
 		outp.close();
 		log(channelId, &apos;info&apos;, &quot;Success: &quot; + fileData);
+		addFileWithKey(new java.io.File(dest, destFileName), fileKey);
 	    fileAudit(&apos;c&apos;, &apos;f&apos;, src.getParentFile().getAbsolutePath(), src.getName(),
 				dest.getParentFile().getAbsolutePath(), dest.getName(), src.length(), dest.length());
 		
@@ -333,6 +339,7 @@ function mkdirs(dirs) {
 			dirs.mkdir();		
 			log(channelId, &apos;info&apos;, &quot;Directory &apos;&quot; + dirs.getAbsolutePath()
 				+ &quot;&apos; wasn&apos;t present; created successfully&quot;);
+			addDirectory(new java.io.File(dirs.getParentFile(), dirs.getName()));
 	    	fileAudit(&apos;i&apos;, &apos;d&apos;, dirs.getParentFile().getAbsolutePath(), dirs.getName(), null, null, dirs.length());
 		} catch(err) {
 			log(channelId, &apos;error&apos;, &quot;Error making directory: &quot; + err + &quot; (&quot; + dirs.getAbsolutePath() + &quot;)&quot;);		

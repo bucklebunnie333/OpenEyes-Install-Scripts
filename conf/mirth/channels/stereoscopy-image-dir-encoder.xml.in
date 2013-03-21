@@ -7,10 +7,10 @@ The image is also scaled and a smaller copy stored in the thumbs/ directory of t
   <enabled>true</enabled>
   <version>2.2.1.5861</version>
   <lastModified>
-    <time>1354541626794</time>
+    <time>1363857694882</time>
     <timezone>Europe/London</timezone>
   </lastModified>
-  <revision>2</revision>
+  <revision>10</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
