@@ -98,7 +98,11 @@ Again, the warnings can be ignored.
 Using the `esb-utils` Scripts
 =======================
 
-The `esb-utils.sh` script is used for creating images imported via the (Mirth) ESB.
+The `esb-utils.sh` script is used for creating images imported via the (Mirth) ESB. Use
+
+	sh dev/esb-utils.sh -h
+
+to invoke help and see what options are available for use.
 
 The script can be used to create Kowa Stereo and Zeiss VFA images. Each call produces images for the left eye and right eye. To create Kowa stereo images and associated text files, run
 
