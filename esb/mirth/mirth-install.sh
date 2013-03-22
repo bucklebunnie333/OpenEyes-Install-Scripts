@@ -104,9 +104,9 @@ install_esb() {
 # Copies compiled (.jar) libraries to Mirth, failing on error.
 # 
 copy_java_projects_to_esb_lib() {
-	sudo cp $SCRIPT_DIR/conf/mirth/java-src/encodeutils/target/encodeutils-1.0-SNAPSHOT.jar $MIRTH_LIB_DIR
+	sudo cp $OE_INSTALL_SCRIPTS_DIR/conf/mirth/java-src/encodeutils/target/encodeutils-1.0-SNAPSHOT.jar $MIRTH_LIB_DIR
 	report_success $? "Copied Java encode utilities library to $MIRTH_LIB_DIR"
-	sudo cp $SCRIPT_DIR/conf/mirth/java-src/imageutils/target/imageutils-1.0-SNAPSHOT.jar $MIRTH_LIB_DIR
+	sudo cp $OE_INSTALL_SCRIPTS_DIR/conf/mirth/java-src/imageutils/target/imageutils-1.0-SNAPSHOT.jar $MIRTH_LIB_DIR
 	report_success $? "Copied Java image utilities library to $MIRTH_LIB_DIR"
 }
 

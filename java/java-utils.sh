@@ -78,11 +78,11 @@ install_maven() {
 compile_and_install_maven_sources() {
 	# TODO ultimately these will obtained via git
 	export_maven_path
-	cd $SCRIPT_DIR/conf/mirth/java-src/imageutils
+	cd $OE_INSTALL_SCRIPTS_DIR/conf/mirth/java-src/imageutils
 	mvn clean install
 	report_success $? "Image utilities installed"
 	cd -
-	cd $SCRIPT_DIR/conf/mirth/java-src/encodeutils
+	cd $OE_INSTALL_SCRIPTS_DIR/conf/mirth/java-src/encodeutils
 	mvn clean install
 	report_success $? "Encode utilities installed"
 	cd -
