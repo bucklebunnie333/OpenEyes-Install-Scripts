@@ -12,7 +12,7 @@ Also, the directory can be exported when in the root directory of the installati
 	export OE_INSTALL_SCRIPTS_DIR=`pwd`
 
 Using the `dev-utils` Scripts
-=======================
+=============================
 
 The `dev-utils.sh` script is used for dealing with sources that have been committed and enable a developer to quickly switch between old and new versions of their sources.
 
@@ -100,3 +100,18 @@ Using the `esb-utils` Scripts
 
 The `esb-utils.sh` script is used for creating images imported via the (Mirth) ESB.
 
+The script can be used to create Kowa Stereo and Zeiss VFA images. Each call produces images for the left eye and right eye. To create Kowa stereo images and associated text files, run
+
+	sh dev/esb-utils.sh -s
+
+from the command line. This will create several `.jpg` and `.txt` files, associated with each other - each image has it's corresponding CSV file containing information about the patient that is stored by the service bus.
+
+To generate Zeiss VFA images, run
+
+	sh dev/esb-utils.sh -v
+
+from the command line. This generates 11 images for each eye, showing a gradual decline in quality for the eye for the TIFF images. Since the TIFFs are wholly reliant on associated XML files, the XML files are also generated.
+
+The only things configured in the CSV/XML files (for Kowa and Zeiss data files, respectively) are the hospital number/patient ID, forename and surname. These can all be modified by supplying `-H <hos_num>`, `-G <given_name>` or  `-F <family_name>`. The defaults are stored as variable names in the `esb-utils.sh` file.
+
+Once `-s` or `-v` have been invoked, the scripts can be copied to the Mirth file input directories using the `-c` (copy) option. This will copy all images that have been generated so far; likewise, to clean the sample directory of images use the `-x` option. If a caller calls `-s` and `-v`, when performing a copy (`-c`) both sets of images will be copied. If only one set of images is to be copied, be sure to delete sample data first (`-x`), then run one of the targets for the required files, then perform a copy.

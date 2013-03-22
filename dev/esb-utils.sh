@@ -9,9 +9,9 @@ GIVEN_NAME=Chey
 FAMILY_NAME=Close
 
 # Pause to give the ESB time to process files? Set this to 0 if not:
-ESB_SLEEP=0
-# Pause between copying XML and (then) TIF files? Set to 0 for no pause:
-ESB_VFA_SLEEP=2
+ESB_SLEEP=1
+# Pause between copying XML and (then) TIFF files? Set to 0 for no pause:
+ESB_VFA_SLEEP=3
 
 # Template files - these are used and processed in to a separate directory
 TEMPLATE_STEREO_DIR=$OE_INSTALL_SCRIPTS_DIR/dev/esb-data/kowa-stereo
@@ -20,6 +20,20 @@ TEMPLATE_VFA_DIR=$OE_INSTALL_SCRIPTS_DIR/dev/esb-data/zeiss-vfa
 # Where template data, after processing, os written to
 SAMPLE_STEREO_DIR=$OE_INSTALL_SCRIPTS_DIR/dev/esb-data/sample-stereo
 SAMPLE_VFA_DIR=$OE_INSTALL_SCRIPTS_DIR/dev/esb-data/sample-vfa
+
+# 
+# If the specified time is greater than 0, sleep for that many seconds.
+# 
+# $1 - the sleep time
+# 
+do_sleep() {
+	SLEEP_TIME=$1;	
+	if [ $ESB_VFA_SLEEP -gt 0 ]
+	then
+		log "Sleeping for $SLEEP_TIME second(s) before copying more files..."
+		sleep $SLEEP_TIME
+	fi
+}
 
 # 
 # Copy sample data to the ESB.
@@ -40,15 +54,13 @@ copy_sample_data() {
 	fi
 	if [ -d $SAMPLE_VFA_DIR ]
 	then
-		for file in `ls -v $SAMPLE_VFA_DIR/*.*`
+		for file in `ls -v $SAMPLE_VFA_DIR/*.tif`
 		do
-			cp $file $OE_VFA_TEXT_IN
-			report_success $? "Copied $file to $OE_VFA_TEXT_IN"			
-			if [ $ESB_VFA_SLEEP -gt 0 ]
-			then
-				log "Sleeping for $ESB_VFA_SLEEP seconds before copying more files..."
-				sleep $ESB_VFA_SLEEP
-			fi
+			cp `dirname $file`/`basename $file .tif`.xml $OE_VFA_TEXT_IN
+			report_success $? "Copied `dirname $file`/`basename $file .tif`.xml to $OE_VFA_TEXT_IN"
+			do_sleep $ESB_VFA_SLEEP
+			cp $file $OE_VFA_IMAGES_IN
+			report_success $? "Copied $file to $OE_VFA_IMAGES_IN"
 		done
 	fi
 }
@@ -171,17 +183,21 @@ print_help() {
   echo ""
   echo "Configuration options:"
   echo ""
-  echo "  -H <hos_num>: specify hospital number."
-  echo "  -G <given_name>: specify forename/given name."
-  echo "  -F <family_name>: specify family name."
+  echo "  -H <hos_num>: specify hospital number (default $PID)."
+  echo "  -G <given_name>: specify forename/given name (default $GIVEN_NAME)."
+  echo "  -F <family_name>: specify family name (default $FAMILY_NAME)."
   echo ""
   echo "Script targets:"
   echo ""
-  echo "  -c: Copy all files to the relevant ESB directories."
-  echo "  -x: Remove sample data directories, generated from"
-  echo "      invoking one of the targets to generate file data."
   echo "  -s: Generate Kowa stereo images and text files."
+  echo "      Uses: -H, -G, -F"
   echo "  -v: Generate Zeiss VFA images and XML files."
+  echo "      Uses: -H, -G, -F"
+  echo "  -c: Copy all files to the relevant ESB directories."
+  echo "      Depends: -s or -v."
+  echo "  -x: Remove (local) sample data directories, generated from"
+  echo "      invoking one of the targets to generate file"
+  echo "      data (-s, -v)"
   echo "  -h: Print this help then quit."
 }
 
