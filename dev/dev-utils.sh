@@ -13,6 +13,16 @@
 # 
 # Utility script to backup/restore/nuke an existing OpenEyes installation - mainly the Apache site directory and MySQL database.
 
+if [ ! -d $OE_INSTALL_SCRIPTS_DIR ]
+then
+	echo "Expected \$OE_INSTALL_SCRIPTS_DIR to be a directory;"
+	echo "Set it correctly by calling"
+	echo "  export OE_INSTALL_SCRIPTS_DIR [path]"
+	echo "from your current shell, where [path] is the full path"
+	echo "to the installation scripts directory."
+	exit 1
+fi
+
 . $OE_INSTALL_SCRIPTS_DIR/base.sh
 
 DATE=`date +"%y-%m-%d.%H%M%S"`

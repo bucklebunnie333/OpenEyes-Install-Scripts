@@ -232,7 +232,7 @@ check_file_exists_or_quit() {
 # 
 # 
 read_oe_db_password() {
-	echo "Reading in password for user '$OE_USER'. Please enter database password for user '$OE_USER':" >&2
+	echo "Reading in password for user '$OE_DB_USER'. Please enter database password for user '$OE_DB_USER':" >&2
 	stty -echo
 	read DB_USER_PASSWORD
 	echo "Again, please:"

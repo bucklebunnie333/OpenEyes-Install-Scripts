@@ -11,7 +11,15 @@
 # 
 # Initial author: Richard Meeking, 24th July 2012.
 
-echo $OE_INSTALL_SCRIPTS_DIR/base.sh
+if [ ! -d $OE_INSTALL_SCRIPTS_DIR ]
+then
+	echo "Expected \$OE_INSTALL_SCRIPTS_DIR to be a directory;"
+	echo "Set it correctly by calling"
+	echo "  export OE_INSTALL_SCRIPTS_DIR [path]"
+	echo "from your current shell, where [path] is the full path"
+	echo "to the installation scripts directory."
+	exit 1
+fi
 
 . $OE_INSTALL_SCRIPTS_DIR/base.sh
 . $OE_INSTALL_SCRIPTS_DIR/modules/modules.properties
