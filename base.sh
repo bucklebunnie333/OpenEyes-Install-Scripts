@@ -59,7 +59,7 @@ log() {
 		if [ $FIRST_TIME_LOG = "true" ]
 		then
 			FIRST_TIME_LOG="false"
-			create_directory $TMP_DIR
+			mkdir $TMP_DIR
 			echo "Writing to log file $LOG_FILE"
 			echo "`date +"%a %Y-%m-%d %H:%M:%S"` Script started." >> $LOG_FILE
 		fi
