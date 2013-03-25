@@ -278,7 +278,6 @@ substitute_mirth_properties() {
 # Global scripts and code templates are also deployed.
 #
 deploy() {
-	pre_process_mirth_config
 	if [ ! -d $TMP_DIR/mirth ]
 	then
 		mkdir $TMP_DIR/mirth
@@ -443,8 +442,11 @@ print_help() {
 	echo "      Depends: -m, -i"
 	echo "  -c: Create ESB file input and output for OpenEyes channels"
 	echo "      to watch and transfer data to."
+	echo "  -p: Pre-process Mirth channel \`.xml.in' files, transforming them"
+	echo "      in to \`.xml' files appropriate for deploying."
 	echo "  -d: Deploy OpenEyes channels. Needs an external connection if the"
-	echo "      ESB is located on another host. Depends: -s, -c. Uses: -D, -P"
+	echo "      ESB is located on another host. Depends: -p, -c, -s."
+	echo "      Uses: -D, -P"
 	echo "  -h: Print this message then quit."
 }
 
@@ -458,7 +460,7 @@ print_help() {
 #
 # Inspired by http://wiki.bash-hackers.org/howto/getopts_tutorial
 # 
-while getopts ":ajgcidumsrhP:L:D:M:" opt; do
+while getopts ":ajgcipdumsrhP:L:D:M:" opt; do
 	case $opt in
 		P)
 			MIRTH_PASSWORD="$OPTARG"
@@ -481,6 +483,7 @@ while getopts ":ajgcidumsrhP:L:D:M:" opt; do
 			compile_and_install_maven_sources
 			copy_java_projects_to_esb_lib
 			create_system_directories
+			pre_process_mirth_config
 			deploy
 			;;
 		j)
@@ -495,6 +498,9 @@ while getopts ":ajgcidumsrhP:L:D:M:" opt; do
 		i)
 			install_esb
 			create_esb_logging_dir
+			;;
+		p)
+			pre_process_mirth_config
 			;;
 		d)
 			deploy

@@ -32,9 +32,9 @@ GIVEN_NAME=Chey
 FAMILY_NAME=Close
 
 # Pause to give the ESB time to process files? Set this to 0 if not:
-ESB_SLEEP=1
+ESB_STEREO_SLEEP=5
 # Pause between copying XML and (then) TIFF files? Set to 0 for no pause:
-ESB_VFA_SLEEP=3
+ESB_VFA_SLEEP=10
 
 # Template files - these are used and processed in to a separate directory
 TEMPLATE_STEREO_DIR=$OE_INSTALL_SCRIPTS_DIR/dev/esb-data/kowa-stereo
@@ -51,7 +51,7 @@ SAMPLE_VFA_DIR=$OE_INSTALL_SCRIPTS_DIR/dev/esb-data/sample-vfa
 # 
 do_sleep() {
 	SLEEP_TIME=$1;	
-	if [ $ESB_VFA_SLEEP -gt 0 ]
+	if [ $SLEEP_TIME -gt 0 ]
 	then
 		log "Sleeping for $SLEEP_TIME second(s) before copying more files..."
 		sleep $SLEEP_TIME
@@ -64,13 +64,11 @@ do_sleep() {
 copy_sample_data() {
 	if [ -d $SAMPLE_STEREO_DIR ]
 	then
-		for file in `ls $SAMPLE_STEREO_DIR/*.txt`
-		do
-			cp $file $OE_STEREO_TEXT_IN
-			report_success $? "Copied $file to $OE_STEREO_TEXT_IN"
-		done
 		for file in `ls $SAMPLE_STEREO_DIR/*.jpg`
 		do
+			cp `dirname $file`/`basename $file .jpg`.txt $OE_STEREO_TEXT_IN
+			report_success $? "Copied `dirname $file`/`basename $file .jpg`.txt to $OE_VFA_TEXT_IN"
+			do_sleep $ESB_STEREO_SLEEP
 			cp $file $OE_STEREO_IMAGES_IN
 			report_success $? "Copied $file to $OE_STEREO_IMAGES_IN"
 		done
@@ -153,7 +151,7 @@ generate_sample_vfa_data() {
 	for file in `ls -r $TMP_VFA_DIR/*.tif`;
 	do 
 		composite -geometry +1351+640 $file $TEMPLATE_VFA_DIR/main_image_1.tif $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg;
-		report_success $? "Added sub image $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg to $TEMPLATE_VFA_DIR/main_image_1.tif"
+		report_success $? "Composed $TEMPLATE_VFA_DIR/main_image_1.tif and $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg to make: $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg"
 		convert $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg $SAMPLE_VFA_DIR/TEST_`basename $file`;
 		report_success $? "Created $SAMPLE_VFA_DIR/TEST_`basename $file`"
 		rm $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg
@@ -191,14 +189,13 @@ generate_sample_vfa_data() {
 # 
 print_help() {
   echo "Utilities for creating ESB files from basic templates,"
-  echo "based on given patient data. By default, PID 1000001,"
-  echo "forename 'Chey' and surname 'Close' are used. This,"
-  echo "for convenience, matches the patient Chey Close from"
-  echo "the MEH sample data, of the same PID."
+  echo "based on given patient data. By default, PID $PID,"
+  echo "forename '$GIVEN_NAME' and surname '$FAMILY_NAME' are used."
   echo ""
   echo "Currently, only Kowa Stereo images and Zeiss VFA images"
   echo "are catered for, along with text files (.txt and .xml"
-  echo "respectively)."
+  echo "respectively) that are normally associated with each"
+  echo "image produced."
   echo ""
   echo "Configuration options should be provided first, followed"
   echo "by installation targets which are executed in the order"

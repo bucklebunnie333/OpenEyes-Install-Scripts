@@ -39,7 +39,7 @@ Channels can be undeployed at any time by calling
 
 	sh esb/mirth/mirth-install.sh -u
 
-Note that the Mirth channels are `.xml` files that are uploaded to the Mirth server and then deployed. During development, when the sources are edited in-situ on the server, they need to be exported back to the localhost in order to be checked in. *However*, the `.xml` files are produced from copying `.xml.in` files to it's corresponding `.xml` file using the script. As such, in order to export the downloaded `.xml` files *back* to `.xml.in` files, use the *revert* command:
+Note that the Mirth channels are `.xml` files that are uploaded to the Mirth server and then deployed. During development, when the sources are edited in-situ on the server, they need to be exported back to the localhost in order to be checked in. *However*, the `.xml` files are produced from copying `.xml.in` files to it's corresponding `.xml` file using the script. More precisely, the `.xml` files deployed initially *are not the original files - they are transformed from `.xml.in` files*. As such, in order to export the downloaded `.xml` files *back* to `.xml.in` files, use the *revert* command:
 
 	sh esb/mirth/mirth-install.sh -r
 
