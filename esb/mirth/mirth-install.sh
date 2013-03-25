@@ -104,9 +104,11 @@ install_esb() {
 # Copies compiled (.jar) libraries to Mirth, failing on error.
 # 
 copy_java_projects_to_esb_lib() {
-	sudo cp $OE_INSTALL_SCRIPTS_DIR/conf/mirth/java-src/encodeutils/target/encodeutils-1.0-SNAPSHOT.jar $MIRTH_LIB_DIR
+	parse_module_details $GIT_MIRTH_ENCODE_UTILS
+	sudo cp $OE_INSTALL_SCRIPTS_DIR/$mod_local_name/target/encodeutils-1.0-SNAPSHOT.jar $MIRTH_LIB_DIR
 	report_success $? "Copied Java encode utilities library to $MIRTH_LIB_DIR"
-	sudo cp $OE_INSTALL_SCRIPTS_DIR/conf/mirth/java-src/imageutils/target/imageutils-1.0-SNAPSHOT.jar $MIRTH_LIB_DIR
+	parse_module_details $GIT_MIRTH_IMAGE_UTILS
+	sudo cp $OE_INSTALL_SCRIPTS_DIR/$mod_local_name/target/imageutils-1.0-SNAPSHOT.jar $MIRTH_LIB_DIR
 	report_success $? "Copied Java image utilities library to $MIRTH_LIB_DIR"
 }
 
@@ -141,7 +143,6 @@ stop_esb() {
 # them to *.xml equivalents
 # 
 pre_process_mirth_config() {
-	GIT_MIRTH_CHANNEL="Mirth-Channels||git@github.com:zendawg|release/1.2-moorfields|false"
 	sh $OE_INSTALL_SCRIPTS_DIR/modules/modules.sh -D $OE_INSTALL_SCRIPTS_DIR -M $GIT_MIRTH_CHANNEL -i
 	# TODO ultimately these will obtained via git
 	ls $MIRTH_CHANNEL_DIR/*.xml  > /dev/null 2>&1
@@ -482,7 +483,8 @@ while getopts ":ajgcipdumsrhP:L:D:M:" opt; do
 			install_esb
 			create_esb_logging_dir
 			install_maven
-			compile_and_install_maven_sources
+			compile_and_install_maven_sources $GIT_MIRTH_IMAGE_UTILS
+			compile_and_install_maven_sources $GIT_MIRTH_ENCODE_UTILS
 			copy_java_projects_to_esb_lib
 			create_system_directories
 			pre_process_mirth_config
@@ -517,7 +519,8 @@ while getopts ":ajgcipdumsrhP:L:D:M:" opt; do
 			install_maven
 			;;
 		s)
-			compile_and_install_maven_sources
+			compile_and_install_maven_sources $GIT_MIRTH_IMAGE_UTILS
+			compile_and_install_maven_sources $GIT_MIRTH_ENCODE_UTILS
 			copy_java_projects_to_esb_lib
 			;;
 		r)

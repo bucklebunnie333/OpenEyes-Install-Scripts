@@ -279,3 +279,27 @@ do_git_clone() {
 	git clone $1 $2
 	report_success $? "Cloned $1 to $2"
 }
+
+# 
+# Parse the details of the module, placing results in mod_name,
+# mod_local_name, mod_repo, mod_branch and mod_migrate.
+# 
+# $1 - module in the format remote_module_name | local_module_name | git_repo | git_branch_name | migrate
+# 
+# See the module properties file for explanation of each part of the module configuration given above.
+# 
+parse_module_details() {
+	module=$1
+	mod_name=`echo $module | cut -d \| -f 1`
+	mod_local_name=`echo $module | cut -d \| -f 2`
+	mod_repo=`echo $module | cut -d \| -f 3`
+	mod_branch=`echo $module | cut -d \| -f 4`
+	mod_migrate=`echo $module | cut -d \| -f 5`
+	if [ -z "$mod_local_name" ]
+	then
+		mod_local_name=$mod_name
+		log "Module name is same as remote module repository name ($mod_local_name)."
+	else
+		log "Using different local module name: $mod_local_name, differs from $mod_name"
+	fi
+}

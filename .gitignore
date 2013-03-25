@@ -3,3 +3,5 @@ conf/mirth/channels/*.xml
 dev/esb-data/sample-stereo
 dev/esb-data/sample-vfa
 Mirth-Channels/
+Mirth-Encode-Utils/
+Mirth-Image-Utils/

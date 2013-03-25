@@ -75,16 +75,16 @@ install_maven() {
 # Compiles all necessary java Maven projects for use with ESB; fails
 # if the sources cannot be built.
 # 
+# $1 - the git project to check out to the install scripts directory
+# 
 compile_and_install_maven_sources() {
-	# TODO ultimately these will obtained via git
+	GIT_PROJECT=$1
+	parse_module_details $GIT_PROJECT
+	sh $OE_INSTALL_SCRIPTS_DIR/modules/modules.sh -D $OE_INSTALL_SCRIPTS_DIR -M $GIT_PROJECT -i
 	export_maven_path
-	cd $OE_INSTALL_SCRIPTS_DIR/conf/mirth/java-src/imageutils
+	cd $OE_INSTALL_SCRIPTS_DIR/$mod_local_name
 	mvn clean install
-	report_success $? "Image utilities installed"
-	cd -
-	cd $OE_INSTALL_SCRIPTS_DIR/conf/mirth/java-src/encodeutils
-	mvn clean install
-	report_success $? "Encode utilities installed"
+	report_success $? "$mod_local_name utilities installed"
 	cd -
 }
 
