@@ -141,6 +141,8 @@ stop_esb() {
 # them to *.xml equivalents
 # 
 pre_process_mirth_config() {
+	GIT_MIRTH_CHANNEL="Mirth-Channels||git@github.com:zendawg|release/1.2-moorfields|false"
+	sh $OE_INSTALL_SCRIPTS_DIR/modules/modules.sh -D $OE_INSTALL_SCRIPTS_DIR -M $GIT_MIRTH_CHANNEL -i
 	# TODO ultimately these will obtained via git
 	ls $MIRTH_CHANNEL_DIR/*.xml  > /dev/null 2>&1
 	if [ $? -eq 0 ]

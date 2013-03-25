@@ -31,21 +31,22 @@ fi
 # file and migrating the module. Failure at any point
 # will bomb out.
 # 
+# $1 - the directory to install the module in
 # 
 install_base_modules() {
+	MOD_DIR=$1
 	mods=$(echo $MODULES | tr ";" "\n")
 
 	for module in $mods
 	do
 		parse_module_details $module
-		if [ -d $SITE_DIR/$OE_DIR/protected/modules/$mod_name ]
+		if [ -d $MOD_DIR/$mod_name ]
 		then
 			log "It looks like module $mod_name already exists; skipping this one."
 		else
-			cd $SITE_DIR/$OE_DIR/protected/modules/
 			log "Remote name: $mod_name, local name: $mod_local_name, repository: $mod_repo, branch: $mod_branch"
-			do_git_clone $mod_repo/$mod_name.git $mod_local_name
-			cd $SITE_DIR/$OE_DIR/protected/modules/$mod_local_name
+			do_git_clone $mod_repo/$mod_name.git $MOD_DIR/$mod_local_name
+			cd $MOD_DIR/$mod_local_name
 			do_git_checkout $mod_branch origin/$mod_branch
 			if [ "$mod_migrate" = "false" ]
 			then
@@ -170,6 +171,8 @@ print_help() {
 	echo "  -A <true|false>: automatically migrate without question; defaults to true"
 	echo "     If set to false, eaech migration will be displayed and the user"
 	echo "     prompted whether to apply the migration or not."
+	echo "  -D <dir>: Directory to install the modules in. By default, the OpenEyes"
+	echo "     modules directory is used."
 	echo "  -M <modules>: overrides the \$MODULES variable in the properties file,"
 	echo "     and uses the same format:"
 	echo "       module_name|git_repo|git_branch_name|migrate;<other module definitions>"
@@ -198,7 +201,7 @@ print_help() {
 #
 # Inspired by http://wiki.bash-hackers.org/howto/getopts_tutorial
 # 
-while getopts ":ishM:A:" opt; do
+while getopts ":ishM:A:D:M:" opt; do
 	case $opt in
 		A)
 			log "Automatically migrate modules, unless set to false. Current value: $OPTARG"
@@ -209,8 +212,13 @@ while getopts ":ishM:A:" opt; do
 			log "Note this overrides the modules given in the properties file."
 			MODULES="$OPTARG"
 			;;
+		D)
+			log "Module installation directory specified: $OPTARG"
+			log "Note this overrides the directory given in the properties file."
+			MODULE_DIR="$OPTARG"
+			;;
 		i)
-			install_base_modules
+			install_base_modules $MODULE_DIR
 			;;
 		s)
 			install_sample
