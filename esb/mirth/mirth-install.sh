@@ -279,7 +279,7 @@ substitute_mirth_properties() {
 #
 openeyes_migrate_esb_projects() {
 	parse_module_details $GIT_MIRTH_PHP_MIGRATIONS
-	sh $OE_INSTALL_SCRIPTS_DIR/modules/modules.sh -D $OE_INSTALL_SCRIPTS_DIR -M $GIT_MIRTH_PHP_MIGRATIONS -i
+	sh $OE_INSTALL_SCRIPTS_DIR/modules/modules.sh -D $SITE_DIR/$OE_DIR/protected/modules -M $GIT_MIRTH_PHP_MIGRATIONS -i
 }
 
 #
