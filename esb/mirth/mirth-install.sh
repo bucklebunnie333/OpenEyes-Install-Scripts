@@ -275,6 +275,14 @@ substitute_mirth_properties() {
 }
 
 #
+# Migrate all projects necessary for the ESB to function correctly.
+#
+openeyes_migrate_esb_projects() {
+	parse_module_details $GIT_MIRTH_PHP_MIGRATIONS
+	sh $OE_INSTALL_SCRIPTS_DIR/modules/modules.sh -D $OE_INSTALL_SCRIPTS_DIR -M $GIT_MIRTH_PHP_MIGRATIONS -i
+}
+
+#
 # Prepare the Mirth XML files based on Mirth properties
 # and deploy them to the Mirth server. All channels are
 # forceably deployed, over-writing the old channel.
@@ -445,10 +453,13 @@ print_help() {
 	echo "      Depends: -m, -i"
 	echo "  -c: Create ESB file input and output for OpenEyes channels"
 	echo "      to watch and transfer data to."
-	echo "  -p: Pre-process Mirth channel \`.xml.in' files, transforming them"
-	echo "      in to \`.xml' files appropriate for deploying."
+	echo "* -p: Obtain (via github) and pre-process Mirth channel \`.xml.in'"
+	echo "      files, transforming them in to \`.xml' files appropriate for"
+	echo "      deploying."
+	echo "* -o: obtain and apply OpenEyes PHP moule migrations for necessary"
+	echo "      projects used by the ESB."
 	echo "  -d: Deploy OpenEyes channels. Needs an external connection if the"
-	echo "      ESB is located on another host. Depends: -p, -c, -s."
+	echo "      ESB is located on another host. Depends: -o, -p, -c, -s."
 	echo "      Uses: -D, -P"
 	echo "  -h: Print this message then quit."
 }
@@ -463,7 +474,7 @@ print_help() {
 #
 # Inspired by http://wiki.bash-hackers.org/howto/getopts_tutorial
 # 
-while getopts ":ajgcipdumsrhP:L:D:M:" opt; do
+while getopts ":ajgciopdumsrhP:L:D:M:" opt; do
 	case $opt in
 		P)
 			MIRTH_PASSWORD="$OPTARG"
@@ -487,6 +498,7 @@ while getopts ":ajgcipdumsrhP:L:D:M:" opt; do
 			compile_and_install_maven_sources $GIT_MIRTH_ENCODE_UTILS
 			copy_java_projects_to_esb_lib
 			create_system_directories
+			openeyes_migrate_esb_projects
 			pre_process_mirth_config
 			deploy
 			;;
@@ -502,6 +514,9 @@ while getopts ":ajgcipdumsrhP:L:D:M:" opt; do
 		i)
 			install_esb
 			create_esb_logging_dir
+			;;
+		o)
+			openeyes_migrate_esb_projects
 			;;
 		p)
 			pre_process_mirth_config
