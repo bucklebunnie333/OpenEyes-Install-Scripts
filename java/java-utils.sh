@@ -12,7 +12,7 @@
 # Initial author: Richard Meeking, 16th January 2012.
 #
 
-if [ ! -d $OE_INSTALL_SCRIPTS_DIR ]
+if [ ! -d "$OE_INSTALL_SCRIPTS_DIR" ]
 then
 	echo "Expected \$OE_INSTALL_SCRIPTS_DIR to be a directory;"
 	echo "Set it correctly by calling"
