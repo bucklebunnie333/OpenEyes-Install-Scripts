@@ -263,7 +263,7 @@ do_git_checkout() {
 			report_success $? "Git checkout for branch $1"
 		else
 			log "Switching to branch: '$1', tracking: '$2'"
-			git checkout -b $1 --track $2
+			git checkout $1
 			report_success $? "Git checkout for branch $1, tracking $2"
 		fi
 	fi
