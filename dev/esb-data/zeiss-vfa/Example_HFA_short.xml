@@ -93,8 +93,8 @@
 	    <CZM_HFA_Series_M>
 		    <test_date VR="DA" codingScheme="99CZM" codeId="7717,1732" codeMeaning="Test Date">2011-03-03</test_date>
 		    <test_time VR="TM" codingScheme="99CZM" codeId="7717,1733" codeMeaning="Test Time">13:14:58.000</test_time>
-		    <test_name VR="LO" codingScheme="99CZM" codeId="7717,1701" codeMeaning="Test Name">Central 24-2 Threshold Test</test_name>
-		    <test_strategy VR="LO" codingScheme="99CZM" codeId="7717,1702" codeMeaning="Test Strategy">SITA-Standard</test_strategy>
+		    <test_name VR="LO" codingScheme="99CZM" codeId="7717,1701" codeMeaning="Test Name">_TEST_NAME</test_name>
+		    <test_strategy VR="LO" codingScheme="99CZM" codeId="7717,1702" codeMeaning="Test Strategy">_TEST_STRATEGY</test_strategy>
 		    <stimulus_size VR="CS" codingScheme="99CZM" codeId="7717,1703" codeMeaning="Stimulus Size">III</stimulus_size>
 		    <stimulus_color VR="SH" codingScheme="99CZM" codeId="7717,1704" codeMeaning="Stimulus Color">White</stimulus_color>
 		    <background_state VR="SH" codingScheme="99CZM" codeId="7717,1705" codeMeaning="Background State">White</background_state>

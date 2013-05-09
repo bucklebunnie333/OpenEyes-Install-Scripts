@@ -31,6 +31,11 @@ GIVEN_NAME=Chey
 # Family name of patient
 FAMILY_NAME=Close
 
+# Strategy name
+TEST_STRATEGY="SITA-Standard"
+# Test name - other types could be 24-2 SITA-FAST
+TEST_NAME="24-2 SITA-Standard"
+
 # Pause to give the ESB time to process files? Set this to 0 if not:
 ESB_STEREO_SLEEP=5
 # Pause between copying XML and (then) TIFF files? Set to 0 for no pause:
@@ -169,6 +174,8 @@ generate_sample_vfa_data() {
 		sed -i s/_PATIENT_ID/$PID/ $XML_SHORT_FILE
 		sed -i s/_FILE_REFERENCE/`basename $file`/ $XML_SHORT_FILE
 		sed -i s/_LATERALITY/L/ $XML_SHORT_FILE
+		sed -i s/_TEST_STRATEGY/"$TEST_STRATEGY"/ $XML_SHORT_FILE
+		sed -i s/_TEST_NAME/"$TEST_NAME"/ $XML_SHORT_FILE
 		report_success $? "Created $XML_SHORT_FILE"
 	done;
 	for file in `ls -r $SAMPLE_VFA_DIR/TEST_right*.tif`;
@@ -180,6 +187,8 @@ generate_sample_vfa_data() {
 		sed -i s/_PATIENT_ID/$PID/ $XML_SHORT_FILE
 		sed -i s/_FILE_REFERENCE/`basename $file`/ $XML_SHORT_FILE
 		sed -i s/_LATERALITY/R/ $XML_SHORT_FILE
+		sed -i s/_TEST_STRATEGY/"$TEST_STRATEGY"/ $XML_SHORT_FILE
+		sed -i s/_TEST_NAME/"$TEST_NAME"/ $XML_SHORT_FILE
 		report_success $? "Created $XML_SHORT_FILE"
 	done;
 }
@@ -206,6 +215,8 @@ print_help() {
   echo "  -H <hos_num>: specify hospital number (default $PID)."
   echo "  -G <given_name>: specify forename/given name (default $GIVEN_NAME)."
   echo "  -F <family_name>: specify family name (default $FAMILY_NAME)."
+  echo "  -S <test_strategy>: VFA Strategy name (default $TEST_STRATEGY)."
+  echo "  -T <test_name>: VFA Test type (default $TEST_NAME)."
   echo ""
   echo "Script targets:"
   echo ""
@@ -231,7 +242,7 @@ print_help() {
 # 
 # Inspired by http://wiki.bash-hackers.org/howto/getopts_tutorial
 # 
-while getopts ":csvxhH:G:F:" opt; do
+while getopts ":csvxhH:G:F:S:T:" opt; do
   case $opt in
     H)
       log "Patient ID/hospital number specified: $OPTARG" >&2
@@ -244,6 +255,14 @@ while getopts ":csvxhH:G:F:" opt; do
     G)
       log "Family name specified: $OPTARG" >&2
       FAMILY_NAME="$OPTARG"
+      ;;
+    S)
+      log "Test strategy specified: $OPTARG" >&2
+      TEST_STRATEGY="$OPTARG"
+      ;;
+    T)
+      log "Test type specified: $OPTARG" >&2
+      TEST_NAME="$OPTARG"
       ;;
     x)
       clean_sample_data
