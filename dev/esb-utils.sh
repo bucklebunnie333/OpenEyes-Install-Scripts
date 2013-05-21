@@ -147,9 +147,9 @@ generate_sample_vfa_data() {
 	mkdir -p $SAMPLE_VFA_DIR/tmp
 
 	# Create reverse images for the left eye:
-	for file in `ls -r $TEMPLATE_VFA_DIR/*.jpg`; do convert -geometry 696x710 -black-threshold 75% -flop $file $TMP_VFA_DIR/left-`basename $file .jpg`.tif; log "Created $TMP_VFA_DIR/left-`basename $file .jpg`.tif"; done
+	for file in `ls -r $TEMPLATE_VFA_DIR/*.jpg`; do convert -geometry 696x710 -black-threshold 75% $file $TMP_VFA_DIR/left-`basename $file .jpg`.tif; log "Created $TMP_VFA_DIR/left-`basename $file .jpg`.tif"; done
 	# Create non reversed TIFF images for the right eye:
-	for file in `ls -r $TEMPLATE_VFA_DIR/*.jpg`; do convert -geometry 696x710 -black-threshold 75% $file $TMP_VFA_DIR/right-`basename $file .jpg`.tif; log "Created $TMP_VFA_DIR/right-`basename $file .jpg`.tif"; done
+	for file in `ls -r $TEMPLATE_VFA_DIR/*.jpg`; do convert -geometry 696x710 -black-threshold 75% -flop $file $TMP_VFA_DIR/right-`basename $file .jpg`.tif; log "Created $TMP_VFA_DIR/right-`basename $file .jpg`.tif"; done
 
 	# for file in *.jpg; do convert -black-threshold 0 -geometry 834x938 $file tif/`basename $file .jpg`.tif; done
 
