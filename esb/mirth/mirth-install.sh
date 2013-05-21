@@ -197,6 +197,7 @@ revert_mirth_properties() {
 	do
 		MIRTH_XML_FILE="$file.in"
 		cp $file $MIRTH_XML_FILE
+		perform_substitution $OE_JAVA_PACKAGE _OE_JAVA_PACKAGE_ $MIRTH_XML_FILE
 		perform_substitution $OE_STEREO_TEXT_IN _OE_STEREO_TEXT_IN_ $MIRTH_XML_FILE
 		perform_substitution $OE_STEREO_IMAGES_IN _OE_STEREO_IMAGES_IN_ $MIRTH_XML_FILE
 		perform_substitution $OE_STEREO_IMAGES_OUT _OE_STEREO_IMAGES_OUT_ $MIRTH_XML_FILE
@@ -243,6 +244,8 @@ substitute_mirth_properties() {
 		OE_DB_PASSWORD=$DB_PASSWORD
 	fi
 	perform_substitution _OE_DB_PASSWORD_ $OE_DB_PASSWORD $MIRTH_XML_FILE
+
+	perform_substitution _OE_JAVA_PACKAGE_ $OE_JAVA_PACKAGE $MIRTH_XML_FILE
 	perform_substitution _OE_DB_USER_ $OE_DB_USER $MIRTH_XML_FILE
 	perform_substitution _OE_DB_HOST_ $OE_DB_HOST $MIRTH_XML_FILE
 	perform_substitution _OE_DB_PORT_ $OE_DB_PORT $MIRTH_XML_FILE
