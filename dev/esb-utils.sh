@@ -157,8 +157,8 @@ generate_sample_vfa_data() {
 	do 
 		composite -geometry +1351+640 $file $TEMPLATE_VFA_DIR/main_image_1.tif $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg;
 		report_success $? "Composed $TEMPLATE_VFA_DIR/main_image_1.tif and $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg to make: $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg"
-		convert $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg $SAMPLE_VFA_DIR/TEST_`basename $file`;
-		report_success $? "Created $SAMPLE_VFA_DIR/TEST_`basename $file`"
+		convert $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg $SAMPLE_VFA_DIR/TEST_`basename $file .tif`_`date "+%Y_%m_%d_%H_%M_%S"`.tif;
+		report_success $? "Created $SAMPLE_VFA_DIR/TEST_`basename $file .tif`_`date "+%Y_%m_%d_%H_%M_%S"`.tif"
 		rm $TMP_VFA_DIR/TEST_`basename $file .tif`.jpg
 	done
 
