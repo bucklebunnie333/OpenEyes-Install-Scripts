@@ -82,10 +82,16 @@ copy_sample_data() {
 	then
 		for file in `ls -v $SAMPLE_VFA_DIR/*.tif`
 		do
-			cp `dirname $file`/`basename $file .tif`.xml $OE_VFA_TEXT_IN
+			touch `dirname $file`/`basename $file .tif`.xml
+			mv `dirname $file`/`basename $file .tif`.xml $OE_VFA_TEXT_IN
+			sudo chown -R root:www-data /var/openeyes/vfa-in
+			sudo chmod -R a+rwx /var/openeyes/vfa-in
 			report_success $? "Copied `dirname $file`/`basename $file .tif`.xml to $OE_VFA_TEXT_IN"
+			touch $file
+			mv $file $OE_VFA_IMAGES_IN
+			sudo chown -R root:www-data /var/openeyes/vfa-in
+			sudo chmod -R a+rwx /var/openeyes/vfa-in
 			do_sleep $ESB_VFA_SLEEP
-			cp $file $OE_VFA_IMAGES_IN
 			report_success $? "Copied $file to $OE_VFA_IMAGES_IN"
 		done
 	fi
@@ -165,6 +171,8 @@ generate_sample_vfa_data() {
 	rm $TMP_VFA_DIR/left-hfa*.tif
 	rm $TMP_VFA_DIR/right-hfa*.tif
 
+	count=0;
+	year=2013;
 	for file in `ls -r $SAMPLE_VFA_DIR/TEST_left*.tif`;
 	do
 		XML_SHORT_FILE=$SAMPLE_VFA_DIR/`basename $file .tif`.xml
@@ -173,11 +181,14 @@ generate_sample_vfa_data() {
 		sed -i s/_GIVEN_NAME/$GIVEN_NAME/ $XML_SHORT_FILE
 		sed -i s/_PATIENT_ID/$PID/ $XML_SHORT_FILE
 		sed -i s/_FILE_REFERENCE/`basename $file`/ $XML_SHORT_FILE
+		sed -i s/_STUDY_DATE/`expr $year - $count`-04-10/ $XML_SHORT_FILE
 		sed -i s/_LATERALITY/L/ $XML_SHORT_FILE
 		sed -i s/_TEST_STRATEGY/"$TEST_STRATEGY"/ $XML_SHORT_FILE
 		sed -i s/_TEST_NAME/"$TEST_NAME"/ $XML_SHORT_FILE
 		report_success $? "Created $XML_SHORT_FILE"
+		count=`expr $count + 1` 
 	done;
+	count=0;
 	for file in `ls -r $SAMPLE_VFA_DIR/TEST_right*.tif`;
 	do
 		XML_SHORT_FILE=$SAMPLE_VFA_DIR/`basename $file .tif`.xml
@@ -186,10 +197,12 @@ generate_sample_vfa_data() {
 		sed -i s/_GIVEN_NAME/$GIVEN_NAME/ $XML_SHORT_FILE
 		sed -i s/_PATIENT_ID/$PID/ $XML_SHORT_FILE
 		sed -i s/_FILE_REFERENCE/`basename $file`/ $XML_SHORT_FILE
+		sed -i s/_STUDY_DATE/`expr $year - $count`-04-10/ $XML_SHORT_FILE
 		sed -i s/_LATERALITY/R/ $XML_SHORT_FILE
 		sed -i s/_TEST_STRATEGY/"$TEST_STRATEGY"/ $XML_SHORT_FILE
 		sed -i s/_TEST_NAME/"$TEST_NAME"/ $XML_SHORT_FILE
 		report_success $? "Created $XML_SHORT_FILE"
+		count=`expr $count + 1` 
 	done;
 }
 

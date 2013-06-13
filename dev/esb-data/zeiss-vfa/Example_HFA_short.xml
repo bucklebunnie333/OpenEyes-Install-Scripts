@@ -41,7 +41,7 @@
 	    </Patient_M>
 	    <GeneralStudy_M>
 		    <study_instance_uid VR="UI" codingScheme="DCM" codeId="0020,000D" codeMeaning="Study Instance UID">1.2.826.0.1.3680043.2.139.3.2.3.740.15852.201133.131458</study_instance_uid>
-		    <study_date VR="DA" codingScheme="DCM" codeId="0008,0020" codeMeaning="Study Date">2011-03-03</study_date>
+		    <study_date VR="DA" codingScheme="DCM" codeId="0008,0020" codeMeaning="Study Date">_STUDY_DATE</study_date>
 		    <study_time VR="TM" codingScheme="DCM" codeId="0008,0030" codeMeaning="Study Time">13:14:58.000</study_time>
 		    <referring_physicians_name VR="PN" codingScheme="DCM" codeId="0008,0090" codeMeaning="Referring Physician's Name">
 			    <family_name/>
