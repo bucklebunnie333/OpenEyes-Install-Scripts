@@ -173,6 +173,17 @@ generate_sample_vfa_data() {
 
 	count=0;
 	year=2013;
+	dates[0]="02-14"
+	dates[1]="10-21"
+	dates[2]="03-18"
+	dates[3]="10-11"
+	dates[4]="06-12"
+	dates[5]="05-20"
+	dates[6]="09-02"
+	dates[7]="07-15"
+	dates[8]="01-31"
+	dates[9]="04-11"
+	dates[10]="06-12"
 	for file in `ls -r $SAMPLE_VFA_DIR/TEST_left*.tif`;
 	do
 		XML_SHORT_FILE=$SAMPLE_VFA_DIR/`basename $file .tif`.xml
@@ -181,7 +192,7 @@ generate_sample_vfa_data() {
 		sed -i s/_GIVEN_NAME/$GIVEN_NAME/ $XML_SHORT_FILE
 		sed -i s/_PATIENT_ID/$PID/ $XML_SHORT_FILE
 		sed -i s/_FILE_REFERENCE/`basename $file`/ $XML_SHORT_FILE
-		sed -i s/_STUDY_DATE/`expr $year - $count`-04-10/ $XML_SHORT_FILE
+		sed -i s/_STUDY_DATE/`expr $year - $count`-${dates[$count]}/ $XML_SHORT_FILE
 		sed -i s/_LATERALITY/L/ $XML_SHORT_FILE
 		sed -i s/_TEST_STRATEGY/"$TEST_STRATEGY"/ $XML_SHORT_FILE
 		sed -i s/_TEST_NAME/"$TEST_NAME"/ $XML_SHORT_FILE
@@ -197,7 +208,7 @@ generate_sample_vfa_data() {
 		sed -i s/_GIVEN_NAME/$GIVEN_NAME/ $XML_SHORT_FILE
 		sed -i s/_PATIENT_ID/$PID/ $XML_SHORT_FILE
 		sed -i s/_FILE_REFERENCE/`basename $file`/ $XML_SHORT_FILE
-		sed -i s/_STUDY_DATE/`expr $year - $count`-04-10/ $XML_SHORT_FILE
+		sed -i s/_STUDY_DATE/`expr $year - $count`-${dates[$count]}/ $XML_SHORT_FILE
 		sed -i s/_LATERALITY/R/ $XML_SHORT_FILE
 		sed -i s/_TEST_STRATEGY/"$TEST_STRATEGY"/ $XML_SHORT_FILE
 		sed -i s/_TEST_NAME/"$TEST_NAME"/ $XML_SHORT_FILE
